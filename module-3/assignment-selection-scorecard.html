@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment Selection Scorecard — AI Fluency for Faculty</title>
+<script>
+/* ================================================================
+   EDIT YOUR CONTENT HERE — all faculty-facing text lives in this
+   block. Change text between quotes; leave the structure alone.
+   Thresholds: edit VERDICTS min values if the cut lines change.
+   ================================================================ */
+const CONTENT = {
+  intro: "Evaluate ONE candidate assignment. Work the six gates first — a single failed gate sends the assignment back, and that's the criteria doing their job, not a failure. Not sure which assignment? Shortlist 2–3 and run each through.",
+
+  gates: [
+    { id:"g1", name:"Gate 1 — On your schedule",
+      q:"Will you teach this assignment's course again in a named upcoming semester?",
+      sendback:"This gate protects the Day 4 Commitment Card — a redesign with no delivery date dead-ends at the showcase. Choose an assignment from a course with a named next run." },
+    { id:"g2", name:"Gate 2 — Materials in hand",
+      q:"Do you have the current assignment prompt AND rubric as documents you can paste?",
+      sendback:"This gate protects Day 2 — the AI Stress Test scores AI output against YOUR rubric. No rubric, no finding. Choose an assignment whose materials exist in pasteable form." },
+    { id:"g3", name:"Gate 3 — Yours to change",
+      q:"Do you have the authority and the intention to revise this assignment?",
+      sendback:"This gate protects your three workshop days — a redesign you can't deploy is an exercise, not a change. Coordinated multi-section courses often fail here; choose an assignment you control." },
+    { id:"g4", name:"Gate 4 — Individual and non-exam",
+      q:"Is this an individual assignment (not an exam, not a group project)?",
+      sendback:"Exams and group projects are out of scope for this workshop cycle — the redesign process ahead assumes an individual, non-exam assignment. Choose a different candidate." },
+    { id:"g5", name:"Gate 5 — Self-contained",
+      q:"Could a student complete it from the pasteable materials in one sitting — no in-class experiences, live performance, or fieldwork required?",
+      sendback:"This gate protects Day 2's 30-minute stress-test window. If a student can't hand the prompt to AI, neither can you when it counts. Choose a discrete, self-contained deliverable." },
+    { id:"g6", name:"Gate 6 — Students will use AI",
+      q:"Do you commit that your redesigned assignment will include at least one task where students use AI — sanctioned, visible, and tied to a discipline AI competency?",
+      note:"The AI-Resistant approach still matters — task by task. Your redesign will likely protect some tasks as human-essential; that's exactly what the Day 2 Gap Analysis sorts out. This gate commits the assignment, not every task.",
+      sendback:"This gate protects the program's purpose: an assignment that develops students' AI fluency for a GenAI-integrated business environment. If you can't picture any task here where student AI use would serve the learning objective, choose a different assignment." }
+  ],
+
+  flag: {
+    name:"Proprietary-materials flag",
+    q:"Does the assignment depend on licensed content you cannot legally paste into an AI tool (e.g., Harvard cases, licensed datasets)?",
+    workLabel:"Still selectable — state your workaround. Standard move: write a one-paragraph summary of the material's key elements in your own words and run the Day 2 stress test with that.",
+    workPlaceholder:"My workaround for the stress test will be…"
+  },
+
+  signals: [
+    { id:"s1", name:"Signal 1 — AI-competency richness",
+      help:"Gate 6 guaranteed the floor: at least one student AI task. This rates the ceiling — how many discipline AI competencies could this assignment authentically develop?",
+      stops:["Hard to picture even one meaningful AI task","One thin AI task; competency unclear","One solid task; one clear competency","Multiple tasks; two competencies in reach","AI woven through; three or more competencies"] },
+    { id:"s2", name:"Signal 2 — Cognitive layers",
+      help:"Day 1's Activity Inventory is one row per cognitive task — layered assignments produce a real Gap Analysis.",
+      stops:["A single task","Two steps, mostly one skill","Three distinct tasks","Four-plus tasks, varied skills","Rich multi-stage cognitive work"] },
+    { id:"s3", name:"Signal 3 — Suspected AI-vulnerability",
+      help:"Suspicion is enough — Day 2 confirms or surprises.",
+      stops:["AI adds little here","AI helps at the margins","AI could do meaningful chunks","AI could produce most of it","AI could plausibly pass this today"] },
+    { id:"s4", name:"Signal 4 — Rubric specificity",
+      help:"The rubric doesn't need to be good — Day 3 rebuilds it. It needs to be diagnostic enough that scoring AI output tells you something.",
+      stops:["Holistic single score","Broad categories only","Criteria named; descriptors thin","Criterion-level descriptors","Specific, observable descriptors throughout"] },
+    { id:"s5", name:"Signal 5 — Grade weight",
+      help:"Higher stakes, higher payoff from the redesign.",
+      stops:["Under 5% of the course grade","Roughly 5–10%","Roughly 10–20%","Roughly 20–30%","Major deliverable — 30% or more"] }
+  ],
+
+  VERDICTS: [
+    { min:17, stamp:"CLEARED FOR THE BUILDING SITE", label:"STRONG CANDIDATE",
+      text:"All six gates passed and the signals are strong. Copy your summary below and carry this assignment into the Prompt Lab." },
+    { min:12, stamp:"PROCEED — WITH NOTES", label:"WORKABLE CANDIDATE",
+      text:"All six gates passed. The signal total is workable — proceed, and name your weakest signal in the Bring Your Assignment submission so it's on the table for Day 1." },
+    { min:5,  stamp:"RECONSIDER", label:"WEAK CANDIDATE",
+      text:"The gates passed, but the signals are thin. Before investing three workshop days here, consider running a different assignment through the scorecard." }
+  ],
+
+  attribution:"Teaching Forward: AI Fluency for Practitioners · Hankamer School of Business · Baylor University"
+};
+/* ================== END OF EDITABLE CONTENT ================== */
+</script>
+<style>
+  :root{
+    --field:#0E3123;
+    --green:#154734;
+    --green-soft:#1C583F;
+    --gold:#FFB81C;
+    --gold-dim:rgba(255,184,28,.4);
+    --paper:#F8F4E8;
+    --paper-line:#E3DCC6;
+    --ink:#173A2C;
+    --ink-soft:#4A5F53;
+    --sendback:#8C3B22;
+    --sendback-bg:#F7E7DE;
+    --mono:'Courier New',Consolas,monospace;
+    --sans:'Helvetica Neue',Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--field);font-family:var(--sans);color:var(--ink);
+    display:flex;justify-content:center;padding:18px 12px;
+    background-image:
+      linear-gradient(rgba(255,184,28,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,184,28,.06) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+  #sheet{
+    width:100%;max-width:880px;background:var(--paper);border-radius:6px;
+    box-shadow:0 22px 60px rgba(0,0,0,.5);overflow:hidden;
+  }
+  header{
+    background:var(--green);color:var(--paper);padding:20px 26px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end;
+    border-bottom:4px solid var(--gold);
+  }
+  header h1{font-size:19px;letter-spacing:.2em;font-weight:700}
+  header .sub{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold);margin-top:6px}
+  .dwg{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold);
+    border:1px solid var(--gold-dim);padding:8px 12px;line-height:1.7;
+  }
+  .dwg b{color:var(--paper);font-weight:normal}
+
+  main{padding:24px 30px 10px}
+  .intro{font-size:14.5px;line-height:1.6;color:var(--ink);max-width:70ch;margin-bottom:22px;
+    border-left:3px solid var(--gold);padding-left:14px}
+
+  .seclabel{
+    font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--green);
+    display:flex;align-items:center;gap:12px;margin:26px 0 12px;
+  }
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--paper-line)}
+
+  .cand{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+  .cand label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--ink-soft);margin-bottom:5px}
+  .cand input{
+    width:100%;padding:10px 12px;font-size:14px;font-family:var(--sans);color:var(--ink);
+    background:#FFFDF6;border:1px solid var(--paper-line);border-radius:4px;
+  }
+  .cand input:focus-visible{outline:3px solid var(--gold);outline-offset:1px;border-color:var(--green)}
+
+  .gate{
+    border:1px solid var(--paper-line);border-radius:5px;background:#FFFDF6;
+    padding:14px 16px;margin-bottom:10px;
+  }
+  .gate .gtop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+  .gate h3{font-size:13.5px;letter-spacing:.04em;color:var(--green)}
+  .gate .gq{font-size:13.5px;line-height:1.55;color:var(--ink);margin-top:6px;max-width:62ch}
+  .gate .gnote{font-size:12px;line-height:1.5;color:var(--ink-soft);margin-top:8px;max-width:62ch;
+    border-left:2px solid var(--gold);padding-left:10px}
+  .yn{display:flex;gap:8px;flex:none;margin-top:2px}
+  .yn label{
+    cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    border:1.5px solid var(--green);border-radius:4px;padding:7px 16px;color:var(--green);
+    user-select:none;
+  }
+  .yn input{position:absolute;opacity:0;width:1px;height:1px}
+  .yn input:focus-visible + span{outline:3px solid var(--gold);outline-offset:3px;border-radius:2px}
+  .yn label:has(input:checked){background:var(--green);color:var(--paper)}
+  .yn label.no:has(input:checked){background:var(--sendback);border-color:var(--sendback);color:#fff}
+  .gate.passed{border-color:var(--green);box-shadow:inset 3px 0 0 var(--green)}
+  .gate.failed{border-color:var(--sendback)}
+
+  .sendback{
+    display:none;margin-top:12px;background:var(--sendback-bg);border:1px solid var(--sendback);
+    border-radius:4px;padding:12px 14px;
+  }
+  .gate.failed .sendback{display:block}
+  .sendback .sb-label{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--sendback);margin-bottom:6px}
+  .sendback p{font-size:13px;line-height:1.55;color:var(--ink)}
+  .sendback button{
+    margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    background:var(--sendback);color:#fff;border:none;border-radius:4px;padding:9px 14px;cursor:pointer;
+  }
+  .sendback button:hover{filter:brightness(1.12)}
+  .sendback button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+  .locked{opacity:.38;pointer-events:none}
+  .lockmsg{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-soft);margin:-4px 0 10px}
+
+  .flagbox{border:1.5px dashed var(--gold);border-radius:5px;background:#FFFBEE;padding:14px 16px}
+  .flagbox .gq{font-size:13.5px;line-height:1.55;max-width:62ch;margin-top:2px}
+  .workwrap{display:none;margin-top:12px}
+  .flagbox.on .workwrap{display:block}
+  .workwrap p{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin-bottom:8px;max-width:64ch}
+  .workwrap textarea{
+    width:100%;min-height:70px;padding:10px 12px;font-size:13.5px;font-family:var(--sans);
+    border:1px solid var(--paper-line);border-radius:4px;background:#FFFDF6;color:var(--ink);resize:vertical;
+  }
+  .workwrap textarea:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+
+  .signal{border:1px solid var(--paper-line);border-radius:5px;background:#FFFDF6;padding:14px 16px;margin-bottom:10px}
+  .signal .stop{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .signal h3{font-size:13.5px;color:var(--green)}
+  .signal .val{font-family:var(--mono);font-size:13px;color:var(--gold);background:var(--green);
+    border-radius:4px;padding:3px 10px;letter-spacing:.1em}
+  .signal .help{font-size:12px;line-height:1.5;color:var(--ink-soft);margin:7px 0 10px;max-width:66ch}
+  .signal input[type=range]{width:100%;accent-color:#154734;cursor:pointer}
+  .signal input[type=range]:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+  .signal .desc{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--green);margin-top:8px;min-height:16px}
+
+  #verdict{margin:8px 0 6px;border:1.5px solid var(--green);border-radius:6px;background:#FFFDF6;padding:20px 22px;
+    display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .stamp{
+    flex:none;width:190px;height:190px;border-radius:50%;
+    border:5px double var(--green);color:var(--green);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    font-family:var(--mono);letter-spacing:.12em;padding:16px;
+    transform:rotate(-8deg);
+  }
+  .stamp .st-top{font-size:9px;margin-bottom:8px}
+  .stamp .st-main{font-size:14px;font-weight:700;line-height:1.45}
+  .stamp .st-score{font-size:11px;margin-top:8px;color:var(--ink-soft)}
+  .stamp.gold{border-color:#B8860B;color:#8A6508;background:rgba(255,184,28,.12)}
+  .stamp.warn{border-color:var(--sendback);color:var(--sendback);background:rgba(140,59,34,.06)}
+  .stamped{animation:stampIn .4s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes stampIn{0%{transform:rotate(-8deg) scale(2.1);opacity:0}100%{transform:rotate(-8deg) scale(1);opacity:1}}
+  #vtext{flex:1;min-width:260px}
+  #vtext .vlabel{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--ink-soft);margin-bottom:8px}
+  #vtext h2{font-size:19px;color:var(--green);letter-spacing:.06em;margin-bottom:8px}
+  #vtext p{font-size:13.5px;line-height:1.6;max-width:56ch}
+  #copybtn{
+    margin-top:14px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    background:var(--green);color:var(--gold);border:none;border-radius:4px;padding:12px 18px;cursor:pointer;
+  }
+  #copybtn:hover{background:var(--green-soft)}
+  #copybtn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+  footer{
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;
+    padding:14px 30px 20px;
+  }
+  #resetall{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;background:none;
+    border:1px solid var(--ink-soft);color:var(--ink-soft);border-radius:4px;padding:8px 13px;cursor:pointer;
+  }
+  #resetall:hover{border-color:var(--green);color:var(--green)}
+  #resetall:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .attrib{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-soft)}
+
+  @media (max-width:640px){
+    .cand{grid-template-columns:1fr}
+    main{padding:18px 16px 6px}
+    header,footer{padding-left:16px;padding-right:16px}
+    #verdict{justify-content:center}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamped{animation:none}
+  }
+</style>
+</head>
+<body>
+<div id="sheet" role="region" aria-label="Assignment Selection Scorecard">
+  <header>
+    <div>
+      <h1>ASSIGNMENT SELECTION SCORECARD</h1>
+      <div class="sub">SITE INSPECTION · MODULE A3 · CHOOSE YOUR REDESIGN CANDIDATE</div>
+    </div>
+    <div class="dwg">
+      <b>PROJECT:</b> TEACHING FORWARD<br>
+      <b>DWG NO:</b> A3-01 · <b>SCALE:</b> ONE ASSIGNMENT
+    </div>
+  </header>
+
+  <main>
+    <p class="intro" id="intro"></p>
+
+    <div class="seclabel">CANDIDATE UNDER INSPECTION</div>
+    <div class="cand">
+      <div><label for="c-name">ASSIGNMENT NAME</label><input id="c-name" type="text" autocomplete="off"></div>
+      <div><label for="c-course">COURSE</label><input id="c-course" type="text" autocomplete="off" placeholder="e.g., FIN 3310"></div>
+      <div><label for="c-sem">NEXT TAUGHT (SEMESTER)</label><input id="c-sem" type="text" autocomplete="off" placeholder="e.g., Fall 2026"></div>
+    </div>
+
+    <div class="seclabel">THE SIX GATES — ALL MUST PASS</div>
+    <div id="gates"></div>
+
+    <div id="flagSec">
+      <div class="seclabel">SOFT FLAG</div>
+      <div class="lockmsg" id="flagLock">UNLOCKS WHEN ALL SIX GATES PASS</div>
+      <div class="flagbox" id="flagbox">
+        <h3 id="flagName" style="font-size:13.5px;color:var(--green)"></h3>
+        <p class="gq" id="flagQ"></p>
+        <div class="yn" style="margin-top:10px">
+          <label>&nbsp;<input type="radio" name="flag" value="no" id="flag-no"><span>NO</span></label>
+          <label class="no">&nbsp;<input type="radio" name="flag" value="yes" id="flag-yes"><span>YES — FLAG IT</span></label>
+        </div>
+        <div class="workwrap">
+          <p id="workLabel"></p>
+          <textarea id="workaround" aria-label="Your stated workaround for the proprietary materials"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div id="sigSec">
+      <div class="seclabel">FIVE QUALITY SIGNALS — RATE 1–5</div>
+      <div class="lockmsg" id="sigLock">UNLOCKS WHEN THE GATES AND FLAG ARE COMPLETE</div>
+      <div id="signals"></div>
+    </div>
+
+    <div id="verdSec">
+      <div class="seclabel">INSPECTION VERDICT</div>
+      <div id="verdict" aria-live="polite">
+        <div class="stamp" id="stamp">
+          <div class="st-top">HANKAMER · A3</div>
+          <div class="st-main" id="stampMain">AWAITING<br>INSPECTION</div>
+          <div class="st-score" id="stampScore"></div>
+        </div>
+        <div id="vtext">
+          <div class="vlabel" id="vlabel">VERDICT</div>
+          <h2 id="vtitle">Complete the gates and signals above</h2>
+          <p id="vbody">The stamp renders automatically once every gate has an answer and every signal is rated.</p>
+          <button id="copybtn" hidden>COPY MY SUMMARY FOR THE SUBMISSION</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <button id="resetall">START OVER WITH A NEW CANDIDATE</button>
+    <div class="attrib" id="attrib"></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  $('intro').textContent = CONTENT.intro;
+  $('attrib').textContent = CONTENT.attribution;
+  $('flagName').textContent = CONTENT.flag.name;
+  $('flagQ').textContent = CONTENT.flag.q;
+  $('workLabel').textContent = CONTENT.flag.workLabel;
+  $('workaround').placeholder = CONTENT.flag.workPlaceholder;
+
+  const gateState = {};
+  const sigState  = {};
+  const sigTouched = new Set();
+
+  const gatesEl = $('gates');
+  CONTENT.gates.forEach(g => {
+    const d = document.createElement('div');
+    d.className = 'gate'; d.id = 'gate-' + g.id;
+    d.innerHTML =
+      '<div class="gtop"><div style="flex:1;min-width:240px"><h3>' + g.name + '</h3>' +
+      '<p class="gq">' + g.q + '</p>' +
+      (g.note ? '<p class="gnote">' + g.note + '</p>' : '') + '</div>' +
+      '<div class="yn" role="radiogroup" aria-label="' + g.name + '">' +
+        '<label>&nbsp;<input type="radio" name="' + g.id + '" value="yes"><span>YES</span></label>' +
+        '<label class="no">&nbsp;<input type="radio" name="' + g.id + '" value="no"><span>NO</span></label>' +
+      '</div></div>' +
+      '<div class="sendback"><div class="sb-label">SENT BACK — CHOOSE A DIFFERENT ASSIGNMENT</div>' +
+      '<p>' + g.sendback + '</p>' +
+      '<button type="button" data-reset>START OVER WITH A NEW CANDIDATE</button></div>';
+    gatesEl.appendChild(d);
+    d.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+      gateState[g.id] = inp.value;
+      d.classList.toggle('passed', inp.value === 'yes');
+      d.classList.toggle('failed', inp.value === 'no');
+      refresh();
+    }));
+  });
+
+  const flagbox = $('flagbox');
+  document.querySelectorAll('input[name=flag]').forEach(inp =>
+    inp.addEventListener('change', () => {
+      flagbox.classList.toggle('on', inp.value === 'yes' && inp.checked);
+      refresh();
+    }));
+  $('workaround').addEventListener('input', refresh);
+
+  const sigsEl = $('signals');
+  CONTENT.signals.forEach(s => {
+    sigState[s.id] = 3;
+    const d = document.createElement('div');
+    d.className = 'signal';
+    d.innerHTML =
+      '<div class="stop"><h3>' + s.name + '</h3><span class="val" id="val-' + s.id + '">— / 5</span></div>' +
+      '<p class="help">' + s.help + '</p>' +
+      '<input type="range" min="1" max="5" step="1" value="3" id="rng-' + s.id + '" aria-label="' + s.name + '">' +
+      '<div class="desc" id="desc-' + s.id + '">Slide to rate</div>';
+    sigsEl.appendChild(d);
+    const rng = d.querySelector('input');
+    rng.addEventListener('input', () => {
+      sigTouched.add(s.id);
+      sigState[s.id] = +rng.value;
+      $('val-' + s.id).textContent = rng.value + ' / 5';
+      $('desc-' + s.id).textContent = s.stops[+rng.value - 1];
+      rng.setAttribute('aria-valuetext', rng.value + ' — ' + s.stops[+rng.value - 1]);
+      refresh();
+    });
+  });
+
+  function refresh(){
+    const answered = CONTENT.gates.every(g => gateState[g.id]);
+    const anyFail  = CONTENT.gates.some(g => gateState[g.id] === 'no');
+    const allPass  = CONTENT.gates.every(g => gateState[g.id] === 'yes');
+
+    $('flagbox').classList.toggle('locked', !allPass);
+    $('flagLock').style.display = allPass ? 'none' : 'block';
+
+    const flagYes = $('flag-yes').checked;
+    const flagNo  = $('flag-no').checked;
+    const flagDone = allPass && (flagNo || (flagYes && $('workaround').value.trim().length >= 20));
+
+    $('signals').classList.toggle('locked', !flagDone);
+    $('sigLock').style.display = flagDone ? 'none' : 'block';
+
+    const stamp = $('stamp');
+    const total = Object.values(sigState).reduce((a,b)=>a+b,0);
+    const allRated = flagDone && sigTouched.size === CONTENT.signals.length;
+
+    stamp.classList.remove('gold','warn','stamped');
+
+    if(anyFail){
+      setVerdict('SEND BACK','Sent back — the criteria did their job',
+        'A gate failed above; the panel under it explains which workshop step it protects. Pick another candidate and run it again — a well-chosen assignment is the whole point of this module.',
+        'warn','', false);
+    } else if(!answered || !flagDone || !allRated){
+      setVerdict('AWAITING<br>INSPECTION','Complete the gates and signals above',
+        'The stamp renders automatically once every gate has an answer and every signal is rated.',
+        '','', false);
+    } else {
+      const v = CONTENT.VERDICTS.find(v => total >= v.min) || CONTENT.VERDICTS[CONTENT.VERDICTS.length-1];
+      const cls = v === CONTENT.VERDICTS[0] ? 'gold' : (v === CONTENT.VERDICTS[2] ? 'warn' : '');
+      setVerdict(v.stamp.replace(/ — /g,'<br>').replace('FOR THE','FOR THE<br>'), v.label, v.text, cls, total + ' / 25', true);
+      stamp.classList.add('stamped');
+    }
+
+    function setVerdict(stampHTML,title,body,cls,score,showCopy){
+      $('stampMain').innerHTML = stampHTML;
+      $('stampScore').textContent = score;
+      $('vtitle').textContent = title;
+      $('vbody').textContent = body;
+      if(cls) stamp.classList.add(cls);
+      $('copybtn').hidden = !showCopy;
+    }
+  }
+
+  $('copybtn').addEventListener('click', async () => {
+    const total = Object.values(sigState).reduce((a,b)=>a+b,0);
+    const v = CONTENT.VERDICTS.find(v => total >= v.min) || CONTENT.VERDICTS[CONTENT.VERDICTS.length-1];
+    const flagYes = $('flag-yes').checked;
+    const lines = [
+      'ASSIGNMENT SELECTION SCORECARD — SUMMARY',
+      'Assignment: ' + ($('c-name').value || '[name]') + '  |  Course: ' + ($('c-course').value || '[course]') + '  |  Next taught: ' + ($('c-sem').value || '[semester]'),
+      'Gates: 6/6 passed — including Gate 6 commitment: the redesigned assignment will include at least one student-facing AI task.',
+      'Proprietary-materials flag: ' + (flagYes ? 'APPLIES — workaround: ' + $('workaround').value.trim() : 'not applicable'),
+      'Signals (1–5): ' + CONTENT.signals.map(s => s.name.replace(/Signal \d — /,'') + ' ' + sigState[s.id]).join(' · ') + '  —  TOTAL ' + total + ' / 25',
+      'Verdict: ' + v.label
+    ];
+    const text = lines.join('\n');
+    try{
+      await navigator.clipboard.writeText(text);
+      $('copybtn').textContent = 'COPIED — PASTE INTO SUBMISSION FIELDS 1 & 4';
+    }catch(e){
+      window.prompt('Copy your summary:', text);
+    }
+    setTimeout(()=>{ $('copybtn').textContent = 'COPY MY SUMMARY FOR THE SUBMISSION'; }, 3500);
+  });
+
+  function resetAll(){
+    document.querySelectorAll('input[type=radio]').forEach(i => i.checked = false);
+    document.querySelectorAll('.gate').forEach(g => g.classList.remove('passed','failed'));
+    document.querySelectorAll('input[type=range]').forEach(r => { r.value = 3; });
+    CONTENT.signals.forEach(s => {
+      sigState[s.id] = 3;
+      $('val-' + s.id).textContent = '— / 5';
+      $('desc-' + s.id).textContent = 'Slide to rate';
+    });
+    sigTouched.clear();
+    Object.keys(gateState).forEach(k => delete gateState[k]);
+    flagbox.classList.remove('on');
+    $('workaround').value = '';
+    ['c-name','c-course','c-sem'].forEach(id => $(id).value = '');
+    refresh();
+    $('c-name').focus();
+  }
+  $('resetall').addEventListener('click', resetAll);
+  document.addEventListener('click', e => { if(e.target.matches('[data-reset]')) resetAll(); });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
