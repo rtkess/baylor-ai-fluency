@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4D Compass — AI Fluency for Faculty | Hankamer School of Business, Baylor University</title>
+<meta name="description" content="Interactive 4D Compass: explore Delegation, Description, Discernment, and Diligence with a live self-rating fluency snapshot.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+body{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif;padding:12px;color:#1a1a1a;line-height:1.5}
+.cp{border:1px solid #cdd5ce;border-radius:12px;overflow:hidden;background:#fff;max-width:760px;margin:0 auto}
+.cp-hdr{background:#154734;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.cp-hdr p{margin:0}
+.cp-ht{color:#fff;font-size:15px;font-weight:600}
+.cp-hs{color:#FFB81C;font-size:11px;margin-top:3px}
+.cp-hbg{background:rgba(255,184,28,.15);border:1px solid #FFB81C;color:#FFB81C;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}
+.cp-grid{display:grid;grid-template-columns:1fr 1fr;background:#f3f6f4;border-bottom:1px solid #cdd5ce}
+.cp-btn{padding:14px 16px;background:transparent;border:none;border-right:1px solid #cdd5ce;border-bottom:1px solid #cdd5ce;cursor:pointer;text-align:left;color:inherit;position:relative;width:100%;font-family:inherit;transition:background .12s}
+.cp-btn:nth-child(2),.cp-btn:nth-child(4){border-right:none}
+.cp-btn:nth-child(3),.cp-btn:nth-child(4){border-bottom:none}
+.cp-btn:hover{background:#fff}
+.cp-btn:focus-visible{outline:2px solid #154734;outline-offset:-2px}
+.cp-btn.on{background:#fff}
+.cp-btn.on::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:#FFB81C}
+.cp-dir{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#154734;color:#FFB81C;font-size:10px;font-weight:700;border-radius:50%;margin-bottom:4px}
+.cp-btn.on .cp-dir{background:#FFB81C;color:#154734}
+.cp-icon{font-size:18px;color:#8fa898;display:block;margin-bottom:4px}
+.cp-btn.on .cp-icon{color:#154734}
+.cp-dname{font-size:13px;font-weight:600;color:#1a1a1a;display:block;margin-bottom:2px}
+.cp-dtag{font-size:11px;color:#555;display:block;margin-bottom:6px;line-height:1.35}
+.cp-sc{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:#fff;border:1px solid #cdd5ce;color:#767676;display:inline-block}
+.cp-sc.done{background:#154734;color:#FFB81C;border-color:#154734}
+.cp-panel{padding:20px;background:#fff;border-bottom:1px solid #cdd5ce}
+.cp-ph{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e0e6e1}
+.cp-pname{font-size:15px;font-weight:600;color:#154734;margin:0 0 6px}
+.cp-pq{font-size:14px;color:#222;margin:0;font-style:italic;line-height:1.5}
+.cp-box{border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:12px;border-top:1px solid #dde4de;border-right:1px solid #dde4de;border-bottom:1px solid #dde4de}
+.cp-ex{background:#f8faf9;border-left:2px solid #FFB81C}
+.cp-mis{background:#fffbf0;border-left:2px solid #b06f00;border-color:#f0d9a0}
+.cp-blbl{font-size:10px;font-weight:600;color:#555;margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
+.cp-disc{font-size:10px;font-weight:600;color:#6b6b6b;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.cp-tx{font-size:13px;color:#222;line-height:1.6;margin:0}
+.cp-sarea{background:#f3f6f4;border-radius:8px;padding:14px 16px}
+.cp-sq{font-size:13px;font-weight:600;color:#1a1a1a;margin:0 0 12px}
+.cp-srow{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.cp-range{flex:1;cursor:pointer;accent-color:#154734;height:6px}
+.cp-range:focus-visible{outline:2px solid #154734;outline-offset:3px}
+.cp-sv{font-size:13px;font-weight:600;color:#1a1a1a;min-width:30px;text-align:right}
+.cp-slbls{display:flex;justify-content:space-between}
+.cp-slbls span{font-size:10px;color:#6b6b6b}
+.cp-svlbl{text-align:center;font-size:12px;font-weight:600;color:#154734;margin-top:6px}
+.cp-snap{padding:20px;background:#f3f6f4}
+.cp-sh{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.cp-si{font-size:16px;color:#5e7a68}
+.cp-st{font-size:14px;font-weight:600;color:#1a1a1a}
+.cp-sn{font-size:11px;color:#6b6b6b;margin-left:auto}
+.cp-brow{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.cp-blb{font-size:12px;font-weight:600;color:#1a1a1a;width:100px;flex-shrink:0}
+.cp-btrk{flex:1;height:8px;background:#dde4de;border-radius:4px;overflow:hidden}
+.cp-bfil{height:100%;background:#FFB81C;border-radius:4px;transition:width .3s ease}
+.cp-bval{font-size:11px;color:#555;width:38px;text-align:right;flex-shrink:0}
+.cp-prof{margin-top:14px;padding-top:14px;border-top:1px solid #dde4de;font-size:13px;color:#333;line-height:1.6}
+.cp-empty{text-align:center;padding:28px 20px;color:#6b6b6b;font-size:13px}
+.cp-empty i{font-size:22px;display:block;margin-bottom:8px;color:#8fa898}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:520px){
+  .cp-grid{grid-template-columns:1fr}
+  .cp-btn{border-right:none!important;border-bottom:1px solid #cdd5ce!important}
+  .cp-btn:last-child{border-bottom:none!important}
+  .cp-hdr{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<h1 class="sr-only">4D Compass — AI Fluency Framework self-assessment for Hankamer School of Business faculty</h1>
+
+<div class="cp">
+  <div class="cp-hdr">
+    <div>
+      <p class="cp-ht">4D Compass</p>
+      <p class="cp-hs">AI Fluency Framework &nbsp;&middot;&nbsp; Hankamer School of Business, Baylor University</p>
+    </div>
+    <span class="cp-hbg"><i class="ti ti-compass" aria-hidden="true"></i>&nbsp; Self-rating &middot; Live profile</span>
+  </div>
+
+  <div class="cp-grid" role="tablist" aria-label="The four D's of the AI Fluency Framework">
+    <button class="cp-btn" id="q-delegation" type="button" role="tab" aria-selected="false" aria-controls="cp-panel" onclick="cpSel('delegation')">
+      <span class="cp-dir" aria-hidden="true">N</span>
+      <i class="ti ti-scale cp-icon" aria-hidden="true"></i>
+      <span class="cp-dname">Delegation</span>
+      <span class="cp-dtag">What do I hand to AI?</span>
+      <span class="cp-sc" id="sc-delegation">not rated</span>
+    </button>
+    <button class="cp-btn" id="q-description" type="button" role="tab" aria-selected="false" aria-controls="cp-panel" onclick="cpSel('description')">
+      <span class="cp-dir" aria-hidden="true">E</span>
+      <i class="ti ti-edit cp-icon" aria-hidden="true"></i>
+      <span class="cp-dname">Description</span>
+      <span class="cp-dtag">How do I talk to AI?</span>
+      <span class="cp-sc" id="sc-description">not rated</span>
+    </button>
+    <button class="cp-btn" id="q-diligence" type="button" role="tab" aria-selected="false" aria-controls="cp-panel" onclick="cpSel('diligence')">
+      <span class="cp-dir" aria-hidden="true">W</span>
+      <i class="ti ti-shield-check cp-icon" aria-hidden="true"></i>
+      <span class="cp-dname">Diligence</span>
+      <span class="cp-dtag">Am I using AI responsibly?</span>
+      <span class="cp-sc" id="sc-diligence">not rated</span>
+    </button>
+    <button class="cp-btn" id="q-discernment" type="button" role="tab" aria-selected="false" aria-controls="cp-panel" onclick="cpSel('discernment')">
+      <span class="cp-dir" aria-hidden="true">S</span>
+      <i class="ti ti-search cp-icon" aria-hidden="true"></i>
+      <span class="cp-dname">Discernment</span>
+      <span class="cp-dtag">How do I evaluate AI output?</span>
+      <span class="cp-sc" id="sc-discernment">not rated</span>
+    </button>
+  </div>
+
+  <div class="cp-panel" id="cp-panel" role="tabpanel" aria-live="polite">
+    <div class="cp-empty">
+      <i class="ti ti-hand-click" aria-hidden="true"></i>
+      Select a quadrant above to explore that D
+    </div>
+  </div>
+
+  <div class="cp-snap">
+    <div class="cp-sh">
+      <i class="ti ti-chart-bar cp-si" aria-hidden="true"></i>
+      <span class="cp-st">Your fluency snapshot</span>
+      <span class="cp-sn">Updates live as you rate each D</span>
+    </div>
+    <div id="cp-bars"></div>
+    <div class="cp-prof" id="cp-prof" aria-live="polite">Rate each D above to generate your snapshot.</div>
+  </div>
+</div>
+
+<script>
+var DATA = {
+  delegation:{name:'Delegation',icon:'ti-scale',coreQ:'What should I give to AI \u2014 and what should stay with me?',disc:'Finance / Accounting',ex:'A Finance professor needs a rubric for a case study analysis. She asks Claude to generate criteria aligned to Bloom\u2019s level: Analyze, reviews the output, adjusts two descriptors to match Hankamer\u2019s standards, and posts it to Canvas. She delegated the drafting. She retained the judgment.',mis:'\u201cIf AI can do it, I should let it.\u201d Delegation is not about offloading everything possible. High-stakes decisions \u2014 grades, academic integrity determinations, and student welfare \u2014 stay with you regardless of what AI can technically produce.',sq:'How confidently do I decide what to delegate vs. keep?'},
+  description:{name:'Description',icon:'ti-edit',coreQ:'How do I communicate with AI so it gives me something I can actually use?',disc:'Marketing',ex:'A Marketing professor prompts Claude: \u201cWrite discussion questions about marketing.\u201d The output is generic. She rewrites using CARE \u2014 specifying her course level, the brand strategy case, her Bloom\u2019s target, and two examples of the depth she wants. The revised prompt produces classroom-ready questions on the first pass.',mis:'\u201cA better AI should understand what I mean without me explaining it.\u201d No AI can read your disciplinary context, your students\u2019 level, or your course objectives. The quality of your output is always proportional to the quality of your prompt.',sq:'How well do I currently structure my prompts for clear, usable AI output?'},
+  discernment:{name:'Discernment',icon:'ti-search',coreQ:'How do I evaluate what AI gives me before I use it with students?',disc:'Management',ex:'A Management professor asks Claude to summarize ethical leadership frameworks. The output looks polished \u2014 but attributes a quote to Peter Drucker that Drucker never said. Without the 4+1 Discernment Check, that error reaches 40 students. With it, he catches it in under two minutes.',mis:'\u201cIf AI produced it confidently, it\u2019s probably right.\u201d AI systems do not know when they are wrong. Confident tone is not a reliability signal. The 4+1 Check (Accurate? Mine? Aligned? Safe? Accessible?) exists precisely because AI does not flag its own errors.',sq:'How consistently do I verify AI output before using it with students?'},
+  diligence:{name:'Diligence',icon:'ti-shield-check',coreQ:'How do I use AI responsibly, ethically, and in alignment with Baylor\u2019s expectations?',disc:'Accounting / Tax Law',ex:'An Accounting professor wants to deploy an AI FAQ bot for her Tax Law course. Before launch, she reviews Baylor\u2019s AI use policy, confirms the tool does not store student data, drafts a student-facing disclosure, and defines the questions the bot must decline. That preparation is Diligence \u2014 not optional setup, but professional obligation.',mis:'\u201cInstitutional policy is IT\u2019s problem, not mine.\u201d When you deploy AI in your course, you are the responsible party \u2014 not the vendor, not the IT department. FERPA compliance, academic integrity, and student transparency are your professional obligations, regardless of which tool you use.',sq:'How confidently do I apply institutional and ethical standards to my AI use?'}
+};
+var KEYS = ['delegation','description','discernment','diligence'];
+var NAMES = {delegation:'Delegation',description:'Description',discernment:'Discernment',diligence:'Diligence'};
+var LBL = ['','Just starting','Exploring','Practicing','Confident','Leading'];
+var scores = {delegation:0,description:0,discernment:0,diligence:0};
+var touched = {delegation:false,description:false,discernment:false,diligence:false};
+var cur = null;
+
+function sendHeight(){
+  try{
+    var h = document.documentElement.scrollHeight;
+    var msg = {subject:'lti.frameResize', height:h + 24};
+    window.parent.postMessage(msg,'*');
+    window.parent.postMessage(JSON.stringify(msg),'*');
+  }catch(e){}
+}
+
+function updScore(k,v){
+  touched[k] = true;
+  scores[k] = parseInt(v,10);
+  var sc = document.getElementById('sc-'+k);
+  if(sc){ sc.textContent = v+'/5'; sc.className = 'cp-sc done'; }
+  var lb = document.getElementById('sv-lbl-'+k);
+  if(lb) lb.textContent = LBL[parseInt(v,10)];
+  var vv = document.getElementById('sv-val-'+k);
+  if(vv) vv.textContent = v+'/5';
+  updBars();
+}
+
+function updBars(){
+  var html = '';
+  KEYS.forEach(function(k){
+    var s = scores[k];
+    var pct = touched[k] ? Math.round(s/5*100) : 0;
+    html += '<div class="cp-brow"><span class="cp-blb">'+NAMES[k]+'</span>'+
+            '<div class="cp-btrk"><div class="cp-bfil" style="width:'+pct+'%"></div></div>'+
+            '<span class="cp-bval">'+(touched[k] ? s+'/5' : '\u2014')+'</span></div>';
+  });
+  document.getElementById('cp-bars').innerHTML = html;
+
+  var rated = KEYS.filter(function(k){ return touched[k]; });
+  var prof = '';
+  if(rated.length === 0){
+    prof = 'Rate each D above to generate your snapshot.';
+  } else if(rated.length < 4){
+    prof = rated.length + ' of 4 D\u2019s rated \u2014 click each quadrant to complete your snapshot.';
+  } else {
+    var srt = KEYS.slice().sort(function(a,b){ return scores[b]-scores[a]; });
+    var hi = NAMES[srt[0]], lo = NAMES[srt[3]];
+    var hiS = scores[srt[0]], loS = scores[srt[3]];
+    var avg = Math.round(KEYS.reduce(function(s,k){ return s+scores[k]; },0)/4*10)/10;
+    if(hiS === loS){
+      prof = avg >= 4 ? 'You are showing consistent confidence across all four D\u2019s. Your focus now is bringing this level of intentionality to every AI interaction.'
+           : avg >= 3 ? 'You are building solid fluency across all four D\u2019s. Consistent practice in each area will accelerate your development.'
+           : 'You are at the beginning of your AI fluency journey \u2014 and that is exactly the right place to start this course.';
+    } else {
+      prof = (hiS >= 4 ? hi+' is your current strength \u2014 you are applying it with confidence. '
+                       : hi+' is your strongest D at this point. ')
+           + (loS <= 2 ? lo+' is your biggest growth opportunity heading into Module 3.'
+                       : lo+' has the most room for development.');
+    }
+  }
+  document.getElementById('cp-prof').textContent = prof;
+  setTimeout(sendHeight, 50);
+}
+
+function cpSel(k){
+  KEYS.forEach(function(id){
+    var b = document.getElementById('q-'+id);
+    var on = (id === k);
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  cur = k;
+  var d = DATA[k];
+  var sv = touched[k] ? scores[k] : 1;
+  document.getElementById('cp-panel').innerHTML =
+    '<div class="cp-ph"><p class="cp-pname">'+d.name+'</p><p class="cp-pq">'+d.coreQ+'</p></div>' +
+    '<div class="cp-box cp-ex"><div class="cp-blbl">Hankamer example</div><div class="cp-disc">'+d.disc+'</div><p class="cp-tx">'+d.ex+'</p></div>' +
+    '<div class="cp-box cp-mis"><div class="cp-blbl"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:11px;margin-right:3px;color:#8a5600"></i>Red-flag misconception</div><p class="cp-tx">'+d.mis+'</p></div>' +
+    '<div class="cp-sarea">' +
+      '<label class="cp-sq" for="sl-'+k+'">'+d.sq+'</label>' +
+      '<div class="cp-srow">' +
+        '<input type="range" class="cp-range" id="sl-'+k+'" min="1" max="5" step="1" value="'+sv+'" ' +
+        'aria-valuemin="1" aria-valuemax="5" aria-valuenow="'+sv+'" aria-valuetext="'+LBL[sv]+'" ' +
+        'oninput="updScore(\''+k+'\', this.value)">' +
+        '<span class="cp-sv" id="sv-val-'+k+'">'+sv+'/5</span>' +
+      '</div>' +
+      '<div class="cp-slbls"><span>1 \u2014 Just starting</span><span>3 \u2014 Practicing</span><span>5 \u2014 Leading</span></div>' +
+      '<div class="cp-svlbl" id="sv-lbl-'+k+'">'+LBL[sv]+'</div>' +
+    '</div>';
+  setTimeout(sendHeight, 80);
+}
+
+updBars();
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+if(window.ResizeObserver){
+  new ResizeObserver(sendHeight).observe(document.body);
+}
+</script>
+</body>
+</html>
