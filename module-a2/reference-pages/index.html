@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fluency Reference Pages — Hankamer School of Business, Baylor University</title>
+<meta name="description" content="Three permanent reference tools: the Delegation Decision Matrix, the CARE Prompting Template, and the 4+1 Discernment Check.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+body{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif;padding:12px;color:#1a1a1a;line-height:1.5}
+.wrap{max-width:760px;margin:0 auto}
+.pg-hdr{background:#154734;border-radius:12px 12px 0 0;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.pg-hdr p{margin:0}
+.pg-ht{color:#fff;font-size:16px;font-weight:600}
+.pg-hs{color:#FFB81C;font-size:11px;margin-top:3px}
+.pg-hbg{background:rgba(255,184,28,.15);border:1px solid #FFB81C;color:#FFB81C;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}
+.pg-note{background:#f3f6f4;border-left:1px solid #cdd5ce;border-right:1px solid #cdd5ce;padding:11px 20px;font-size:12px;color:#555;line-height:1.55;display:flex;align-items:flex-start;gap:7px}
+.pg-note i{color:#154734;font-size:14px;margin-top:1px;flex-shrink:0}
+.acc{border:1px solid #cdd5ce;border-top:none;border-radius:0 0 12px 12px;overflow:hidden;background:#fff}
+.acc-item{border-bottom:1px solid #dde4de}
+.acc-item:last-child{border-bottom:none}
+.acc-btn{width:100%;padding:15px 20px;background:#fff;border:none;cursor:pointer;text-align:left;display:flex;align-items:center;gap:11px;font-family:inherit;color:inherit;transition:background .12s}
+.acc-btn:hover{background:#f8faf9}
+.acc-btn:focus-visible{outline:2px solid #154734;outline-offset:-2px}
+.acc-btn.open{background:#f3f6f4}
+.acc-ico{width:32px;height:32px;flex-shrink:0;background:#154734;color:#FFB81C;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.acc-txt{flex:1}
+.acc-t{font-size:14px;font-weight:600;color:#154734;margin:0 0 2px}
+.acc-s{font-size:11px;color:#666;margin:0}
+.acc-chev{font-size:16px;color:#8fa898;transition:transform .2s;flex-shrink:0}
+.acc-btn.open .acc-chev{transform:rotate(180deg)}
+.acc-panel{display:none;padding:18px 20px 20px;background:#fff;border-top:1px solid #e4e9e5}
+.acc-panel.open{display:block}
+.intro{font-size:13px;color:#444;line-height:1.6;margin:0 0 14px}
+.axes{font-size:12px;color:#555;line-height:1.6;margin:0 0 13px;padding:10px 12px;background:#f3f6f4;border-radius:6px}
+.axes b{color:#154734;font-weight:600}
+.mxt{width:100%;border-collapse:separate;border-spacing:7px;table-layout:fixed}
+.mxt .sp{width:64px}
+.mxt .colh{font-size:12px;font-weight:600;text-align:center;padding:8px 4px;background:#154734;color:#fff;border-radius:6px}
+.mxt .rowh{width:64px;font-size:11px;font-weight:600;text-align:center;background:#FFB81C;color:#412402;border-radius:6px;padding:8px 4px;vertical-align:middle}
+.mxt .cell{border-radius:8px;padding:12px 13px;vertical-align:top;border:1px solid}
+.mxt .q1{background:#eef6e8;border-color:#bcd9a0}
+.mxt .q2{background:#e8f1fb;border-color:#a8ccef}
+.mxt .q3{background:#fff6e0;border-color:#f0d9a0}
+.mxt .q4{background:#fbeaea;border-color:#e8a8a8}
+.mxt .act{font-size:13px;font-weight:600;margin:0 0 3px}
+.mxt .q1 .act{color:#3b6d11}
+.mxt .q2 .act{color:#185fa5}
+.mxt .q3 .act{color:#8a5600}
+.mxt .q4 .act{color:#a32d2d}
+.mxt .mode{font-size:11px;color:#666;margin:0 0 8px}
+.mxt .ex{font-size:12px;color:#222;line-height:1.55;margin:0}
+.mxt .exd{font-weight:600}
+.crow{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #e4e9e5}
+.crow:last-of-type{border-bottom:none}
+.clet{width:34px;height:34px;flex-shrink:0;background:#154734;color:#FFB81C;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700}
+.cname{font-size:13px;font-weight:600;color:#154734;margin:0 0 2px}
+.cdesc{font-size:12px;color:#555;line-height:1.55;margin:0 0 6px}
+.cex{font-size:12px;color:#222;line-height:1.55;margin:0;padding:8px 11px;background:#f8faf9;border-left:2px solid #FFB81C;border-radius:0 6px 6px 0}
+.cex em{color:#6b6b6b;font-style:normal;font-size:10px;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.drow{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #e4e9e5}
+.drow:last-of-type{border-bottom:none}
+.dnum{width:28px;height:28px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#154734;color:#fff}
+.dnum.plus{background:#FFB81C;color:#412402}
+.dq{font-size:13px;font-weight:600;color:#154734;margin:0 0 2px}
+.dd{font-size:12px;color:#555;line-height:1.55;margin:0 0 5px}
+.dw{font-size:11px;color:#8a5600;line-height:1.5;margin:0}
+.dw b{font-weight:600}
+.plusband{margin:14px 0 4px;padding:8px 11px;background:#fff6e0;border-radius:6px;font-size:12px;font-weight:600;color:#8a5600;display:flex;align-items:center;gap:6px}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #dde4de;font-size:12px;color:#555;line-height:1.6;font-style:italic}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:560px){
+  .mxt{border-spacing:5px}
+  .mxt .rowh,.mxt .sp{width:44px;font-size:10px}
+  .pg-hdr{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<h1 class="sr-only">AI Fluency reference pages: Delegation Decision Matrix, CARE Prompting Template, and the 4+1 Discernment Check</h1>
+
+<div class="wrap">
+  <div class="pg-hdr">
+    <div>
+      <p class="pg-ht">AI Fluency Reference Pages</p>
+      <p class="pg-hs">Hankamer School of Business &nbsp;&middot;&nbsp; Baylor University</p>
+    </div>
+    <span class="pg-hbg"><i class="ti ti-bookmark" aria-hidden="true"></i>&nbsp; Bookmark this page</span>
+  </div>
+
+  <div class="pg-note">
+    <i class="ti ti-info-circle" aria-hidden="true"></i>
+    <span>These three tools are not one-time reading. You will return to them throughout the course &mdash; and in your own practice long after it ends. Bookmark this page.</span>
+  </div>
+
+  <div class="acc">
+
+    <div class="acc-item">
+      <button class="acc-btn" id="btn-1" type="button" aria-expanded="false" aria-controls="p-1" onclick="tog(1)">
+        <span class="acc-ico"><i class="ti ti-scale" aria-hidden="true"></i></span>
+        <span class="acc-txt">
+          <span class="acc-t">Delegation Decision Matrix</span>
+          <span class="acc-s">What to hand to AI &mdash; and what to keep</span>
+        </span>
+        <i class="ti ti-chevron-down acc-chev" aria-hidden="true"></i>
+      </button>
+      <div class="acc-panel" id="p-1" role="region" aria-labelledby="btn-1">
+        <p class="intro">Use this 2&times;2 before you delegate any task. Plot it on two axes &mdash; how high are the stakes, and how clearly can the task be defined &mdash; then act according to the quadrant it lands in.</p>
+        <div class="axes"><b>Vertical &mdash; Stakes:</b> how consequential is the outcome? &nbsp;&middot;&nbsp; <b>Horizontal &mdash; Task definition:</b> how clearly can you specify it?</div>
+        <table class="mxt">
+          <tr>
+            <td class="sp"></td>
+            <td class="colh">Clear task</td>
+            <td class="colh">Ambiguous task</td>
+          </tr>
+          <tr>
+            <td class="rowh">High stakes</td>
+            <td class="cell q3">
+              <p class="act">Delegate with verification</p>
+              <p class="mode">Automation + Discernment</p>
+              <p class="ex"><span class="exd">Finance:</span> Drafting quiz questions on derivatives pricing for a graded exam. AI drafts &mdash; you verify every calculation and answer key before students see it.</p>
+            </td>
+            <td class="cell q4">
+              <p class="act">Keep it &mdash; stays with you</p>
+              <p class="mode">The quadrant Delegation protects</p>
+              <p class="ex"><span class="exd">Accounting / Tax Law:</span> Determining whether a submission is academic dishonesty. High stakes, deeply contextual, permanent consequences. This stays with you, full stop.</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="rowh">Low stakes</td>
+            <td class="cell q1">
+              <p class="act">Delegate freely</p>
+              <p class="mode">Automation</p>
+              <p class="ex"><span class="exd">Marketing:</span> Generating a first-draft rubric for a brand-analysis assignment at a set Bloom's level. You review and adjust &mdash; AI does the drafting.</p>
+            </td>
+            <td class="cell q2">
+              <p class="act">Collaborate</p>
+              <p class="mode">Augmentation</p>
+              <p class="ex"><span class="exd">Management:</span> Brainstorming discussion angles for an ESG leadership case. Open-ended, so you guide AI across several exchanges rather than taking a first draft.</p>
+            </td>
+          </tr>
+        </table>
+        <p class="foot">When in doubt, ask: if AI gets this wrong and I don't catch it, what is the cost? The higher and more irreversible that cost, the more the task belongs with you.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-btn" id="btn-2" type="button" aria-expanded="false" aria-controls="p-2" onclick="tog(2)">
+        <span class="acc-ico"><i class="ti ti-edit" aria-hidden="true"></i></span>
+        <span class="acc-txt">
+          <span class="acc-t">CARE Prompting Template</span>
+          <span class="acc-s">How to ask AI for something usable</span>
+        </span>
+        <i class="ti ti-chevron-down acc-chev" aria-hidden="true"></i>
+      </button>
+      <div class="acc-panel" id="p-2" role="region" aria-labelledby="btn-2">
+        <p class="intro">The quality of what AI gives you is proportional to the quality of how you ask. CARE is a four-part structure for prompts that produce usable, discipline-appropriate output on the first pass. Include all four whenever the output matters.</p>
+        <div class="crow">
+          <div class="clet">C</div>
+          <div>
+            <p class="cname">Context</p>
+            <p class="cdesc">Set the scene. Tell AI who you are, what course you teach, your students' level, and relevant background.</p>
+            <p class="cex"><em>Example</em>"I teach FIN 3310, a junior-level Corporate Finance course at Baylor's Hankamer School of Business. Students just completed a session on capital structure theory."</p>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="clet">A</div>
+          <div>
+            <p class="cname">Action</p>
+            <p class="cdesc">State exactly what you want AI to do &mdash; the task, the quantity, the format, and the cognitive level you're targeting.</p>
+            <p class="cex"><em>Example</em>"Generate four scenario-based quiz questions that require students to apply capital structure trade-offs to a realistic firm decision &mdash; not recall definitions."</p>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="clet">R</div>
+          <div>
+            <p class="cname">Role</p>
+            <p class="cdesc">Tell AI what expertise to adopt. This shapes the tone, depth, and disciplinary framing of the response.</p>
+            <p class="cex"><em>Example</em>"Act as an experienced corporate finance educator familiar with Modigliani-Miller propositions and Hankamer's expectations for analytical rigor."</p>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="clet">E</div>
+          <div>
+            <p class="cname">Example</p>
+            <p class="cdesc">Show AI what good looks like &mdash; a sample, a model, or the depth and style you expect. The most-skipped component, and the one that most improves output.</p>
+            <p class="cex"><em>Example</em>"Target Bloom's level: Application and Analysis. Format each item as a 2&ndash;3 sentence firm scenario followed by one focused analytical question."</p>
+          </div>
+        </div>
+        <p class="foot">A prompt missing Context produces generic output. A prompt missing Example produces output at the wrong depth. When the result matters, use all four.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-btn" id="btn-3" type="button" aria-expanded="false" aria-controls="p-3" onclick="tog(3)">
+        <span class="acc-ico"><i class="ti ti-search" aria-hidden="true"></i></span>
+        <span class="acc-txt">
+          <span class="acc-t">The 4+1 Discernment Check</span>
+          <span class="acc-s">Evaluate AI output before you use it</span>
+        </span>
+        <i class="ti ti-chevron-down acc-chev" aria-hidden="true"></i>
+      </button>
+      <div class="acc-panel" id="p-3" role="region" aria-labelledby="btn-3">
+        <p class="intro">AI does not know when it is wrong, and a confident tone is not a reliability signal. Before any AI-generated content reaches your students, run it through these five checks. Four protect quality; the +1 protects access.</p>
+        <div class="drow">
+          <div class="dnum">1</div>
+          <div>
+            <p class="dq">Accurate?</p>
+            <p class="dd">Is every fact, figure, citation, and claim correct? AI can state false information &mdash; invented quotes, fabricated sources &mdash; with complete confidence.</p>
+            <p class="dw"><b>Watch for:</b> misattributed quotes, plausible but wrong statistics, citations that don't exist.</p>
+          </div>
+        </div>
+        <div class="drow">
+          <div class="dnum">2</div>
+          <div>
+            <p class="dq">Mine?</p>
+            <p class="dd">Does this sound like you, and does it fit your students? AI output is generic by default. Revise until the voice and emphasis reflect your course.</p>
+            <p class="dw"><b>Watch for:</b> tone that doesn't match your style, examples that don't fit your students.</p>
+          </div>
+        </div>
+        <div class="drow">
+          <div class="dnum">3</div>
+          <div>
+            <p class="dq">Aligned?</p>
+            <p class="dd">Does this actually serve your learning objectives? Polished output that drifts from your goals is still off-target.</p>
+            <p class="dw"><b>Watch for:</b> content that's impressive but tangential to your stated outcomes.</p>
+          </div>
+        </div>
+        <div class="drow">
+          <div class="dnum">4</div>
+          <div>
+            <p class="dq">Safe?</p>
+            <p class="dd">Did you protect privacy and avoid harm? Never put student names, grades, or identifiable information into a general-purpose AI tool &mdash; that's a FERPA concern.</p>
+            <p class="dw"><b>Watch for:</b> FERPA-protected data in prompts, biased framing, content that could exclude students.</p>
+          </div>
+        </div>
+        <div class="plusband"><i class="ti ti-plus" aria-hidden="true"></i> The +1 &mdash; accessibility check</div>
+        <div class="drow">
+          <div class="dnum plus">5</div>
+          <div>
+            <p class="dq">Accessible?</p>
+            <p class="dd">Can every student use this? Ask AI directly: "What accessibility barriers exist here, and what specific revisions would reduce them?" Addressing access before a student has to request an accommodation is the professional standard.</p>
+            <p class="dw"><b>Watch for:</b> images without alt text, dense unstructured text, color used as the only way to convey meaning.</p>
+          </div>
+        </div>
+        <p class="foot">Run all five every time. The check that takes two minutes is what makes you the author of AI-assisted work &mdash; not the editor of someone else's mistakes.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function sendHeight(){
+  try{
+    var h = document.documentElement.scrollHeight;
+    var msg = {subject:'lti.frameResize', height:h + 24};
+    window.parent.postMessage(msg,'*');
+    window.parent.postMessage(JSON.stringify(msg),'*');
+  }catch(e){}
+}
+
+function tog(n){
+  var btn = document.getElementById('btn-'+n);
+  var pnl = document.getElementById('p-'+n);
+  var isOpen = pnl.classList.contains('open');
+
+  for(var i=1; i<=3; i++){
+    document.getElementById('btn-'+i).classList.remove('open');
+    document.getElementById('btn-'+i).setAttribute('aria-expanded','false');
+    document.getElementById('p-'+i).classList.remove('open');
+  }
+
+  if(!isOpen){
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+    pnl.classList.add('open');
+  }
+  setTimeout(sendHeight, 60);
+}
+
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+if(window.ResizeObserver){
+  new ResizeObserver(sendHeight).observe(document.body);
+}
+</script>
+</body>
+</html>
