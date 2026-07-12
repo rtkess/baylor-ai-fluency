@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socratic Confidence Game</title>
+  <style>
+    /* ========================================
+       SOCRATIC CONFIDENCE GAME - STYLES
+       ======================================== */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .game-header {
+      padding: 24px;
+      text-align: center;
+      color: white;
+    }
+
+    .game-header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .game-header p {
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+
+    .game-body {
+      background: white;
+      padding: 32px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Score Display */
+    .score-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 12px 16px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .score-value {
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .score-value.animate {
+      transform: scale(1.3);
+    }
+
+    .question-counter {
+      color: #666;
+    }
+
+    /* Timer */
+    .timer-container {
+      margin-bottom: 24px;
+    }
+
+    .timer-bar {
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .timer-progress {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.1s linear, background-color 0.3s ease;
+    }
+
+    .timer-text {
+      text-align: right;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    /* Question */
+    .question-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Confidence Selection */
+    .confidence-section {
+      margin-bottom: 24px;
+    }
+
+    .confidence-label {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .confidence-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .confidence-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 16px 20px;
+      border: 3px solid #ddd;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .confidence-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .confidence-btn:focus {
+      outline: 3px solid;
+      outline-offset: 2px;
+    }
+
+    .confidence-btn .emoji {
+      font-size: 1.8rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .confidence-btn .label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .confidence-btn .points {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .confidence-btn.sure { border-color: #28a745; }
+    .confidence-btn.sure:hover, .confidence-btn.sure.selected {
+      background: #28a745;
+      color: white;
+    }
+    .confidence-btn.sure .points { color: #28a745; }
+    .confidence-btn.sure:hover .points, .confidence-btn.sure.selected .points { color: white; }
+
+    .confidence-btn.think { border-color: #ffc107; }
+    .confidence-btn.think:hover, .confidence-btn.think.selected {
+      background: #ffc107;
+      color: #1a1a1a;
+    }
+    .confidence-btn.think .points { color: #d4a106; }
+    .confidence-btn.think:hover .points, .confidence-btn.think.selected .points { color: #1a1a1a; }
+
+    .confidence-btn.guess { border-color: #6c757d; }
+    .confidence-btn.guess:hover, .confidence-btn.guess.selected {
+      background: #6c757d;
+      color: white;
+    }
+    .confidence-btn.guess .points { color: #6c757d; }
+    .confidence-btn.guess:hover .points, .confidence-btn.guess.selected .points { color: white; }
+
+    /* Answer Options */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      padding: 16px 20px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      text-align: left;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #999;
+      background: #f8f9fa;
+    }
+
+    .option-btn:focus {
+      outline: 3px solid;
+      outline-offset: 2px;
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .option-btn.correct {
+      border-color: #28a745;
+      background: #d4edda;
+      animation: correctPulse 0.5s ease;
+    }
+
+    .option-btn.correct .option-letter {
+      background: #28a745;
+      color: white;
+    }
+
+    .option-btn.incorrect {
+      border-color: #dc3545;
+      background: #f8d7da;
+      animation: shake 0.5s ease;
+    }
+
+    .option-btn.incorrect .option-letter {
+      background: #dc3545;
+      color: white;
+    }
+
+    .option-btn.show-correct {
+      border-color: #28a745;
+      background: #d4edda;
+    }
+
+    .option-btn.show-correct .option-letter {
+      background: #28a745;
+      color: white;
+    }
+
+    @keyframes correctPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+
+    /* Feedback */
+    .feedback {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .feedback.correct {
+      background: #d4edda;
+      border: 1px solid #28a745;
+    }
+
+    .feedback.incorrect {
+      background: #f8d7da;
+      border: 1px solid #dc3545;
+    }
+
+    .feedback-header {
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feedback.correct .feedback-header { color: #155724; }
+    .feedback.incorrect .feedback-header { color: #721c24; }
+
+    .feedback-points {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feedback-explanation {
+      color: #333;
+      font-size: 0.95rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:focus {
+      outline: 3px solid;
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .next-btn {
+      margin-top: 20px;
+      align-self: flex-end;
+    }
+
+    /* Start Screen */
+    .start-screen {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .start-screen h2 {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+    }
+
+    .start-screen p {
+      color: #666;
+      margin-bottom: 24px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .name-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 14px 18px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .name-input:focus {
+      outline: none;
+      border-color: #666;
+    }
+
+    .scoring-info {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .scoring-info h3 {
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .scoring-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .scoring-row:last-child {
+      border-bottom: none;
+    }
+
+    /* End Screen */
+    .end-screen {
+      text-align: center;
+    }
+
+    .end-screen h2 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .final-score {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 20px 0;
+    }
+
+    .calibration-rating {
+      padding: 16px 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+
+    .calibration-rating .label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .calibration-rating .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    /* Results Table */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .results-table th {
+      background: #f8f9fa;
+      padding: 12px;
+      border-bottom: 2px solid #dee2e6;
+      font-weight: 600;
+    }
+
+    .results-table td {
+      padding: 12px;
+      border-bottom: 1px solid #dee2e6;
+      vertical-align: top;
+    }
+
+    .results-table tr.correct-row {
+      background: #f0fff4;
+    }
+
+    .results-table tr.incorrect-row {
+      background: #fff5f5;
+    }
+
+    .result-icon {
+      font-size: 1.2rem;
+    }
+
+    .end-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .copy-success {
+      color: #28a745;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .copy-success.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Hidden */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .game-body {
+        padding: 20px;
+      }
+
+      .confidence-buttons {
+        flex-direction: column;
+      }
+
+      .confidence-btn {
+        min-width: 100%;
+      }
+
+      .game-header h1 {
+        font-size: 1.4rem;
+      }
+
+      .question-text {
+        font-size: 1.1rem;
+      }
+
+      .results-table {
+        font-size: 0.8rem;
+      }
+
+      .results-table th,
+      .results-table td {
+        padding: 8px 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container" id="gameContainer" role="main" aria-label="Socratic Confidence Game">
+    <!-- Content injected by JavaScript -->
+  </div>
+
+  <script>
+    /* ========================================
+       CONFIGURATION BLOCK
+       Faculty: Edit this section to customize your quiz.
+       Do not modify code below the CONFIG block.
+       ======================================== */
+
+    const CONFIG = {
+      title: "Socratic Confidence Game",
+      subtitle: "Course Activity",
+      timePerQuestion: 30,
+      showLeaderboard: true,
+      allowRetry: true,
+      primaryColor: "#154734",
+      accentColor: "#ffb81c",
+      questions: [
+    {
+      question: "I can name and distinguish the 3 Modalities (3As) of AI interaction",
+      options: ["Accessibility, Authenticity, Automation", "Automation, Accuracy, Agency", "Accessibility, Accuracy, Acceleration", "Automation, Augmentation, Agency"],
+      correct: 3,
+      explanation: "Automation: AI performs a well-defined task based on your instructions. \nAugmentation: You and AI work back and forth in real time, each exchange building on the last. \nAgency: You configure AI to act on your behalf over time — often interacting with students without your direct involvement in each exchange."
+    },
+    {
+      question: "I can identify the 4 Ds of the AI Fluency Framework",
+      options: ["Delegation, Digital, Derritive, Definitive", "Delegation, Description, Discernment, Diligence", "Description, Decision, Discipline, Definition", "Delegation, Discernment, Discipline, Digital"],
+      correct: 1,
+      explanation: "Delegation: Knowing which tasks belong to AI — and which belong to you.\nDescription: Communicating clearly and specifically so AI gives you something actually useful.\nDiscernment: Evaluating what AI gives you with professional judgment before using it.\nDiligence: Using AI responsibly, transparently, and in alignment with your institutional obligations."
+    },
+    {
+      question: "Which of the following is an appropriate task to delegate to AI to automate?",
+      options: ["creating rubric language", "Designing a course", "summarizing a complext student essay.", "Grading Student work"],
+      correct: 0,
+      explanation: "Rubric language does not contain any FERPA violations and can be generally standard language. It is appropriate for AI to automate."
+    }
+      ]
+    };
+
+    /* ========================================
+       GAME ENGINE - Do not modify below
+       ======================================== */
+
+    // Game State
+    let state = {
+      currentScreen: 'start',
+      playerName: '',
+      currentQuestion: 0,
+      score: 0,
+      selectedConfidence: null,
+      timeRemaining: CONFIG.timePerQuestion,
+      timerInterval: null,
+      results: [],
+      answered: false
+    };
+
+    // Confidence levels with scoring
+    const CONFIDENCE_LEVELS = {
+      sure: { label: "I'm Sure", emoji: "confident", correctPts: 3, wrongPts: -1 },
+      think: { label: "I Think So", emoji: "thinking", correctPts: 2, wrongPts: 0 },
+      guess: { label: "Just Guessing", emoji: "unsure", correctPts: 1, wrongPts: 0 }
+    };
+
+    // DOM references
+    const container = document.getElementById('gameContainer');
+
+    // Apply custom colors
+    function applyColors() {
+      document.body.style.background = `linear-gradient(135deg, ${CONFIG.primaryColor}15 0%, ${CONFIG.accentColor}15 100%)`;
+    }
+
+    // Render start screen
+    function renderStartScreen() {
+      container.innerHTML = `
+        <div class="game-header" style="background: linear-gradient(135deg, ${CONFIG.primaryColor}, ${CONFIG.primaryColor}dd);">
+          <h1>${CONFIG.title}</h1>
+          <p>${CONFIG.subtitle}</p>
+        </div>
+        <div class="game-body">
+          <div class="start-screen">
+            <h2>Welcome!</h2>
+            <p>This game tests both your knowledge AND your self-awareness. Before each question, you'll declare how confident you are in your answer.</p>
+
+            <label for="playerName" class="hidden">Your Name</label>
+            <input type="text" id="playerName" class="name-input" placeholder="Enter your name" aria-label="Enter your name" maxlength="50">
+
+            <div class="scoring-info">
+              <h3>Scoring System</h3>
+              <div class="scoring-row">
+                <span><strong>"I'm Sure"</strong></span>
+                <span>Correct: +3 pts | Wrong: -1 pt</span>
+              </div>
+              <div class="scoring-row">
+                <span><strong>"I Think So"</strong></span>
+                <span>Correct: +2 pts | Wrong: 0 pts</span>
+              </div>
+              <div class="scoring-row">
+                <span><strong>"Just Guessing"</strong></span>
+                <span>Correct: +1 pt | Wrong: 0 pts</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="startBtn" style="background: ${CONFIG.primaryColor};" aria-label="Start the game">
+              Start Game
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('startBtn').addEventListener('click', startGame);
+      document.getElementById('playerName').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') startGame();
+      });
+      document.getElementById('playerName').focus();
+    }
+
+    // Start the game
+    function startGame() {
+      const nameInput = document.getElementById('playerName');
+      state.playerName = nameInput.value.trim() || 'Anonymous';
+      state.currentQuestion = 0;
+      state.score = 0;
+      state.results = [];
+      renderQuestion();
+    }
+
+    // Render question screen
+    function renderQuestion() {
+      const q = CONFIG.questions[state.currentQuestion];
+      state.selectedConfidence = null;
+      state.answered = false;
+      state.timeRemaining = CONFIG.timePerQuestion;
+
+      container.innerHTML = `
+        <div class="game-header" style="background: linear-gradient(135deg, ${CONFIG.primaryColor}, ${CONFIG.primaryColor}dd);">
+          <h1>${CONFIG.title}</h1>
+        </div>
+        <div class="game-body">
+          <div class="score-display">
+            <span class="question-counter">Question ${state.currentQuestion + 1} of ${CONFIG.questions.length}</span>
+            <span>Score: <span class="score-value" id="scoreValue">${state.score}</span></span>
+          </div>
+
+          <div class="timer-container">
+            <div class="timer-bar">
+              <div class="timer-progress" id="timerProgress" style="width: 100%; background: ${CONFIG.primaryColor};"></div>
+            </div>
+            <div class="timer-text" id="timerText">${state.timeRemaining}s remaining</div>
+          </div>
+
+          <div class="question-text" id="questionText">${q.question}</div>
+
+          <div class="confidence-section" id="confidenceSection">
+            <div class="confidence-label">How confident are you?</div>
+            <div class="confidence-buttons" role="group" aria-label="Confidence level selection">
+              <button class="confidence-btn sure" data-confidence="sure" aria-label="I'm Sure - Correct: +3 points, Wrong: -1 point">
+                <span class="emoji" aria-hidden="true">&#128170;</span>
+                <span class="label">I'm Sure</span>
+                <span class="points">+3 / -1</span>
+              </button>
+              <button class="confidence-btn think" data-confidence="think" aria-label="I Think So - Correct: +2 points, Wrong: 0 points">
+                <span class="emoji" aria-hidden="true">&#129300;</span>
+                <span class="label">I Think So</span>
+                <span class="points">+2 / 0</span>
+              </button>
+              <button class="confidence-btn guess" data-confidence="guess" aria-label="Just Guessing - Correct: +1 point, Wrong: 0 points">
+                <span class="emoji" aria-hidden="true">&#129335;</span>
+                <span class="label">Just Guessing</span>
+                <span class="points">+1 / 0</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="options-container hidden" id="optionsContainer" role="group" aria-label="Answer options">
+            ${q.options.map((opt, i) => `
+              <button class="option-btn" data-index="${i}" aria-label="Option ${String.fromCharCode(65 + i)}: ${opt}">
+                <span class="option-letter" style="background: ${CONFIG.accentColor}; color: ${CONFIG.primaryColor};">${String.fromCharCode(65 + i)}</span>
+                <span class="option-text">${opt}</span>
+              </button>
+            `).join('')}
+          </div>
+
+          <div class="feedback" id="feedback" role="alert" aria-live="polite">
+            <div class="feedback-header" id="feedbackHeader"></div>
+            <div class="feedback-points" id="feedbackPoints"></div>
+            <div class="feedback-explanation" id="feedbackExplanation"></div>
+          </div>
+
+          <button class="btn btn-primary next-btn hidden" id="nextBtn" style="background: ${CONFIG.primaryColor};">
+            ${state.currentQuestion < CONFIG.questions.length - 1 ? 'Next Question' : 'See Results'}
+          </button>
+        </div>
+      `;
+
+      // Add confidence button listeners
+      document.querySelectorAll('.confidence-btn').forEach(btn => {
+        btn.addEventListener('click', () => selectConfidence(btn.dataset.confidence));
+      });
+
+      startTimer();
+    }
+
+    // Select confidence level
+    function selectConfidence(level) {
+      state.selectedConfidence = level;
+
+      // Highlight selected button
+      document.querySelectorAll('.confidence-btn').forEach(btn => {
+        btn.classList.remove('selected');
+        if (btn.dataset.confidence === level) {
+          btn.classList.add('selected');
+        }
+      });
+
+      // Show answer options
+      document.getElementById('optionsContainer').classList.remove('hidden');
+
+      // Add option button listeners
+      document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => selectAnswer(parseInt(btn.dataset.index)));
+      });
+
+      // Focus first option for keyboard navigation
+      document.querySelector('.option-btn').focus();
+    }
+
+    // Select answer
+    function selectAnswer(index) {
+      if (state.answered) return;
+      state.answered = true;
+
+      stopTimer();
+
+      const q = CONFIG.questions[state.currentQuestion];
+      const isCorrect = index === q.correct;
+      const confidence = CONFIDENCE_LEVELS[state.selectedConfidence];
+      const points = isCorrect ? confidence.correctPts : confidence.wrongPts;
+
+      // Update score
+      state.score += points;
+
+      // Store result
+      state.results.push({
+        question: q.question,
+        selectedAnswer: q.options[index],
+        correctAnswer: q.options[q.correct],
+        confidence: confidence.label,
+        isCorrect,
+        points
+      });
+
+      // Update UI
+      const options = document.querySelectorAll('.option-btn');
+      options.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === index) {
+          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        } else if (i === q.correct && !isCorrect) {
+          btn.classList.add('show-correct');
+        }
+      });
+
+      // Show feedback
+      const feedback = document.getElementById('feedback');
+      const feedbackHeader = document.getElementById('feedbackHeader');
+      const feedbackPoints = document.getElementById('feedbackPoints');
+      const feedbackExplanation = document.getElementById('feedbackExplanation');
+
+      feedback.classList.remove('correct', 'incorrect');
+      feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+
+      feedbackHeader.innerHTML = isCorrect
+        ? '<span aria-hidden="true">&#9989;</span> Correct!'
+        : '<span aria-hidden="true">&#10060;</span> Incorrect';
+
+      feedbackPoints.textContent = points > 0 ? `+${points} points` : points < 0 ? `${points} point` : '0 points';
+      feedbackExplanation.textContent = q.explanation;
+
+      // Animate score
+      const scoreEl = document.getElementById('scoreValue');
+      scoreEl.textContent = state.score;
+      scoreEl.classList.add('animate');
+      setTimeout(() => scoreEl.classList.remove('animate'), 300);
+
+      // Show next button
+      document.getElementById('nextBtn').classList.remove('hidden');
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+      document.getElementById('nextBtn').focus();
+    }
+
+    // Timer functions
+    function startTimer() {
+      const timerProgress = document.getElementById('timerProgress');
+      const timerText = document.getElementById('timerText');
+
+      state.timerInterval = setInterval(() => {
+        state.timeRemaining--;
+
+        const percent = (state.timeRemaining / CONFIG.timePerQuestion) * 100;
+        timerProgress.style.width = `${percent}%`;
+        timerText.textContent = `${state.timeRemaining}s remaining`;
+
+        // Turn red in last 5 seconds
+        if (state.timeRemaining <= 5) {
+          timerProgress.style.background = '#dc3545';
+        }
+
+        if (state.timeRemaining <= 0) {
+          stopTimer();
+          handleTimeout();
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+        state.timerInterval = null;
+      }
+    }
+
+    function handleTimeout() {
+      if (state.answered) return;
+
+      // If no confidence selected, default to guess
+      if (!state.selectedConfidence) {
+        state.selectedConfidence = 'guess';
+      }
+
+      // Mark as wrong with no answer
+      const q = CONFIG.questions[state.currentQuestion];
+      const confidence = CONFIDENCE_LEVELS[state.selectedConfidence];
+      const points = confidence.wrongPts;
+
+      state.answered = true;
+      state.score += points;
+
+      state.results.push({
+        question: q.question,
+        selectedAnswer: 'Time expired',
+        correctAnswer: q.options[q.correct],
+        confidence: confidence.label,
+        isCorrect: false,
+        points
+      });
+
+      // Show correct answer
+      const options = document.querySelectorAll('.option-btn');
+      options.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) {
+          btn.classList.add('show-correct');
+        }
+      });
+
+      document.getElementById('optionsContainer').classList.remove('hidden');
+
+      // Show feedback
+      const feedback = document.getElementById('feedback');
+      feedback.classList.add('show', 'incorrect');
+      document.getElementById('feedbackHeader').innerHTML = '<span aria-hidden="true">&#9200;</span> Time\'s Up!';
+      document.getElementById('feedbackPoints').textContent = points < 0 ? `${points} point` : '0 points';
+      document.getElementById('feedbackExplanation').textContent = q.explanation;
+
+      // Update score display
+      document.getElementById('scoreValue').textContent = state.score;
+
+      // Show next button
+      document.getElementById('nextBtn').classList.remove('hidden');
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    }
+
+    // Next question or end game
+    function nextQuestion() {
+      state.currentQuestion++;
+
+      if (state.currentQuestion >= CONFIG.questions.length) {
+        renderEndScreen();
+      } else {
+        renderQuestion();
+      }
+    }
+
+    // Calculate calibration rating
+    function calculateCalibration() {
+      let calibrated = 0;
+
+      state.results.forEach(r => {
+        // "Sure" and correct, or "Guess" and wrong = well-calibrated
+        // "Think" is neutral
+        if (r.confidence === "I'm Sure" && r.isCorrect) calibrated++;
+        else if (r.confidence === "Just Guessing" && !r.isCorrect) calibrated++;
+        else if (r.confidence === "I Think So") calibrated += 0.5;
+      });
+
+      return Math.round((calibrated / state.results.length) * 100);
+    }
+
+    // Render end screen
+    function renderEndScreen() {
+      const calibration = calculateCalibration();
+      const maxPossible = CONFIG.questions.length * 3;
+
+      container.innerHTML = `
+        <div class="game-header" style="background: linear-gradient(135deg, ${CONFIG.primaryColor}, ${CONFIG.primaryColor}dd);">
+          <h1>${CONFIG.title}</h1>
+          <p>Results for ${state.playerName}</p>
+        </div>
+        <div class="game-body">
+          <div class="end-screen">
+            <h2>Game Complete!</h2>
+
+            <div class="final-score" style="color: ${CONFIG.primaryColor};">
+              ${state.score} / ${maxPossible}
+            </div>
+
+            <div class="calibration-rating" style="background: ${CONFIG.accentColor}; color: ${CONFIG.primaryColor};">
+              <div class="label">Calibration Rating</div>
+              <div class="value">${calibration}%</div>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">
+              ${calibration >= 70 ? 'Excellent self-awareness! You know what you know.' :
+                calibration >= 50 ? 'Good calibration. Keep practicing metacognition!' :
+                'Work on matching your confidence to your knowledge.'}
+            </p>
+
+            <table class="results-table" role="table" aria-label="Question results breakdown">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Your Answer</th>
+                  <th scope="col">Confidence</th>
+                  <th scope="col">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.results.map((r, i) => `
+                  <tr class="${r.isCorrect ? 'correct-row' : 'incorrect-row'}">
+                    <td>${i + 1}</td>
+                    <td><span class="result-icon" aria-label="${r.isCorrect ? 'Correct' : 'Incorrect'}">${r.isCorrect ? '&#9989;' : '&#10060;'}</span></td>
+                    <td>${truncate(r.selectedAnswer, 30)}</td>
+                    <td>${r.confidence}</td>
+                    <td>${r.points > 0 ? '+' : ''}${r.points}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+
+            <div class="end-buttons">
+              <button class="btn btn-primary" id="exportBtn" style="background: ${CONFIG.primaryColor};" aria-label="Copy results summary to clipboard">
+                Export Summary
+              </button>
+              ${CONFIG.allowRetry ? `
+                <button class="btn btn-secondary" id="retryBtn" aria-label="Play the game again">
+                  Play Again
+                </button>
+              ` : ''}
+            </div>
+
+            <div class="copy-success" id="copySuccess" role="status" aria-live="polite">
+              Summary copied to clipboard!
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('exportBtn').addEventListener('click', exportSummary);
+      if (CONFIG.allowRetry) {
+        document.getElementById('retryBtn').addEventListener('click', () => {
+          state = {
+            currentScreen: 'start',
+            playerName: '',
+            currentQuestion: 0,
+            score: 0,
+            selectedConfidence: null,
+            timeRemaining: CONFIG.timePerQuestion,
+            timerInterval: null,
+            results: [],
+            answered: false
+          };
+          renderStartScreen();
+        });
+      }
+    }
+
+    // Truncate text helper
+    function truncate(str, len) {
+      return str.length > len ? str.substring(0, len) + '...' : str;
+    }
+
+    // Export summary to clipboard
+    function exportSummary() {
+      const calibration = calculateCalibration();
+      const date = new Date().toLocaleString();
+
+      let summary = `SOCRATIC CONFIDENCE GAME RESULTS\n`;
+      summary += `================================\n\n`;
+      summary += `Student: ${state.playerName}\n`;
+      summary += `Date: ${date}\n`;
+      summary += `Quiz: ${CONFIG.title}\n\n`;
+      summary += `FINAL SCORE: ${state.score} / ${CONFIG.questions.length * 3}\n`;
+      summary += `CALIBRATION: ${calibration}%\n\n`;
+      summary += `QUESTION BREAKDOWN:\n`;
+      summary += `-----------------\n`;
+
+      state.results.forEach((r, i) => {
+        summary += `\n${i + 1}. ${r.isCorrect ? '[CORRECT]' : '[INCORRECT]'}\n`;
+        summary += `   Q: ${r.question.substring(0, 80)}${r.question.length > 80 ? '...' : ''}\n`;
+        summary += `   Your Answer: ${r.selectedAnswer}\n`;
+        if (!r.isCorrect) {
+          summary += `   Correct Answer: ${r.correctAnswer}\n`;
+        }
+        summary += `   Confidence: ${r.confidence} | Points: ${r.points > 0 ? '+' : ''}${r.points}\n`;
+      });
+
+      // Copy to clipboard
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(summary).then(() => {
+          showCopySuccess();
+        }).catch(() => {
+          fallbackCopy(summary);
+        });
+      } else {
+        fallbackCopy(summary);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopySuccess();
+      } catch (e) {
+        alert('Unable to copy. Please select and copy manually:\n\n' + text);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess() {
+      const el = document.getElementById('copySuccess');
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    // Initialize game
+    function init() {
+      applyColors();
+      renderStartScreen();
+    }
+
+    // Start
+    init();
+  </script>
+</body>
+</html>
