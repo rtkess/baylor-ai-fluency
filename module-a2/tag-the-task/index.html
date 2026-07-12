@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tag the Task — AI Fluency for Faculty | Hankamer School of Business, Baylor University</title>
+<meta name="description" content="Sort six Hankamer faculty scenarios into the correct AI modality: Automation, Augmentation, or Agency.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+body{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif;padding:12px;color:#1a1a1a;line-height:1.5}
+.tt{border:1px solid #cdd5ce;border-radius:12px;overflow:hidden;background:#fff;max-width:760px;margin:0 auto}
+.tt-h{background:#154734;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tt-h p{margin:0}
+.tt-ht{color:#fff;font-size:15px;font-weight:600}
+.tt-hs{color:#FFB81C;font-size:11px;margin-top:3px}
+.tt-hb{background:rgba(255,184,28,.15);border:1px solid #FFB81C;color:#FFB81C;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}
+.tt-i{background:#f3f6f4;padding:11px 20px;font-size:12px;color:#555;line-height:1.55;border-bottom:1px solid #dde4de}
+.tt-b{padding:16px 20px}
+.tt-lbl{font-size:11px;font-weight:600;color:#555;margin-bottom:8px;display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.04em}
+.tt-pool{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;min-height:20px}
+.tt-c{border:1px solid #dde4de;border-left:2px solid #FFB81C;border-radius:0 8px 8px 0;padding:10px 12px;background:#f8faf9;cursor:grab;display:flex;align-items:center;gap:9px}
+.tt-c:hover{background:#fff}
+.tt-c:focus-visible{outline:2px solid #154734;outline-offset:1px}
+.tt-c.sel{border-color:#154734;border-left-color:#154734;background:#fff;box-shadow:0 0 0 1px #154734}
+.tt-cn{width:20px;height:20px;flex-shrink:0;background:#154734;color:#FFB81C;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.tt-ct{flex:1}
+.tt-cd{font-size:10px;font-weight:600;color:#6b6b6b;margin-bottom:2px;letter-spacing:.03em;text-transform:uppercase}
+.tt-cx{font-size:12px;color:#222;line-height:1.45;margin:0}
+.tt-grip{color:#9aa89e;font-size:14px;flex-shrink:0}
+.tt-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.tt-z{border:1px dashed #b8c4bb;border-radius:8px;padding:10px;background:#f8faf9;min-height:110px;cursor:pointer}
+.tt-z.over{border-color:#154734;border-style:solid;background:#fff}
+.tt-z.armed{border-color:#FFB81C;border-style:solid}
+.tt-zh{display:flex;align-items:center;gap:5px;margin-bottom:7px;padding-bottom:6px;border-bottom:1px solid #dde4de}
+.tt-zi{font-size:14px;color:#154734}
+.tt-zn{font-size:12px;font-weight:600;color:#1a1a1a}
+.tt-zc{display:flex;flex-direction:column;gap:4px}
+.tt-drop{padding:7px 9px;border-radius:5px;font-size:11px;line-height:1.4;border:1px solid #dde4de;background:#fff;display:flex;gap:6px;align-items:center}
+.tt-drop.ok{background:#eef6e8;border-color:#bcd9a0}
+.tt-drop.no{background:#fbeaea;border-color:#e8a8a8}
+.tt-dn{width:16px;height:16px;flex-shrink:0;background:#154734;color:#FFB81C;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
+.tt-drop.ok .tt-dn{background:#3b6d11;color:#fff}
+.tt-drop.no .tt-dn{background:#a32d2d;color:#fff}
+.tt-x{margin-left:auto;cursor:pointer;color:#9aa89e;font-size:12px;background:none;border:none;padding:0;display:flex}
+.tt-x:hover{color:#a32d2d}
+.tt-empty{font-size:10px;color:#9aa89e;text-align:center;padding:14px 4px;font-style:italic}
+.tt-bar{display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid #dde4de;flex-wrap:wrap}
+.tt-prog{font-size:11px;color:#555;font-weight:600}
+.tt-btn{margin-left:auto;background:#154734;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.tt-btn:hover:not(:disabled){background:#0f3527}
+.tt-btn:focus-visible{outline:2px solid #FFB81C;outline-offset:2px}
+.tt-btn:disabled{background:#dde4de;color:#9aa89e;cursor:not-allowed}
+.tt-btn.rs{background:#f3f6f4;color:#1a1a1a;border:1px solid #cdd5ce;margin-left:0}
+.tt-btn.rs:hover{background:#e8ede9}
+.tt-fb{margin-top:14px;padding-top:14px;border-top:1px solid #dde4de}
+.tt-sc{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:11px 13px;border-radius:8px;background:#f3f6f4}
+.tt-si{font-size:20px}
+.tt-st{font-size:14px;font-weight:600;color:#1a1a1a;margin:0}
+.tt-ss{font-size:12px;color:#555;margin:2px 0 0}
+.tt-r{padding:10px 12px;border-radius:0 6px 6px 0;margin-bottom:6px;border:1px solid;border-left:2px solid}
+.tt-r.ok{border-left-color:#3b6d11;background:#eef6e8;border-color:#bcd9a0}
+.tt-r.no{border-left-color:#a32d2d;background:#fbeaea;border-color:#e8a8a8}
+.tt-rh{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap}
+.tt-rt{font-size:12px;font-weight:600;color:#1a1a1a}
+.tt-rb{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;margin-left:auto;white-space:nowrap}
+.tt-r.ok .tt-rb{background:#3b6d11;color:#fff}
+.tt-r.no .tt-rb{background:#a32d2d;color:#fff}
+.tt-rx{font-size:11px;color:#555;line-height:1.55;margin:0}
+.tt-rx b{color:#154734;font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:560px){
+  .tt-zones{grid-template-columns:1fr}
+  .tt-z{min-height:80px}
+  .tt-h{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<h1 class="sr-only">Tag the Task — sort six Hankamer faculty scenarios into the correct AI modality</h1>
+
+<div class="tt">
+  <div class="tt-h">
+    <div>
+      <p class="tt-ht">Tag the Task</p>
+      <p class="tt-hs">Sort each scenario into its modality &nbsp;&middot;&nbsp; Hankamer School of Business</p>
+    </div>
+    <span class="tt-hb"><i class="ti ti-cards" aria-hidden="true"></i>&nbsp; 6 scenarios</span>
+  </div>
+  <div class="tt-i">
+    Drag each scenario card into the modality zone that best describes it &mdash; or click a card, then click a zone. After all six are placed, submit for feedback and rationale. <b>Think carefully:</b> there are no partial scores.
+  </div>
+  <div class="tt-b">
+    <div class="tt-lbl"><i class="ti ti-stack-2" aria-hidden="true"></i> Scenario cards</div>
+    <div class="tt-pool" id="pool"></div>
+
+    <div class="tt-zones">
+      <div class="tt-z" id="z-automation" ondragover="dOver(event,'automation')" ondragleave="dLeave('automation')" ondrop="dDrop(event,'automation')" onclick="zClick('automation')">
+        <div class="tt-zh"><i class="ti ti-settings tt-zi" aria-hidden="true"></i><span class="tt-zn">Automation</span></div>
+        <div class="tt-zc" id="c-automation"><div class="tt-empty">Drop here</div></div>
+      </div>
+      <div class="tt-z" id="z-augmentation" ondragover="dOver(event,'augmentation')" ondragleave="dLeave('augmentation')" ondrop="dDrop(event,'augmentation')" onclick="zClick('augmentation')">
+        <div class="tt-zh"><i class="ti ti-arrows-exchange tt-zi" aria-hidden="true"></i><span class="tt-zn">Augmentation</span></div>
+        <div class="tt-zc" id="c-augmentation"><div class="tt-empty">Drop here</div></div>
+      </div>
+      <div class="tt-z" id="z-agency" ondragover="dOver(event,'agency')" ondragleave="dLeave('agency')" ondrop="dDrop(event,'agency')" onclick="zClick('agency')">
+        <div class="tt-zh"><i class="ti ti-robot tt-zi" aria-hidden="true"></i><span class="tt-zn">Agency</span></div>
+        <div class="tt-zc" id="c-agency"><div class="tt-empty">Drop here</div></div>
+      </div>
+    </div>
+
+    <div class="tt-bar">
+      <span class="tt-prog" id="prog">0 of 6 placed</span>
+      <button class="tt-btn rs" type="button" onclick="reset()"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+      <button class="tt-btn" id="sbtn" type="button" onclick="submit()" disabled>Submit</button>
+    </div>
+
+    <div id="fb" aria-live="polite"></div>
+  </div>
+</div>
+
+<script>
+var S = [
+  {id:1,d:'Marketing',t:'Asking Claude to generate first-draft rubric language for a brand-analysis assignment, then reviewing and adjusting the criteria.',a:'automation',r:'The task is well-defined and lower-stakes. You specify the assignment and Bloom\u2019s level, AI drafts, you review. That\u2019s Automation \u2014 and <b>Delegation</b> is the D doing the work: you correctly judged this as a draftable task while keeping editorial control.'},
+  {id:2,d:'Management',t:'Iteratively co-drafting a case discussion prompt with Claude \u2014 pushing back, adding disciplinary context, refining across several exchanges.',a:'augmentation',r:'The back-and-forth is the signal. Each exchange builds on the last and your expertise shapes every pass. That\u2019s Augmentation \u2014 and <b>Description</b> is critical: in a multi-exchange loop, weak prompts compound.'},
+  {id:3,d:'Accounting',t:'Setting up an AI FAQ chatbot that answers student questions independently, outside your office hours.',a:'agency',r:'AI acts on your behalf without you in each exchange. That\u2019s Agency \u2014 and it demands the highest <b>Diligence</b>: institutional policy, FERPA awareness, and clearly defined no-go zones must be settled before launch, not after.'},
+  {id:4,d:'Marketing',t:'Pasting 45 course evaluation comments into Claude and asking it to identify the three most common themes.',a:'automation',r:'A single well-scoped task with a clear output you can evaluate. You define it, AI executes, you review. Automation \u2014 with a <b>Discernment</b> check on whether the themes actually reflect what students wrote.'},
+  {id:5,d:'Operations',t:'Working with Claude in real time on a course redesign outline \u2014 proposing, reacting, adjusting, and reshaping the structure together.',a:'augmentation',r:'Real-time collaboration on an open-ended problem where your judgment drives each turn. Augmentation. Course redesign is too ambiguous and too dependent on your disciplinary knowledge to hand off in a single shot.'},
+  {id:6,d:'Finance',t:'Delegating literature synthesis to an AI agent that searches, reads, and compiles findings across sources on its own.',a:'agency',r:'The agent operates autonomously across multiple steps without you approving each one. Agency \u2014 and <b>Discernment</b> matters enormously here: AI can fabricate citations, so every source must be verified before it enters your work.'}
+];
+var NM = {automation:'Automation',augmentation:'Augmentation',agency:'Agency'};
+var ZONES = ['automation','augmentation','agency'];
+var place = {}, sel = null, done = false;
+
+function sendHeight(){
+  try{
+    var h = document.documentElement.scrollHeight;
+    var msg = {subject:'lti.frameResize', height:h + 24};
+    window.parent.postMessage(msg,'*');
+    window.parent.postMessage(JSON.stringify(msg),'*');
+  }catch(e){}
+}
+
+function render(){
+  var h = '';
+  S.forEach(function(s){
+    if(place[s.id]) return;
+    h += '<div class="tt-c'+(sel===s.id?' sel':'')+'" draggable="true" tabindex="0" role="button" ' +
+         'aria-label="Scenario '+s.id+', '+s.d+'. Click to select, then click a modality zone." ' +
+         'ondragstart="dStart(event,'+s.id+')" onclick="cClick(event,'+s.id+')" ' +
+         'onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();cClick(event,'+s.id+');}">' +
+         '<span class="tt-cn">'+s.id+'</span>' +
+         '<div class="tt-ct"><div class="tt-cd">'+s.d+'</div><p class="tt-cx">'+s.t+'</p></div>' +
+         '<i class="ti ti-grip-vertical tt-grip" aria-hidden="true"></i></div>';
+  });
+  document.getElementById('pool').innerHTML = h || '<div class="tt-empty">All cards placed \u2014 ready to submit</div>';
+
+  ZONES.forEach(function(z){
+    var hh = '';
+    S.forEach(function(s){
+      if(place[s.id] !== z) return;
+      var cls = '', ic = '';
+      if(done){ cls = (s.a===z ? ' ok' : ' no'); ic = (s.a===z ? 'ti-check' : 'ti-x'); }
+      hh += '<div class="tt-drop'+cls+'"><span class="tt-dn">'+s.id+'</span><span>'+s.d+'</span>' +
+            (done ? '<i class="ti '+ic+'" aria-hidden="true" style="margin-left:auto"></i>'
+                  : '<button class="tt-x" type="button" onclick="rm(event,'+s.id+')" aria-label="Remove scenario '+s.id+'"><i class="ti ti-x" aria-hidden="true"></i></button>') +
+            '</div>';
+    });
+    document.getElementById('c-'+z).innerHTML = hh || '<div class="tt-empty">Drop here</div>';
+    document.getElementById('z-'+z).classList.toggle('armed', sel !== null && !done);
+  });
+
+  var n = Object.keys(place).length;
+  document.getElementById('prog').textContent = n + ' of 6 placed';
+  document.getElementById('sbtn').disabled = (n < 6 || done);
+  setTimeout(sendHeight, 50);
+}
+
+function dStart(e,id){ if(done) return; e.dataTransfer.setData('id', id); sel = null; }
+function dOver(e,z){ if(done) return; e.preventDefault(); document.getElementById('z-'+z).classList.add('over'); }
+function dLeave(z){ document.getElementById('z-'+z).classList.remove('over'); }
+function dDrop(e,z){
+  if(done) return;
+  e.preventDefault();
+  document.getElementById('z-'+z).classList.remove('over');
+  place[e.dataTransfer.getData('id')] = z;
+  render();
+}
+function cClick(e,id){ if(done) return; e.stopPropagation(); sel = (sel === id ? null : id); render(); }
+function zClick(z){ if(done || sel === null) return; place[sel] = z; sel = null; render(); }
+function rm(e,id){ e.stopPropagation(); if(done) return; delete place[id]; render(); }
+function reset(){ place = {}; sel = null; done = false; document.getElementById('fb').innerHTML = ''; render(); }
+
+function submit(){
+  done = true;
+  var ok = S.filter(function(s){ return place[s.id] === s.a; }).length;
+  var msg = ok === 6 ? 'Perfect \u2014 all six correctly placed.'
+          : ok >= 4  ? 'Solid work. Review the ones you missed below.'
+                     : 'The framework takes practice. Read the rationales carefully \u2014 that\u2019s where the learning is.';
+  var ico = ok === 6 ? '\uD83C\uDFAF' : ok >= 4 ? '\uD83D\uDC4D' : '\uD83D\uDCD8';
+  var h = '<div class="tt-fb"><div class="tt-sc"><span class="tt-si">'+ico+'</span>' +
+          '<div><p class="tt-st">'+ok+' of 6 correct</p><p class="tt-ss">'+msg+'</p></div></div>';
+  S.forEach(function(s){
+    var c = (place[s.id] === s.a);
+    h += '<div class="tt-r '+(c?'ok':'no')+'"><div class="tt-rh">' +
+         '<span class="tt-rt">'+s.id+'. '+s.d+'</span>' +
+         '<span class="tt-rb">'+(c ? 'Correct' : 'You said ' + NM[place[s.id]])+'</span></div>' +
+         '<p class="tt-rx"><b>'+NM[s.a]+'.</b> '+s.r+'</p></div>';
+  });
+  h += '</div>';
+  document.getElementById('fb').innerHTML = h;
+  render();
+}
+
+render();
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+if(window.ResizeObserver){ new ResizeObserver(sendHeight).observe(document.body); }
+</script>
+</body>
+</html>
