@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modality Control Panel — AI Fluency for Faculty | Hankamer School of Business, Baylor University</title>
+<meta name="description" content="Interactive control panel exploring the three modalities of AI interaction: Automation, Augmentation, and Agency.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+body{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif;padding:12px;color:#1a1a1a;line-height:1.5}
+.mc{border:1px solid #cdd5ce;border-radius:12px;overflow:hidden;background:#fff;max-width:760px;margin:0 auto}
+.mc-hdr{background:#154734;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.mc-hdr p{margin:0}
+.mc-ht{color:#fff;font-size:15px;font-weight:600}
+.mc-hs{color:#FFB81C;font-size:11px;margin-top:3px}
+.mc-hbg{background:rgba(255,184,28,.15);border:1px solid #FFB81C;color:#FFB81C;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}
+.mc-zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#f3f6f4;border-bottom:1px solid #cdd5ce}
+.mc-zb{padding:14px 16px;background:transparent;border:none;border-right:1px solid #cdd5ce;cursor:pointer;text-align:left;color:inherit;position:relative;width:100%;font-family:inherit;transition:background .12s}
+.mc-zb:last-child{border-right:none}
+.mc-zb:hover{background:#fff}
+.mc-zb:focus-visible{outline:2px solid #154734;outline-offset:-2px}
+.mc-zb.on{background:#fff}
+.mc-zb.on::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:#FFB81C}
+.mc-zi{font-size:20px;color:#8fa898;display:block;margin-bottom:6px}
+.mc-zb.on .mc-zi{color:#154734}
+.mc-zn{font-size:13px;font-weight:600;color:#1a1a1a;display:block;margin-bottom:3px}
+.mc-zt{font-size:11px;color:#555;line-height:1.4;display:block}
+.mc-body{padding:20px;background:#fff}
+.mc-ch{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #dde4de}
+.mc-chi{font-size:18px;color:#154734}
+.mc-cht{font-size:15px;font-weight:600;color:#154734}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mc-cell{border:1px solid #dde4de;border-left:2px solid #FFB81C;border-radius:0 8px 8px 0;padding:14px 16px;background:#f8faf9}
+.mc-cell.wo{background:#fffbf0;border-color:#f0d9a0;border-left-color:#b06f00}
+.mc-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#FFB81C;border-radius:50%;font-size:10px;font-weight:700;color:#412402;margin-bottom:5px}
+.mc-num.wo-num{background:#fff8e0;color:#7a5a00;border:1px solid #d9a441}
+.mc-clbl{font-size:11px;font-weight:600;color:#555;margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.mc-cbody{font-size:13px;color:#222;line-height:1.6;margin:0}
+.mc-ex{margin-top:6px;display:flex;flex-direction:column;gap:6px}
+.mc-ei{padding:8px 10px;background:#fff;border:1px solid #dde4de;border-radius:6px}
+.mc-ed{font-size:10px;font-weight:600;color:#154734;margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}
+.mc-et{font-size:12px;color:#444;line-height:1.5;margin:0}
+.mc-foot{font-size:11px;color:#6b6b6b;text-align:center;padding:10px 20px;border-top:1px solid #dde4de;display:flex;align-items:center;justify-content:center;gap:5px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:620px){
+  .mc-zones{grid-template-columns:1fr}
+  .mc-zb{border-right:none!important;border-bottom:1px solid #cdd5ce}
+  .mc-zb:last-child{border-bottom:none}
+  .mc-grid{grid-template-columns:1fr}
+  .mc-hdr{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<h1 class="sr-only">Modality Control Panel — the three modalities of AI interaction for Hankamer School of Business faculty</h1>
+
+<div class="mc">
+  <div class="mc-hdr">
+    <div>
+      <p class="mc-ht">Modality Control Panel</p>
+      <p class="mc-hs">AI Fluency Framework &nbsp;&middot;&nbsp; Hankamer School of Business, Baylor University</p>
+    </div>
+    <span class="mc-hbg"><i class="ti ti-layout-grid" aria-hidden="true"></i>&nbsp; 3 modalities</span>
+  </div>
+
+  <div class="mc-zones" role="tablist" aria-label="The three modalities of AI interaction">
+    <button class="mc-zb" id="z-automation" type="button" role="tab" aria-selected="false" aria-controls="mc-out" onclick="mcSel('automation')">
+      <i class="ti ti-settings mc-zi" aria-hidden="true"></i>
+      <span class="mc-zn">Automation</span>
+      <span class="mc-zt">Define it. Delegate it. Review it.</span>
+    </button>
+    <button class="mc-zb" id="z-augmentation" type="button" role="tab" aria-selected="false" aria-controls="mc-out" onclick="mcSel('augmentation')">
+      <i class="ti ti-arrows-exchange mc-zi" aria-hidden="true"></i>
+      <span class="mc-zn">Augmentation</span>
+      <span class="mc-zt">Co-create. Iterate. Stay in the loop.</span>
+    </button>
+    <button class="mc-zb" id="z-agency" type="button" role="tab" aria-selected="false" aria-controls="mc-out" onclick="mcSel('agency')">
+      <i class="ti ti-robot mc-zi" aria-hidden="true"></i>
+      <span class="mc-zn">Agency</span>
+      <span class="mc-zt">Configure it. Deploy it. Monitor it.</span>
+    </button>
+  </div>
+
+  <div class="mc-body" id="mc-out" role="tabpanel" aria-live="polite"></div>
+
+  <div class="mc-foot">
+    <i class="ti ti-pointer" aria-hidden="true"></i>
+    Select a modality above to explore its definition, examples, gain, and watchout
+  </div>
+</div>
+
+<script>
+var Z = {
+  automation:{icon:'ti-settings',name:'Automation',def:'AI performs a well-defined task based on your instructions. You specify clearly upfront, AI executes, and you review and decide what to use. Best for repetitive, well-scoped tasks where output can be evaluated against clear criteria.',ex:[{d:'Finance / Accounting',t:'A Finance professor asks Claude to generate a rubric aligned to Bloom\u2019s level: Analyze for a case study assignment. She reviews the criteria, adjusts two descriptors, and posts it to Canvas.'},{d:'Marketing',t:'A Marketing professor pastes 45 end-of-semester course evaluation comments and asks Claude to identify the three most common themes. She uses the summary to prioritize one course revision.'}],gain:'Reclaim hours spent on well-defined, lower-creativity tasks \u2014 rubric drafts, quiz banks, syllabi sections, feedback templates \u2014 so you can invest your expertise where it matters most: judgment, mentorship, and course design.',watch:'Automation requires strong Delegation judgment upfront. If the task is too ambiguous, high-stakes, or dependent on nuanced student context, AI output will be generic \u2014 and you may not catch the gaps without a careful Discernment review.'},
+  augmentation:{icon:'ti-arrows-exchange',name:'Augmentation',def:'You and AI work back and forth in real time, each exchange building on the last. Your judgment shapes every iteration. Best for complex, creative, or ambiguous tasks where disciplinary expertise drives the outcome.',ex:[{d:'Management',t:'A Management professor builds an ESG reporting case study by sharing a real company scenario, pushing back on the framing, adding disciplinary context, and iterating across five exchanges before the case is classroom-ready.'},{d:'Operations / Analytics',t:'An Operations professor co-develops a supply chain disruption simulation with Claude \u2014 stress-testing cost assumptions and refining parameters across six exchanges before finalizing.'}],gain:'A thinking partner for your most complex work \u2014 case design, curriculum redesign, research synthesis \u2014 where your expertise shapes every iteration and AI compresses what would otherwise take hours of solo drafting.',watch:'Augmentation is only as good as the Description you bring to each exchange. Vague prompts produce generic responses, and in a multi-exchange loop weak prompts compound the problem. The CARE framework determines the quality of every iteration.'},
+  agency:{icon:'ti-robot',name:'Agency',def:'You configure AI to act on your behalf over time \u2014 often interacting with students without your direct involvement in each exchange. You define its role, its knowledge base, its limits, and its no-go zones before deployment.',ex:[{d:'Accounting / Tax Law',t:'An Accounting professor deploys an AI FAQ bot for her Tax Law course that answers student questions independently between 10pm and 7am. She defined its knowledge base, its scope, and its no-go zones before launch.'},{d:'Finance / Investments',t:'A Finance professor configures an AI tutoring assistant that generates personalized practice problems based on student performance patterns \u2014 extending support far beyond what office hours can deliver.'}],gain:'Extend your presence beyond your office hours and bandwidth. A well-configured AI agent can provide students with immediate, personalized support at scale that would be impossible to deliver manually.',watch:'Agency demands the highest Diligence of any modality. Once AI acts on your behalf, it reflects on you and on Baylor. Institutional policy compliance, FERPA awareness, and clear no-go zones are prerequisites \u2014 not afterthoughts.'}
+};
+var MKEYS = ['automation','augmentation','agency'];
+
+function sendHeight(){
+  try{
+    var h = document.documentElement.scrollHeight;
+    var msg = {subject:'lti.frameResize', height:h + 24};
+    window.parent.postMessage(msg,'*');
+    window.parent.postMessage(JSON.stringify(msg),'*');
+  }catch(e){}
+}
+
+function mcSel(k){
+  MKEYS.forEach(function(id){
+    var b = document.getElementById('z-'+id);
+    var on = (id === k);
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  var d = Z[k];
+  document.getElementById('mc-out').innerHTML =
+    '<div class="mc-ch"><i class="ti '+d.icon+' mc-chi" aria-hidden="true"></i><span class="mc-cht">'+d.name+'</span></div>' +
+    '<div class="mc-grid">' +
+      '<div class="mc-cell"><div class="mc-num">1</div><div class="mc-clbl">Definition</div><p class="mc-cbody">'+d.def+'</p></div>' +
+      '<div class="mc-cell"><div class="mc-num">2</div><div class="mc-clbl">Hankamer examples</div><div class="mc-ex">' +
+        d.ex.map(function(e){ return '<div class="mc-ei"><div class="mc-ed">'+e.d+'</div><p class="mc-et">'+e.t+'</p></div>'; }).join('') +
+      '</div></div>' +
+      '<div class="mc-cell"><div class="mc-num">3</div><div class="mc-clbl">What you gain</div><p class="mc-cbody">'+d.gain+'</p></div>' +
+      '<div class="mc-cell wo"><div class="mc-num wo-num"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:10px"></i></div><div class="mc-clbl"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:12px;color:#8a5600"></i>&nbsp;Primary watchout</div><p class="mc-cbody">'+d.watch+'</p></div>' +
+    '</div>';
+  setTimeout(sendHeight, 80);
+}
+
+mcSel('automation');
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+if(window.ResizeObserver){
+  new ResizeObserver(sendHeight).observe(document.body);
+}
+</script>
+</body>
+</html>
