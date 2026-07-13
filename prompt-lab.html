@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Lab — Diagnose Your Assignment</title>
+
+<!-- ==================================================================
+     PROMPT LAB — DIAGNOSE YOUR ASSIGNMENT
+     Module A3 · Teaching Forward: AI Fluency for Practitioners
+     Baylor University · Hankamer School of Business
+
+     BACKEND:  https://prompt-lab-proxy.vercel.app/api/diagnose
+
+     EDIT CONTENT BELOW. Do not touch anything after
+     "END EDITABLE CONTENT".
+     ================================================================== -->
+
+<script>
+const CONTENT = {
+
+  PROXY_URL: "https://prompt-lab-proxy.vercel.app/api/diagnose",
+
+  eyebrow: "Module A3 · Formative Assessment",
+  title: "Prompt Lab: Diagnose Your Assignment",
+  intro: "You're about to use Claude directly on this page — no separate tab, no account needed. This lab does one job: it diagnoses the assignment you're bringing to the workshop. It will not redesign it, and it will not complete it. That discovery is deliberately reserved for the AI Stress Test on Workshop Day 2.",
+
+  calloutTitle: "AI in Your Hands vs. AI in Theirs",
+  calloutBody: "Everything you've done so far in this module has been AI in <em>your</em> hands — you prompting, you judging, you deciding. The assignment you select here is about AI in <em>theirs</em>. The diagnosis below reads your assignment for one thing above all: is there room in it for students to do real AI work?",
+
+  part1Label: "Part 1",
+  part1Title: "Watch one get diagnosed first",
+  part1Lede: "Before you paste your own, read how a colleague's assignment came back. Notice what the diagnosis is looking for — and what it deliberately refuses to do.",
+
+  exampleCourse: "MKT 3305 — Consumer Behavior · HSB",
+  exampleAssignmentLabel: "The assignment as it exists today",
+  exampleAssignment: "Segmentation Memo (15% of course grade). Students select a consumer product of their choosing, identify three viable market segments, and write a 1,200-word memo to a hypothetical brand manager recommending one segment for a targeted campaign. The memo must include: a demographic and psychographic profile of each segment, a rationale for the recommended segment grounded in course concepts (VALS, motivation theory, reference groups), and one anticipated objection with a response. Individual work. Submitted to Canvas as a Word document.",
+
+  exampleRubricLabel: "The rubric as it exists today",
+  exampleRubric: "Segment identification (25 pts): Three distinct, viable segments identified with supporting detail. Application of course concepts (30 pts): Correctly applies at least two frameworks from Units 3–5. Recommendation and rationale (25 pts): Clear recommendation supported by evidence from the profiles. Objection handling (10 pts): Anticipates one credible objection and responds substantively. Writing and format (10 pts): Professional memo format, clear prose, under 1,200 words.",
+
+  exampleDiagnosisLabel: "What came back",
+  exampleDiagnosis: "1. MODALITY OPERATING — Automation. As written, this assignment is highly susceptible to a single-pass delegation: a student could paste the prompt into a general-purpose model and receive a structurally complete memo — three segments, a recommendation, an objection — in one exchange. Nothing in the task structure requires the student to iterate with the tool, evaluate what it returns, or contribute judgment the model cannot supply. The deliverable is the kind of well-formed professional artifact these systems produce most reliably.\n\n2. MOST CRITICAL D — Discernment. The redesign question is not whether students will use AI here; it is whether they will be positioned to judge what it gives them. A model will confidently generate psychographic profiles that sound plausible and are entirely fabricated. Right now nothing in the assignment asks the student to notice that. Discernment is the competency this assignment is best positioned to build, and currently does not.\n\n3. CRITERIA VALIDATION — Self-contained: yes. The prompt and rubric together are sufficient for a faculty member to work from in one sitting; no external case packet is required. Cognitive tasks (five, and these become your Activity Inventory rows): (a) select a product, (b) identify three segments, (c) profile each segment demographically and psychographically, (d) select one segment and construct a rationale using course frameworks, (e) anticipate and answer one objection. AI vulnerability: high. Tasks (b) through (e) are all producible in a single generation, and (c) in particular invites fabrication that the current rubric would not catch. Rubric specificity: partial. \"Correctly applies at least two frameworks\" is specific enough that an AI output could be scored against it and would likely pass — which is itself the finding. \"Supported by evidence from the profiles\" is weaker; if the profiles are invented, the evidentiary chain is circular and the rubric has no way to see it. Room for student-facing AI work: substantial. The gap between a fabricated psychographic profile and a defensible one is exactly where AI-output evaluation lives, and this assignment already has the segment-profiling step where that work would sit naturally.\n\n4. ONE OPEN QUESTION — If a student used AI to generate all three segment profiles and then defended the recommended one on their own, which parts of the learning objective would still be intact — and which would have quietly disappeared?",
+
+  exampleNote: "Notice what it did not do: it did not write the memo, and it did not rewrite the assignment. It named what is happening, what is at risk, and what is possible.",
+
+  part2Label: "Part 2",
+  part2Title: "Now yours",
+  part2Lede: "Paste the assignment you're bringing to the workshop — the original, not a redesign. Then write the four CARE components that frame the diagnosis. Your prompt quality shapes what comes back; this is Description in practice.",
+
+  assignmentLabel: "Your assignment prompt",
+  assignmentHelp: "Paste it as students see it today. Do not clean it up.",
+  assignmentPlaceholder: "Paste the full assignment prompt here…",
+
+  rubricLabel: "Your rubric",
+  rubricHelp: "As it currently exists — criteria and point values.",
+  rubricPlaceholder: "Paste your rubric here…",
+
+  careHeading: "Your CARE prompt",
+  careLede: "Four components. Each one narrows what the diagnosis can see.",
+
+  contextLabel: "C — Context",
+  contextHelp: "Course number and title, level, discipline, where this sits in the term, who your students are.",
+  contextPlaceholder: "I teach FIN 3310 (Corporate Finance), a required junior-level course at Baylor's Hankamer School of Business. Students complete this in week 9, after…",
+
+  careAssignmentLabel: "A — Assignment",
+  careAssignmentHelp: "What you're asking the diagnosis to do. Be specific about what you most need to know.",
+  careAssignmentPlaceholder: "Diagnose this assignment for AI vulnerability and tell me where there is room for students to do real AI work…",
+
+  roleLabel: "R — Role",
+  roleHelp: "The expertise you want the diagnosis to reason from.",
+  rolePlaceholder: "Act as an experienced business educator familiar with…",
+
+  examplesLabel: "E — Examples",
+  examplesHelp: "Constraints, prior context, what you've already tried, what a good answer looks like to you.",
+  examplesPlaceholder: "This assignment has run for four semesters. Last year I noticed…",
+
+  submitLabel: "Diagnose my assignment",
+  submitBusy: "Reading your assignment…",
+
+  resultTitle: "Your diagnosis",
+  resultNote: "Copy this into your Canvas submission. Bring the open question to Workshop Day 1.",
+  copyLabel: "Copy diagnosis",
+  copiedLabel: "Copied",
+
+  checkTitle: "Before you use this — the 4+1 Discernment Check",
+  checkItems: [
+    "Accurate? Does the diagnosis reflect what your assignment actually asks students to do?",
+    "Mine? Does it read your course the way you know it, or has it flattened something?",
+    "Aligned? Does it serve the learning objective you actually care about?",
+    "Safe? Did you paste any student names, grades, or identifiable information? If so — stop, remove them, resubmit.",
+    "Accessible? What barriers does this assignment already carry, before AI enters the picture?"
+  ],
+
+  errEmpty: "Both your assignment prompt and your rubric are needed before a diagnosis can run.",
+  errNetwork: "The connection to Claude did not go through. Check your network and try again.",
+  errServer: "Something went wrong on the way to Claude. Try again in a moment."
+};
+</script>
+
+<!-- ============ END EDITABLE CONTENT ============ -->
+
+<style>
+  :root{
+    --green:#154734;
+    --green-deep:#0d2c20;
+    --gold:#FFB81C;
+    --gold-soft:#FFF4DA;
+    --ink:#1a1a1a;
+    --ink-mid:#4a4f4c;
+    --ink-soft:#767b78;
+    --paper:#ffffff;
+    --wash:#F5F7F5;
+    --rule:#DDE3DF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:0 24px 72px;}
+
+  header{
+    background:var(--green);
+    color:#fff;
+    padding:36px 24px 32px;
+    margin-bottom:36px;
+    border-bottom:5px solid var(--gold);
+  }
+  .header-inner{max-width:840px;margin:0 auto;}
+  .eyebrow{
+    font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:12px;
+  }
+  h1{font-size:31px;line-height:1.2;font-weight:700;letter-spacing:-.015em;margin-bottom:14px;}
+  .intro{font-size:15.5px;color:#D7E3DC;max-width:66ch;}
+
+  .callout{
+    background:var(--gold-soft);
+    border-left:5px solid var(--gold);
+    padding:20px 24px;
+    margin-bottom:44px;
+    border-radius:0 6px 6px 0;
+  }
+  .callout h2{
+    font-size:14px;font-weight:700;color:var(--green);
+    letter-spacing:.02em;margin-bottom:7px;
+  }
+  .callout p{font-size:14.5px;color:#5C4A16;}
+
+  section{margin-bottom:48px;}
+  .sec-head{
+    display:flex;align-items:baseline;gap:14px;
+    padding-bottom:12px;margin-bottom:8px;
+    border-bottom:2px solid var(--green);
+  }
+  .sec-label{
+    background:var(--green);color:var(--gold);
+    font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    padding:5px 11px;border-radius:3px;white-space:nowrap;
+  }
+  .sec-head h2{font-size:22px;font-weight:700;color:var(--green);letter-spacing:-.01em;}
+  .lede{font-size:15px;color:var(--ink-mid);margin-bottom:24px;max-width:68ch;}
+
+  .example{
+    border:1px solid var(--rule);border-radius:8px;
+    overflow:hidden;background:var(--paper);
+  }
+  .example-course{
+    background:var(--wash);border-bottom:1px solid var(--rule);
+    padding:11px 20px;
+    font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--green);
+  }
+  .ex-block{padding:20px;border-bottom:1px solid var(--rule);}
+  .ex-block:last-child{border-bottom:none;}
+  .ex-label{
+    font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:9px;
+  }
+  .ex-body{font-size:14.5px;color:var(--ink-mid);}
+  .ex-diag{background:var(--wash);}
+  .ex-diag .ex-label{color:var(--green);}
+  .ex-diag .ex-body{
+    white-space:pre-wrap;
+    font-size:14.5px;color:var(--ink);
+    border-left:3px solid var(--gold);padding-left:16px;
+  }
+  .ex-note{
+    padding:16px 20px;background:var(--green-deep);color:#C9D8D0;
+    font-size:14px;font-style:italic;
+  }
+
+  .field{margin-bottom:24px;}
+  label{
+    display:block;font-size:13px;font-weight:700;color:var(--green);
+    letter-spacing:.02em;margin-bottom:3px;
+  }
+  .help{font-size:13px;color:var(--ink-soft);margin-bottom:9px;}
+  textarea{
+    width:100%;font-family:inherit;font-size:14.5px;line-height:1.55;
+    color:var(--ink);background:var(--paper);
+    border:1.5px solid var(--rule);border-radius:6px;
+    padding:13px 15px;resize:vertical;transition:border-color .15s;
+  }
+  textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(21,71,52,.09);}
+  textarea::placeholder{color:#AAB2AE;}
+  .ta-lg{min-height:140px;}
+  .ta-md{min-height:100px;}
+  .ta-sm{min-height:74px;}
+
+  .care-box{
+    background:var(--wash);border:1px solid var(--rule);
+    border-radius:8px;padding:24px;margin-bottom:28px;
+  }
+  .care-box h3{
+    font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px;
+  }
+  .care-lede{font-size:13.5px;color:var(--ink-soft);margin-bottom:22px;}
+  .care-box .field:last-child{margin-bottom:0;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    background:var(--green);color:#fff;
+    font-family:inherit;font-size:15px;font-weight:700;letter-spacing:.01em;
+    border:none;border-radius:6px;padding:15px 30px;cursor:pointer;
+    transition:background .15s,transform .08s;
+  }
+  .btn:hover:not(:disabled){background:var(--green-deep);}
+  .btn:active:not(:disabled){transform:translateY(1px);}
+  .btn:disabled{background:#8FA39A;cursor:not-allowed;}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .spin{
+    width:15px;height:15px;border:2.5px solid rgba(255,255,255,.32);
+    border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;
+  }
+  @keyframes sp{to{transform:rotate(360deg);}}
+
+  .err{
+    display:none;margin-top:16px;padding:13px 17px;
+    background:#FDECEA;border-left:4px solid #C0392B;border-radius:0 5px 5px 0;
+    font-size:14px;color:#8B2820;
+  }
+  .err.show{display:block;}
+
+  #result{display:none;margin-top:44px;}
+  #result.show{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+  .res-card{border:2px solid var(--green);border-radius:8px;overflow:hidden;}
+  .res-head{
+    background:var(--green);color:#fff;padding:15px 22px;
+    display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .res-head h2{font-size:17px;font-weight:700;}
+  .copy-btn{
+    background:transparent;color:var(--gold);
+    border:1.5px solid var(--gold);border-radius:5px;
+    font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    padding:7px 15px;cursor:pointer;transition:background .15s,color .15s;
+  }
+  .copy-btn:hover{background:var(--gold);color:var(--green);}
+  .copy-btn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  .res-body{padding:24px 22px;white-space:pre-wrap;font-size:15px;color:var(--ink);}
+  .res-note{
+    background:var(--wash);border-top:1px solid var(--rule);
+    padding:14px 22px;font-size:13.5px;color:var(--ink-mid);
+  }
+
+  .check{
+    margin-top:32px;border:1px solid var(--gold);
+    border-radius:8px;overflow:hidden;
+  }
+  .check h2{
+    background:var(--gold);color:var(--green-deep);
+    font-size:14px;font-weight:700;letter-spacing:.02em;
+    padding:13px 20px;
+  }
+  .check ol{list-style:none;counter-reset:c;padding:8px 20px 18px;}
+  .check li{
+    counter-increment:c;position:relative;
+    padding:11px 0 11px 38px;font-size:14.5px;color:var(--ink-mid);
+    border-bottom:1px solid #F0EDE4;
+  }
+  .check li:last-child{border-bottom:none;}
+  .check li::before{
+    content:counter(c);position:absolute;left:0;top:11px;
+    width:23px;height:23px;border-radius:50%;
+    background:var(--green);color:var(--gold);
+    font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  @media (max-width:600px){
+    header{padding:28px 20px 24px;}
+    h1{font-size:25px;}
+    .wrap{padding:0 20px 56px;}
+    .sec-head{flex-direction:column;align-items:flex-start;gap:9px;}
+    .care-box{padding:18px;}
+    .btn{width:100%;justify-content:center;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow" id="hEyebrow"></div>
+    <h1 id="hTitle"></h1>
+    <p class="intro" id="hIntro"></p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="callout">
+    <h2 id="cTitle"></h2>
+    <p id="cBody"></p>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-label" id="p1Label"></span>
+      <h2 id="p1Title"></h2>
+    </div>
+    <p class="lede" id="p1Lede"></p>
+
+    <div class="example">
+      <div class="example-course" id="exCourse"></div>
+      <div class="ex-block">
+        <div class="ex-label" id="exALabel"></div>
+        <div class="ex-body" id="exA"></div>
+      </div>
+      <div class="ex-block">
+        <div class="ex-label" id="exRLabel"></div>
+        <div class="ex-body" id="exR"></div>
+      </div>
+      <div class="ex-block ex-diag">
+        <div class="ex-label" id="exDLabel"></div>
+        <div class="ex-body" id="exD"></div>
+      </div>
+      <div class="ex-note" id="exNote"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-label" id="p2Label"></span>
+      <h2 id="p2Title"></h2>
+    </div>
+    <p class="lede" id="p2Lede"></p>
+
+    <div class="field">
+      <label for="fAssign" id="lAssign"></label>
+      <div class="help" id="hAssign"></div>
+      <textarea id="fAssign" class="ta-lg"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="fRubric" id="lRubric"></label>
+      <div class="help" id="hRubric"></div>
+      <textarea id="fRubric" class="ta-md"></textarea>
+    </div>
+
+    <div class="care-box">
+      <h3 id="careH"></h3>
+      <p class="care-lede" id="careL"></p>
+
+      <div class="field">
+        <label for="fCtx" id="lCtx"></label>
+        <div class="help" id="hCtx"></div>
+        <textarea id="fCtx" class="ta-sm"></textarea>
+      </div>
+      <div class="field">
+        <label for="fCareA" id="lCareA"></label>
+        <div class="help" id="hCareA"></div>
+        <textarea id="fCareA" class="ta-sm"></textarea>
+      </div>
+      <div class="field">
+        <label for="fRole" id="lRole"></label>
+        <div class="help" id="hRole"></div>
+        <textarea id="fRole" class="ta-sm"></textarea>
+      </div>
+      <div class="field">
+        <label for="fEx" id="lEx"></label>
+        <div class="help" id="hEx"></div>
+        <textarea id="fEx" class="ta-sm"></textarea>
+      </div>
+    </div>
+
+    <button class="btn" id="go"><span id="goTxt"></span></button>
+    <div class="err" id="err"></div>
+  </section>
+
+  <div id="result">
+    <div class="res-card">
+      <div class="res-head">
+        <h2 id="rTitle"></h2>
+        <button class="copy-btn" id="copy"></button>
+      </div>
+      <div class="res-body" id="rBody"></div>
+      <div class="res-note" id="rNote"></div>
+    </div>
+
+    <div class="check">
+      <h2 id="chkTitle"></h2>
+      <ol id="chkList"></ol>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const C = CONTENT;
+  const $ = id => document.getElementById(id);
+
+  $("hEyebrow").textContent = C.eyebrow;
+  $("hTitle").textContent   = C.title;
+  $("hIntro").textContent   = C.intro;
+  $("cTitle").textContent   = C.calloutTitle;
+  $("cBody").innerHTML      = C.calloutBody;
+
+  $("p1Label").textContent  = C.part1Label;
+  $("p1Title").textContent  = C.part1Title;
+  $("p1Lede").textContent   = C.part1Lede;
+  $("exCourse").textContent = C.exampleCourse;
+  $("exALabel").textContent = C.exampleAssignmentLabel;
+  $("exA").textContent      = C.exampleAssignment;
+  $("exRLabel").textContent = C.exampleRubricLabel;
+  $("exR").textContent      = C.exampleRubric;
+  $("exDLabel").textContent = C.exampleDiagnosisLabel;
+  $("exD").textContent      = C.exampleDiagnosis;
+  $("exNote").textContent   = C.exampleNote;
+
+  $("p2Label").textContent  = C.part2Label;
+  $("p2Title").textContent  = C.part2Title;
+  $("p2Lede").textContent   = C.part2Lede;
+
+  $("lAssign").textContent  = C.assignmentLabel;
+  $("hAssign").textContent  = C.assignmentHelp;
+  $("fAssign").placeholder  = C.assignmentPlaceholder;
+  $("lRubric").textContent  = C.rubricLabel;
+  $("hRubric").textContent  = C.rubricHelp;
+  $("fRubric").placeholder  = C.rubricPlaceholder;
+
+  $("careH").textContent    = C.careHeading;
+  $("careL").textContent    = C.careLede;
+  $("lCtx").textContent     = C.contextLabel;
+  $("hCtx").textContent     = C.contextHelp;
+  $("fCtx").placeholder     = C.contextPlaceholder;
+  $("lCareA").textContent   = C.careAssignmentLabel;
+  $("hCareA").textContent   = C.careAssignmentHelp;
+  $("fCareA").placeholder   = C.careAssignmentPlaceholder;
+  $("lRole").textContent    = C.roleLabel;
+  $("hRole").textContent    = C.roleHelp;
+  $("fRole").placeholder    = C.rolePlaceholder;
+  $("lEx").textContent      = C.examplesLabel;
+  $("hEx").textContent      = C.examplesHelp;
+  $("fEx").placeholder      = C.examplesPlaceholder;
+
+  $("goTxt").textContent    = C.submitLabel;
+  $("rTitle").textContent   = C.resultTitle;
+  $("rNote").textContent    = C.resultNote;
+  $("copy").textContent     = C.copyLabel;
+  $("chkTitle").textContent = C.checkTitle;
+  C.checkItems.forEach(t => {
+    const li = document.createElement("li");
+    li.textContent = t;
+    $("chkList").appendChild(li);
+  });
+
+  const btn = $("go"), errBox = $("err"), result = $("result");
+
+  function showErr(m){ errBox.textContent = m; errBox.classList.add("show"); }
+  function clearErr(){ errBox.classList.remove("show"); }
+
+  function busy(on){
+    btn.disabled = on;
+    btn.innerHTML = on
+      ? '<span class="spin"></span><span>' + C.submitBusy + '</span>'
+      : '<span>' + C.submitLabel + '</span>';
+  }
+
+  btn.addEventListener("click", async () => {
+    clearErr();
+    const assignment = $("fAssign").value.trim();
+    const rubric     = $("fRubric").value.trim();
+
+    if(!assignment || !rubric){ showErr(C.errEmpty); return; }
+
+    const payload = {
+      assignment,
+      rubric,
+      care: {
+        context:    $("fCtx").value.trim(),
+        assignment: $("fCareA").value.trim(),
+        role:       $("fRole").value.trim(),
+        examples:   $("fEx").value.trim()
+      }
+    };
+
+    busy(true);
+    result.classList.remove("show");
+
+    try{
+      const r = await fetch(C.PROXY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if(!r.ok){
+        const d = await r.json().catch(() => ({}));
+        showErr(d.error === "Assignment and rubric are both required."
+          ? C.errEmpty : C.errServer);
+        busy(false);
+        return;
+      }
+
+      const data = await r.json();
+      $("rBody").textContent = data.diagnosis || C.errServer;
+      result.classList.add("show");
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    }catch(e){
+      showErr(C.errNetwork);
+    }finally{
+      busy(false);
+    }
+  });
+
+  $("copy").addEventListener("click", () => {
+    const t = $("rBody").textContent;
+    const done = () => {
+      $("copy").textContent = C.copiedLabel;
+      setTimeout(() => { $("copy").textContent = C.copyLabel; }, 1800);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(done).catch(() => {});
+    }else{
+      const ta = document.createElement("textarea");
+      ta.value = t; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy");
+      document.body.removeChild(ta); done();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
