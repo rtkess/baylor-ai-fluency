@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Discipline Reading — Module A7</title>
+<style>
+  /* ============================================================
+     EDITABLE CONTENT
+     Faculty-facing copy and reading links live in the CONTENT
+     block in the <script> at the bottom of this file.
+     To change a reading URL or blurb, edit there — not here.
+     Nothing in this <style> block needs touching to update copy.
+     ============================================================ */
+
+  :root {
+    --baylor-green: #154734;
+    --baylor-green-deep: #0e3325;
+    --baylor-gold: #FFB81C;
+    --gold-soft: #fff4d6;
+    --ink: #1c2621;
+    --ink-soft: #47554e;
+    --paper: #ffffff;
+    --mist: #f3f6f4;
+    --line: #dbe4df;
+    --shadow: 0 1px 2px rgba(21,71,52,.06), 0 8px 24px rgba(21,71,52,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--mist);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding: 0;
+  }
+
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 22px 40px;
+  }
+
+  /* ---- Header ---- */
+  .head {
+    background: linear-gradient(135deg, var(--baylor-green) 0%, var(--baylor-green-deep) 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 30px 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .head::after {
+    content: "";
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,184,28,.22), transparent 70%);
+  }
+  .eyebrow {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--baylor-gold);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .head h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  .head p {
+    margin-top: 12px;
+    font-size: 15.5px;
+    color: #e4ede8;
+    max-width: 56ch;
+  }
+  .head .rule {
+    width: 54px; height: 4px;
+    background: var(--baylor-gold);
+    border-radius: 3px;
+    margin-top: 18px;
+  }
+
+  /* ---- Step label ---- */
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 30px 2px 14px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .step .n {
+    width: 26px; height: 26px;
+    background: var(--baylor-gold);
+    color: var(--baylor-green-deep);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex: none;
+  }
+  .step .t {
+    font-size: 13px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--baylor-green);
+  }
+
+  /* ---- Discipline picker ---- */
+  .picker {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .disc {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: 11px;
+    padding: 16px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color .15s, transform .12s, box-shadow .15s;
+    color: var(--ink);
+  }
+  .disc:hover { border-color: var(--baylor-gold); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .disc:focus-visible { outline: 3px solid var(--baylor-gold); outline-offset: 2px; }
+  .disc[aria-pressed="true"] {
+    border-color: var(--baylor-green);
+    background: var(--baylor-green);
+    color: #fff;
+    box-shadow: var(--shadow);
+  }
+  .disc .dn {
+    font-weight: 700;
+    font-size: 15.5px;
+    display: block;
+  }
+  .disc .db {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+    display: block;
+  }
+  .disc[aria-pressed="true"] .db { color: var(--gold-soft); }
+
+  /* ---- Result card ---- */
+  .result {
+    margin-top: 20px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: none;
+  }
+  .result.show { display: block; animation: rise .3s ease; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .result .band {
+    background: var(--gold-soft);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 22px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--baylor-green);
+  }
+  .result .body { padding: 22px 24px 24px; }
+  .result h2 {
+    font-size: 20px;
+    color: var(--baylor-green);
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+  .result .src {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .result .desc { font-size: 15px; margin-bottom: 18px; }
+
+  .lens {
+    background: var(--mist);
+    border-left: 3px solid var(--baylor-gold);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .lens strong { color: var(--baylor-green); }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    background: var(--baylor-green);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 9px;
+    transition: background .15s, transform .12s;
+  }
+  .cta:hover { background: var(--baylor-green-deep); transform: translateY(-1px); }
+  .cta:focus-visible { outline: 3px solid var(--baylor-gold); outline-offset: 2px; }
+  .cta .arw { font-size: 17px; }
+
+  /* ---- Shared supplements ---- */
+  .supp {
+    margin-top: 14px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 22px 24px 24px;
+  }
+  .supp h3 {
+    font-size: 17px;
+    color: var(--baylor-green);
+    margin-bottom: 4px;
+  }
+  .supp .note {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .supp-links { display: grid; gap: 10px; }
+  .supp-link {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 13px 16px;
+    transition: border-color .15s, background .15s;
+  }
+  .supp-link:hover { border-color: var(--baylor-gold); background: var(--mist); }
+  .supp-link:focus-visible { outline: 3px solid var(--baylor-gold); outline-offset: 2px; }
+  .supp-link .lbl { font-weight: 700; font-size: 15px; color: var(--baylor-green); flex: none; }
+  .supp-link .sub { font-size: 13.5px; color: var(--ink-soft); font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .supp-link .go { margin-left: auto; color: var(--baylor-green); font-weight: 700; flex: none; }
+
+  .pending {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11.5px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #9a6b00;
+    background: var(--gold-soft);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+  }
+
+  .foot {
+    margin-top: 22px;
+    text-align: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 560px) {
+    .head { padding: 24px 22px; }
+    .head h1 { font-size: 22px; }
+    .wrap { padding: 18px 14px 32px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">Module A7 · Discipline-Specific AI Reading</div>
+    <h1>Find your field's AI reading</h1>
+    <p>Every discipline is being reshaped by AI in its own way. Select your area below to open the professional-body reading your graduates will be measured against.</p>
+    <div class="rule"></div>
+  </header>
+
+  <div class="step">
+    <span class="n">1</span>
+    <span class="t">Select your discipline</span>
+  </div>
+  <div class="picker" id="picker" role="group" aria-label="Select your discipline"></div>
+
+  <section class="result" id="result" aria-live="polite">
+    <div class="band" id="resultBand">Your assigned reading</div>
+    <div class="body">
+      <h2 id="rTitle"></h2>
+      <div class="src" id="rSrc"></div>
+      <p class="desc" id="rDesc"></p>
+      <div class="lens" id="rLens"></div>
+      <a class="cta" id="rLink" href="#" target="_blank" rel="noopener">
+        <span id="rCtaLabel">Open the reading</span><span class="arw">→</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="step">
+    <span class="n">2</span>
+    <span class="t">Everyone reads these</span>
+  </div>
+  <section class="supp">
+    <h3>Two shared supplements</h3>
+    <p class="note">Read alongside your discipline source — these cut across all fields and frame the workforce picture your students are graduating into.</p>
+    <div class="supp-links" id="suppLinks"></div>
+  </section>
+
+  <p class="foot">After reading, return to Canvas and post your 2–3 sentence takeaway to the Discussion Board.</p>
+
+</div>
+
+<script>
+/* ============================================================
+   EDITABLE CONTENT — edit URLs, blurbs, and lens text here.
+   • url: the live reading link (opens in a new tab)
+   • pending: set true to show a "link coming" state and
+     disable the button until a URL is added.
+   ============================================================ */
+const CONTENT = {
+  disciplines: [
+    {
+      id: "accounting",
+      name: "Accounting",
+      tag: "AICPA",
+      title: "The AI Accelerator Skills Program",
+      source: "AICPA & CIMA · Program overview",
+      url: "https://www.aicpa-cima.com/cpe-learning/bundle/ai-accelerator-program-bun",
+      desc: "The accounting profession's structured response to AI — organized into strategic, transitional, and operational tiers spanning governance, generative AI adoption, and day-to-day automation of finance and accounting work.",
+      lens: "As you read, watch for: which AI competencies the profession now treats as baseline for graduates entering practice — and where <strong>human judgment and governance</strong> are held apart from the automation."
+    },
+    {
+      id: "finance",
+      name: "Finance",
+      tag: "CFA Institute",
+      title: "AI in Asset Management: Tools, Applications & Frontiers",
+      source: "CFA Institute · Practitioner theme hub",
+      url: "https://rpc.cfainstitute.org/themes/technology/ai-in-asset-management",
+      desc: "How machine learning, natural language processing, and deep learning are being deployed across portfolio design, trading, risk oversight, and client engagement — with practitioner briefs on where AI adds value beyond traditional quantitative methods.",
+      lens: "As you read, watch for: how the profession frames <strong>balancing automation with human oversight</strong> while maintaining governance and accountability — the judgment your students will be expected to exercise, not just the tools."
+    },
+    {
+      id: "marketing",
+      name: "Marketing",
+      tag: "AMA",
+      title: "The Skills Marketers Need in 2025 and Beyond",
+      source: "American Marketing Association · 2025 Skills Report",
+      url: "https://www.ama.org/2025/01/31/2025-marketing-skills-report/",
+      desc: "Built from 1,200+ marketer surveys and 450+ job postings, this report names generative AI as the top-rated future skill while stressing the durable human skills — communication, innovation, adaptability — that stay competitive alongside automation.",
+      lens: "As you read, watch for: the report's pairing of <strong>rising AI fluency with enduring human skills</strong> — and how that tension should shape what a marketing assignment asks students to demonstrate."
+    },
+    {
+      id: "mgmt",
+      name: "Management / HR",
+      tag: "SHRM",
+      title: "The State of AI in HR 2026",
+      source: "SHRM · Research report",
+      url: "https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026",
+      desc: "Drawing on nearly 1,900 HR professionals, this report maps which HR functions AI is reshaping, where adoption stalls, and how organizations are setting policy and governance for responsible use.",
+      lens: "As you read, watch for: the gap between <strong>executive expectation and front-line practice</strong>, and the governance and policy literacy the profession now expects — competencies your graduates will need to name and navigate."
+    },
+    {
+      id: "ops",
+      name: "Ops / Analytics",
+      tag: "INFORMS",
+      title: "Information on Artificial Intelligence",
+      source: "INFORMS · AI resource hub",
+      url: "https://www.informs.org/News-Room/O.R.-Analytics-for-Government-Officials/Topic-Areas/Information-on-Artificial-Intelligence",
+      desc: "The operations-research and analytics community's view of AI — how modeling, optimization, and data science translate AI capability into defensible, real-world decision-making across sectors.",
+      lens: "As you read, watch for: how the field ties AI to <strong>rigorous, accountable decision-making</strong> rather than output alone — the analytical discipline your students will be expected to bring to AI-assisted work."
+    }
+  ],
+  supplements: [
+    {
+      label: "Dear [CC]",
+      sub: "Real-time job-market data and honest conversations on how AI is reshaping entry-level work.",
+      url: "https://www.dearcc.org/",
+      pending: false
+    },
+    {
+      label: "NYT Magazine",
+      sub: "\u201CAI, Jobs and the Workforce\u201D (June 2026).",
+      url: "",
+      pending: true
+    }
+  ]
+};
+
+/* ---------- END EDITABLE CONTENT ---------- */
+
+const picker = document.getElementById('picker');
+const result = document.getElementById('result');
+
+CONTENT.disciplines.forEach(d => {
+  const b = document.createElement('button');
+  b.className = 'disc';
+  b.type = 'button';
+  b.setAttribute('aria-pressed', 'false');
+  b.dataset.id = d.id;
+  b.innerHTML = `<span class="dn">${d.name}</span><span class="db">${d.tag}</span>`;
+  b.addEventListener('click', () => select(d.id));
+  picker.appendChild(b);
+});
+
+function select(id) {
+  const d = CONTENT.disciplines.find(x => x.id === id);
+  if (!d) return;
+
+  document.querySelectorAll('.disc').forEach(btn => {
+    btn.setAttribute('aria-pressed', btn.dataset.id === id ? 'true' : 'false');
+  });
+
+  document.getElementById('rTitle').textContent = d.title;
+  document.getElementById('rSrc').textContent = d.source;
+  document.getElementById('rDesc').textContent = d.desc;
+  document.getElementById('rLens').innerHTML = d.lens;
+
+  const link = document.getElementById('rLink');
+  const label = document.getElementById('rCtaLabel');
+  if (d.url) {
+    link.href = d.url;
+    link.style.pointerEvents = 'auto';
+    link.style.opacity = '1';
+    label.textContent = 'Open the ' + d.tag + ' reading';
+  } else {
+    link.href = '#';
+    link.style.pointerEvents = 'none';
+    link.style.opacity = '.5';
+    label.textContent = 'Link coming soon';
+  }
+
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+const suppWrap = document.getElementById('suppLinks');
+CONTENT.supplements.forEach(s => {
+  if (s.pending || !s.url) {
+    const div = document.createElement('div');
+    div.className = 'supp-link';
+    div.style.cursor = 'default';
+    div.innerHTML = `<span class="lbl">${s.label}</span><span class="sub">${s.sub}</span><span class="pending">Link coming</span>`;
+    suppWrap.appendChild(div);
+  } else {
+    const a = document.createElement('a');
+    a.className = 'supp-link';
+    a.href = s.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML = `<span class="lbl">${s.label}</span><span class="sub">${s.sub}</span><span class="go">→</span>`;
+    suppWrap.appendChild(a);
+  }
+});
+</script>
+</body>
+</html>
