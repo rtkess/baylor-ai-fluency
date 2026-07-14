@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module A5 — The Dual Approach: A Short Reference</title>
+<style>
+:root{
+  --green:#154734; --green-mid:#1d6349; --green-tint:#e8efec;
+  --gold:#FFB81C; --gold-tint:#fff6e2;
+  --ink:#1f2622; --muted:#5d6b64; --line:#dde3df;
+  --paper:#fff; --wash:#f6f8f7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  background:var(--wash);color:var(--ink);line-height:1.6;padding:24px 16px 48px;
+}
+.wrap{max-width:860px;margin:0 auto}
+.head{background:var(--green);color:#fff;border-radius:10px 10px 0 0;padding:26px 28px 24px;border-bottom:5px solid var(--gold)}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.head h1{font-size:25px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
+.head p{font-size:14.5px;color:#cfe0d8;max-width:66ch}
+.body{background:var(--paper);border:1px solid var(--line);border-top:none;border-radius:0 0 10px 10px;padding:8px 28px 28px}
+
+.acc{border-bottom:1px solid var(--line)}
+.acc:last-of-type{border-bottom:none}
+.acc-btn{
+  width:100%;background:none;border:none;font:inherit;text-align:left;cursor:pointer;
+  padding:20px 44px 20px 0;position:relative;color:var(--ink);
+}
+.acc-btn:focus-visible{outline:3px solid var(--gold);outline-offset:-3px;border-radius:4px}
+.acc-btn:hover .t{color:var(--green-mid)}
+.acc-btn .k{
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  color:var(--green);background:var(--green-tint);padding:3px 9px;border-radius:99px;
+  display:inline-block;margin-bottom:8px;
+}
+.acc-btn .t{display:block;font-size:17px;font-weight:700;line-height:1.35;transition:color .15s}
+.acc-btn .s{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}
+.chev{
+  position:absolute;right:6px;top:50%;width:11px;height:11px;
+  border-right:2.5px solid var(--green);border-bottom:2.5px solid var(--green);
+  transform:translateY(-70%) rotate(45deg);transition:transform .22s ease;
+}
+.acc.open .chev{transform:translateY(-30%) rotate(225deg)}
+.panel{display:none;padding:0 0 24px}
+.acc.open .panel{display:block}
+.panel > p{font-size:15px;margin-bottom:14px;max-width:70ch}
+.panel > p:last-of-type{margin-bottom:0}
+.panel strong{color:var(--green)}
+.pull{
+  border-left:4px solid var(--gold);background:var(--gold-tint);
+  padding:14px 16px;border-radius:0 7px 7px 0;margin:16px 0;
+}
+.pull p{font-size:14px;margin:0}
+.pull .lab{
+  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  color:var(--green);margin-bottom:5px;
+}
+ul{margin:0 0 14px 20px}
+li{font-size:14.5px;margin-bottom:6px}
+.cite{
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--muted);line-height:1.5;
+}
+.cite .lab{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--green);margin-bottom:5px;display:block}
+.cite a{color:var(--green-mid);word-break:break-word}
+
+.close{
+  margin-top:24px;background:var(--green-tint);border-left:4px solid var(--green);
+  padding:18px 20px;border-radius:0 8px 8px 0;
+}
+.close h2{font-size:15px;color:var(--green);margin-bottom:8px}
+.close p{font-size:14px;max-width:70ch}
+
+@media (max-width:640px){
+  .head,.body{padding-left:20px;padding-right:20px}
+  .head h1{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.panel{display:block!important}.chev{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="head">
+  <div class="eyebrow">Module A5 · Read · MLO A5.1 · ~8 min</div>
+  <h1>The Dual Approach: Protect or Open?</h1>
+  <p>Six short passages on why AI-Resistant and AI-Literacy design are complementary moves, not rival camps — how to tell which one a task is asking for, and how both connect to the continuum you met last module. Expand each panel.</p>
+</div>
+
+<div class="body">
+
+  <div class="acc">
+    <button class="acc-btn" aria-expanded="false">
+      <span class="k">The premise</span>
+      <span class="t">Detection failed. Design is what's left.</span>
+      <span class="s">Why this module exists at all.</span>
+      <span class="chev"></span>
+    </button>
+    <div class="panel">
+      <p>Start with the thing that is no longer in dispute: you cannot reliably tell whether a student used AI. Detection tools produce false positives and false negatives, and Harvard's Bok Center is blunt about the consequence — rather than trying to identify or police AI use, ensuring that student work is reliable evidence of learning requires rethinking assignment design itself.</p>
+      <p>This is a harder ask than it sounds, because it relocates the problem. The question stops being <strong>"did they cheat?"</strong> — an unanswerable question — and becomes <strong>"is this assignment still producing evidence of the learning I care about?"</strong> That question you <em>can</em> answer. It is an assignment-design question, and it is entirely within your control.</p>
+      <div class="pull">
+        <p class="lab">The reframe</p>
+        <p>You are not trying to catch students. You are trying to make sure the work they hand you still tells you something true about what they learned.</p>
+      </div>
+      <p>Everything in this module follows from that reframe. Both design responses — protecting a task and opening a task — are ways of restoring the evidentiary value of an assignment. They just do it in opposite directions.</p>
+      <div class="cite">
+        <span class="lab">Source</span>
+        Derek Bok Center for Teaching and Learning, Harvard University. <em>Designing Courses &amp; Assignments in the Age of AI.</em>
+        <a href="https://bokcenter.harvard.edu/courses-and-assignments-in-age-of-ai" target="_blank" rel="noopener">bokcenter.harvard.edu/courses-and-assignments-in-age-of-ai</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn" aria-expanded="false">
+      <span class="k">Move one</span>
+      <span class="t">AI-Resistant: keep the cognitive work with the student</span>
+      <span class="s">What it protects, and what it costs.</span>
+      <span class="chev"></span>
+    </button>
+    <div class="panel">
+      <p>An AI-Resistant assignment is one where success requires demonstrable learning that AI cannot generate on the student's behalf. The Bok Center's guidance is specific about the mechanism: link an assignment's grade not only to the artifact submitted, but to the student's <strong>demonstrated understanding of that artifact</strong> — an oral defense, a discussion of process, a live account of the choices made and why.</p>
+      <p>This is the crucial refinement, and it is easy to miss. AI-Resistant does not mean <em>AI-proof</em>, and it does not mean banning tools. It means designing so that having the output is not the same as having the learning. A student who outsourced the memo can still submit the memo. What they cannot do is defend it under questioning.</p>
+      <ul>
+        <li><strong>Structural resistance</strong> — live, oral, observed, in-person. Resistant by format; you don't have to design it.</li>
+        <li><strong>Designed resistance</strong> — personalized context, iterative drafts, process artifacts, defense of judgment under uncertainty.</li>
+      </ul>
+      <div class="pull">
+        <p class="lab">The cost</p>
+        <p>Resistance is not free. Every task you protect is a task where students do not practice working with the tool their profession already uses. Protect what the objective genuinely requires — not everything that feels threatened.</p>
+      </div>
+      <div class="cite">
+        <span class="lab">Source</span>
+        Derek Bok Center for Teaching and Learning, Harvard University. <em>Guidance for Faculty on Addressing AI-Related Academic Integrity Issues.</em>
+        <a href="https://bokcenter.harvard.edu/guidance-faculty-addressing-ai-related-academic-integrity-issues" target="_blank" rel="noopener">bokcenter.harvard.edu/guidance-faculty-addressing-ai-related-academic-integrity-issues</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn" aria-expanded="false">
+      <span class="k">Move two</span>
+      <span class="t">AI-Literacy: build the tool into the learning</span>
+      <span class="s">Integration is a design decision, not a permission slip.</span>
+      <span class="chev"></span>
+    </button>
+    <div class="panel">
+      <p>The opposite move is to integrate AI deliberately, so that students build fluency by using it under structure. The most useful map here comes from Ethan and Lilach Mollick at Wharton, who propose seven distinct roles AI can play in a course — <strong>AI-tutor, AI-coach, AI-mentor, AI-teammate, AI-tool, AI-simulator, and AI-student</strong> — each with its own pedagogical payoff and its own failure mode.</p>
+      <p>What makes their framing useful for business faculty is the insistence that integration is not permissiveness. Every one of the seven approaches is designed around a single requirement: the student must remain the <strong>human in the loop</strong>. The strategies work by forcing active oversight and critical assessment of AI output — treating complacency about the model's answer as the primary risk to be designed against, alongside error and bias.</p>
+      <div class="pull">
+        <p class="lab">The distinction that matters</p>
+        <p>"Students may use AI" is a policy. "Students will use AI as a simulated skeptical client, and will submit the transcript alongside their revision" is a design. Only the second one teaches anything.</p>
+      </div>
+      <p>Note how naturally this connects to the 4 D's you already have. An AI-Literacy assignment is one that puts <strong>Description</strong> and <strong>Discernment</strong> in the student's hands and then grades them on it — which is to say, it teaches the same fluency this workshop is teaching you.</p>
+      <div class="cite">
+        <span class="lab">Source</span>
+        Mollick, E. R., &amp; Mollick, L. (2023). <em>Assigning AI: Seven Approaches for Students, with Prompts.</em> The Wharton School, University of Pennsylvania. SSRN.
+        <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4475995" target="_blank" rel="noopener">papers.ssrn.com/sol3/papers.cfm?abstract_id=4475995</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn" aria-expanded="false">
+      <span class="k">The synthesis</span>
+      <span class="t">Why most assignments are Task-Split</span>
+      <span class="s">The judgment is per task, not per assignment.</span>
+      <span class="chev"></span>
+    </button>
+    <div class="panel">
+      <p>Here is the move this module is really asking you to make. <strong>Protect and open are not choices you make about an assignment. They are choices you make about each cognitive task inside it.</strong> A valuation project can protect the model and open the counterargument work. A performance simulation can open the preparation and let the live conversation protect itself. The unit of decision is the task.</p>
+      <p>There is scholarly support for treating this as a design pattern rather than a compromise. Roe, Perkins and Giray propose <em>assessment twins</em> — pairing an AI-vulnerable task with a second, less vulnerable task that assesses the same outcome. Their argument is that this strengthens validity by producing confirmatory evidence on the same learning outcome, while preserving the pedagogical value of established formats that shouldn't simply be discarded. It is a both/and structure, deliberately.</p>
+      <div class="pull">
+        <p class="lab">The working question</p>
+        <p>Not "is this assignment safe?" but "which of these tasks is the objective actually made of — and which ones are just the scaffolding around it?"</p>
+      </div>
+      <p>This is exactly the sort you will perform, formally and with evidence, in the <strong>Day 2 Gap Analysis</strong>. What you are doing in Module 5 is the first pass — from the outside, on instinct. Day 2 replaces the instinct with data.</p>
+      <div class="cite">
+        <span class="lab">Source</span>
+        Roe, J., Perkins, M., &amp; Giray, L. (2025). <em>Assessment Twins: A Protocol for AI-Vulnerable Summative Assessment.</em> arXiv preprint.
+        <a href="https://arxiv.org/pdf/2510.02929" target="_blank" rel="noopener">arxiv.org/pdf/2510.02929</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn" aria-expanded="false">
+      <span class="k">The stakes</span>
+      <span class="t">What happens if you do nothing</span>
+      <span class="s">Six minutes. Read this one.</span>
+      <span class="chev"></span>
+    </button>
+    <div class="panel">
+      <p>Mollick's <em>Post-Apocalyptic Education</em> is the piece to read if you read only one. His argument is that the homework apocalypse already happened, adoption is near-universal, and remarkably little has changed in response — faculty are still operating on a <strong>Detection Illusion</strong> that the evidence retired some time ago.</p>
+      <p>But the sharper finding is about students, and it should worry you more. He calls it <strong>Illusory Knowledge</strong>: students do not realize that getting AI help on homework is undermining their learning. Because the AI's advice and answers help them solve the problem in front of them, the experience <em>feels</em> like fluency — right up until the exam, where the effect on performance shows up as a straightforward decline. Students are not choosing to learn less. They are experiencing the sensation of learning while learning less.</p>
+      <div class="pull">
+        <p class="lab">Why this lands on faculty and not students</p>
+        <p>A student cannot detect the gap between feeling fluent and being fluent. That is exactly what the illusion consists of. The only place that gap can be closed is in the design of the assignment — which makes it your problem, and no one else's.</p>
+      </div>
+      <div class="cite">
+        <span class="lab">Source</span>
+        Mollick, E. <em>Post-Apocalyptic Education.</em> One Useful Thing.
+        <a href="https://www.oneusefulthing.org/p/post-apocalyptic-education" target="_blank" rel="noopener">oneusefulthing.org/p/post-apocalyptic-education</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn" aria-expanded="false">
+      <span class="k">The connection</span>
+      <span class="t">Where this meets the continuum you learned last module</span>
+      <span class="s">Position, vector, and why one assignment has two.</span>
+      <span class="chev"></span>
+    </button>
+    <div class="panel">
+      <p>In Module 4 you met the IWU AI Literacy Continuum and used it to place your assignment on a five-level scale. That scale answers one question: <strong>where is this assignment now?</strong> It is a position.</p>
+      <p>What you have just read answers a different question: <strong>which way should it move?</strong> That is a vector. And the two design responses point in opposite directions —</p>
+      <ul>
+        <li><strong>AI-Resistant design pulls downward</strong>, anchoring a task toward the lower levels where the cognitive work stays with the student.</li>
+        <li><strong>AI-Literacy design pushes upward</strong>, toward the levels where students work with the tool under structure and are assessed on how well they do it.</li>
+      </ul>
+      <p>Put those two ideas together and something breaks — usefully. If protect and open are decisions you make <em>task by task</em>, and each direction moves a task to a different place on the continuum, then <strong>a single assignment does not have one continuum position. It has a range.</strong></p>
+      <div class="pull">
+        <p class="lab">The reframe that matters</p>
+        <p>Your assignment is not <em>at</em> a level. Its tasks are at different levels — and redesign is the decision about which ones to move, and how far.</p>
+      </div>
+      <p>An assignment that protects at Level 1 and opens at Level 4 is not incoherent. It is deliberately doing two things at once: preserving the judgment students must own, while rehearsing the workflow they will graduate into. In most business disciplines, that is not a compromise. It is the honest design.</p>
+      <p>You will place both ends of that range in the activity that follows — and you will almost certainly find the gap uncomfortable. Sit in it. The Day 2 Gap Analysis is where it gets resolved with evidence rather than instinct.</p>
+      <div class="cite">
+        <span class="lab">Sources</span>
+        Perkins, M., et al. (2024). <em>AI Assessment Scale (AIAS)</em> — the framework the IWU Continuum adapts. See your Module 4 continuum reference card for Baylor's five-level descriptors.
+      </div>
+    </div>
+  </div>
+
+  <div class="close">
+    <h2>Before you move on</h2>
+    <p>Both moves — protect and open — are ways of making an assignment tell the truth about what a student learned. Neither is the safe choice. The next activity asks you to make the call on five Hankamer assignments, and then on your own.</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.acc-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    const acc = b.parentElement;
+    const open = acc.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+});
+</script>
+</body>
+</html>
