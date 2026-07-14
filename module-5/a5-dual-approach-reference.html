@@ -12,9 +12,12 @@
   --paper:#fff; --wash:#f6f8f7;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 body{
   font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
   background:var(--wash);color:var(--ink);line-height:1.6;padding:24px 16px 48px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .wrap{max-width:860px;margin:0 auto}
 .head{background:var(--green);color:#fff;border-radius:10px 10px 0 0;padding:26px 28px 24px;border-bottom:5px solid var(--gold)}
