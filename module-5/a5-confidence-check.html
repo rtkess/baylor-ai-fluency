@@ -31,9 +31,12 @@
   --up:#1d6349; --down:#a8442a; --flat:#5d6b64;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 body{
   font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
   background:var(--wash);color:var(--ink);line-height:1.55;padding:20px 16px 36px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .wrap{max-width:800px;margin:0 auto}
 
