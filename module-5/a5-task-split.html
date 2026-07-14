@@ -30,10 +30,13 @@
   --warn:#a8442a;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 body{
   font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
   background:var(--wash);color:var(--ink);line-height:1.55;
   padding:24px 16px 48px;
+  overflow-y:auto;              /* the interactive scrolls itself */
+  -webkit-overflow-scrolling:touch;
 }
 .wrap{max-width:900px;margin:0 auto}
 
@@ -65,6 +68,8 @@ body{
 .bar{
   background:var(--paper);border:1px solid var(--line);border-top:none;
   padding:14px 28px;display:flex;align-items:center;gap:14px;
+  position:sticky;top:0;z-index:20;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
 }
 .track{flex:1;height:6px;background:var(--line);border-radius:99px;overflow:hidden}
 .fill{height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .35s ease}
