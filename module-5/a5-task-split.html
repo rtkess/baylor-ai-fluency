@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module A5 — Literacy, Resistant, or Task-Split?</title>
+<style>
+/* ============================================================
+   MODULE A5 — AI Pedagogy: Literacy vs. AI-Resistant
+   Classification activity + redesign-candidate reflection
+   Baylor Green #154734 · Baylor Gold #FFB81C
+   Self-contained. Host on GitHub Pages. Embed via iframe.
+   ============================================================ */
+:root{
+  --green:#154734;
+  --green-mid:#1d6349;
+  --green-tint:#e8efec;
+  --gold:#FFB81C;
+  --gold-tint:#fff6e2;
+  --ink:#1f2622;
+  --muted:#5d6b64;
+  --line:#dde3df;
+  --paper:#ffffff;
+  --wash:#f6f8f7;
+  --resist:#2c5f7c;
+  --resist-tint:#e7eff4;
+  --split:#7a4b8f;
+  --split-tint:#f1eaf5;
+  --ok:#1d6349;
+  --warn:#a8442a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  background:var(--wash);color:var(--ink);line-height:1.55;
+  padding:24px 16px 48px;
+}
+.wrap{max-width:900px;margin:0 auto}
+
+/* ---------- Header ---------- */
+.head{
+  background:var(--green);color:#fff;border-radius:10px 10px 0 0;
+  padding:26px 28px 24px;border-bottom:5px solid var(--gold);
+}
+.eyebrow{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:8px;
+}
+.head h1{font-size:26px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.head p{font-size:15px;color:#cfe0d8;max-width:64ch}
+
+/* ---------- Legend ---------- */
+.legend{
+  background:var(--paper);border:1px solid var(--line);border-top:none;
+  padding:20px 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.leg{border-left:4px solid;padding:10px 12px;border-radius:0 6px 6px 0}
+.leg.lit{border-color:var(--green);background:var(--green-tint)}
+.leg.res{border-color:var(--resist);background:var(--resist-tint)}
+.leg.spl{border-color:var(--split);background:var(--split-tint)}
+.leg h3{font-size:13px;font-weight:700;margin-bottom:4px}
+.leg p{font-size:12.5px;color:var(--muted);line-height:1.45}
+
+/* ---------- Progress ---------- */
+.bar{
+  background:var(--paper);border:1px solid var(--line);border-top:none;
+  padding:14px 28px;display:flex;align-items:center;gap:14px;
+}
+.track{flex:1;height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .35s ease}
+.count{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+
+/* ---------- Cards ---------- */
+.deck{
+  background:var(--paper);border:1px solid var(--line);border-top:none;
+  border-radius:0 0 10px 10px;padding:26px 28px 30px;
+}
+.card{border:1px solid var(--line);border-radius:8px;margin-bottom:18px;overflow:hidden}
+.card.done{border-color:var(--green-mid)}
+.card-top{padding:18px 20px;background:var(--paper)}
+.meta{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.num{
+  width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+  display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;
+}
+.disc{
+  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  color:var(--green);background:var(--green-tint);padding:3px 9px;border-radius:99px;
+}
+.card-top h2{font-size:16px;font-weight:700;margin-bottom:8px}
+.card-top p{font-size:14.5px;color:var(--ink)}
+.card-top .obj{
+  font-size:13px;color:var(--muted);margin-top:10px;padding-top:10px;
+  border-top:1px dashed var(--line);
+}
+.obj strong{color:var(--green);font-weight:700}
+
+/* ---------- Choices ---------- */
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 20px 18px}
+.pick{
+  border:1.5px solid var(--line);background:var(--paper);border-radius:7px;
+  padding:11px 10px;font:inherit;font-size:13px;font-weight:700;color:var(--ink);
+  cursor:pointer;text-align:center;transition:all .16s ease;
+}
+.pick:hover:not(:disabled){border-color:var(--green);background:var(--green-tint)}
+.pick:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.pick:disabled{cursor:default;opacity:.45}
+.pick.chosen{opacity:1}
+.pick.chosen.right{background:var(--green);border-color:var(--green);color:#fff}
+.pick.chosen.wrong{background:#fbeceA;border-color:var(--warn);color:var(--warn)}
+.pick.reveal{opacity:1;border-color:var(--green);border-style:dashed;color:var(--green)}
+
+/* ---------- Feedback ---------- */
+.fb{display:none;padding:0 20px 20px}
+.fb.show{display:block}
+.fb-in{border-left:4px solid var(--green);background:var(--wash);border-radius:0 7px 7px 0;padding:14px 16px}
+.fb-in.miss{border-color:var(--warn)}
+.verdict{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;color:var(--ok)}
+.verdict.miss{color:var(--warn)}
+.fb-in p{font-size:14px;color:var(--ink);margin-bottom:9px}
+.fb-in p:last-child{margin-bottom:0}
+.fb-in .lens{
+  font-size:13px;color:var(--muted);padding-top:9px;border-top:1px solid var(--line);
+}
+.fb-in .lens strong{color:var(--green)}
+
+/* ---------- Reflection ---------- */
+.reflect{
+  margin-top:8px;border:2px solid var(--gold);border-radius:10px;overflow:hidden;
+  background:var(--paper);
+}
+.reflect.locked{opacity:.5;pointer-events:none}
+.r-head{background:var(--gold-tint);padding:18px 22px;border-bottom:1px solid var(--line)}
+.r-head .eyebrow{color:var(--green);margin-bottom:6px}
+.r-head h2{font-size:19px;font-weight:700;color:var(--green);margin-bottom:8px}
+.r-head p{font-size:14px;color:var(--ink);max-width:70ch}
+.r-body{padding:22px}
+.q{margin-bottom:20px}
+.q label{display:block;font-size:14px;font-weight:700;margin-bottom:4px}
+.q .hint{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+textarea,input[type=text]{
+  width:100%;font:inherit;font-size:14px;padding:11px 13px;
+  border:1.5px solid var(--line);border-radius:7px;background:var(--wash);
+  resize:vertical;color:var(--ink);
+}
+textarea:focus,input:focus{outline:none;border-color:var(--green);background:var(--paper)}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.btn{
+  background:var(--green);color:#fff;border:none;border-radius:7px;
+  padding:13px 26px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;
+  transition:background .16s;
+}
+.btn:hover{background:var(--green-mid)}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn:disabled{background:var(--muted);cursor:not-allowed}
+.btn.ghost{background:var(--paper);color:var(--green);border:1.5px solid var(--green)}
+.btn.ghost:hover{background:var(--green-tint)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.note{font-size:12.5px;color:var(--muted);margin-top:12px}
+
+/* ---------- Summary ---------- */
+.summary{display:none;margin-top:8px;border:2px solid var(--green);border-radius:10px;overflow:hidden}
+.summary.show{display:block}
+.s-head{background:var(--green);color:#fff;padding:20px 24px}
+.s-head h2{font-size:19px;margin-bottom:4px}
+.s-head p{font-size:13.5px;color:#cfe0d8}
+.s-body{background:var(--paper);padding:22px 24px}
+.s-block{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.s-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.s-block h3{
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);
+  font-weight:700;margin-bottom:6px;
+}
+.s-block p{font-size:14px;white-space:pre-wrap}
+.carry{
+  background:var(--gold-tint);border-left:4px solid var(--gold);
+  padding:14px 16px;border-radius:0 7px 7px 0;margin-top:18px;
+}
+.carry p{font-size:13.5px;color:var(--ink)}
+.carry strong{color:var(--green)}
+
+/* ---------- Continuum block ---------- */
+.cont{
+  border:1.5px solid var(--split);border-radius:9px;overflow:hidden;
+  margin:26px 0 22px;background:var(--paper);
+}
+.cont-head{background:var(--split-tint);padding:18px 20px;border-bottom:1px solid var(--line)}
+.cont-head .eyebrow{color:var(--split);margin-bottom:6px}
+.cont-head h3{font-size:16px;font-weight:700;color:var(--split);margin-bottom:10px;line-height:1.35}
+.cont-head p{font-size:14px;margin-bottom:10px;max-width:72ch}
+.cont-head p:last-child{margin-bottom:0}
+.cont-head strong{color:var(--split)}
+.cont-body{padding:20px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px}
+.lvl{
+  border:1px solid var(--line);border-radius:6px;padding:8px 6px;text-align:center;
+  background:var(--wash);
+}
+.lvl .n{font-size:15px;font-weight:700;color:var(--split);display:block}
+.lvl .nm{font-size:10.5px;color:var(--muted);line-height:1.3;display:block;margin-top:2px}
+.place{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.place .box{border:1.5px solid var(--line);border-radius:7px;padding:13px 14px;background:var(--wash)}
+.place .box.pro{border-left:4px solid var(--resist)}
+.place .box.opn{border-left:4px solid var(--green)}
+.place .box h4{font-size:13px;font-weight:700;margin-bottom:3px}
+.place .box .sub{font-size:12px;color:var(--muted);margin-bottom:9px;line-height:1.4}
+select{
+  width:100%;font:inherit;font-size:14px;padding:9px 11px;
+  border:1.5px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);
+}
+select:focus{outline:none;border-color:var(--split)}
+.spread{
+  display:none;margin-top:16px;padding:14px 16px;border-radius:0 7px 7px 0;
+  border-left:4px solid var(--split);background:var(--split-tint);
+}
+.spread.show{display:block}
+.spread p{font-size:13.5px;margin:0}
+.spread strong{color:var(--split)}
+
+.lock-msg{
+  text-align:center;font-size:13px;color:var(--muted);
+  padding:16px;background:var(--wash);border-radius:7px;margin-top:8px;
+}
+
+/* ---------- Interstitial framing blocks ---------- */
+.interstitial{
+  border-left:4px solid var(--gold);background:var(--gold-tint);
+  border-radius:0 8px 8px 0;padding:20px 22px;margin:6px 0 20px;
+}
+.interstitial .eyebrow{color:var(--green);margin-bottom:7px}
+.interstitial h2{font-size:17px;font-weight:700;color:var(--green);margin-bottom:10px;line-height:1.35}
+.interstitial p{font-size:14.5px;margin-bottom:11px;max-width:72ch}
+.interstitial p:last-child{margin-bottom:0}
+.interstitial strong{color:var(--green)}
+.interstitial.bridge{border-color:var(--green);background:var(--green-tint)}
+.interstitial.bridge h2{color:var(--green)}
+.interstitial.bridge.hidden{display:none}
+
+@media (max-width:640px){
+  .legend,.choices,.split-grid{grid-template-columns:1fr}
+  .head,.legend,.bar,.deck{padding-left:20px;padding-right:20px}
+  .head h1{font-size:22px}
+}
+@media print{body{background:#fff}.choices,.actions,.bar{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================= EDITABLE CONTENT ================= -->
+<div class="head">
+  <div class="eyebrow">Module A5 · Low-Stakes Activity · MLO A5.2</div>
+  <h1>Literacy, Resistant, or Task-Split?</h1>
+  <p>Five Hankamer assignments. For each one, decide which design response the <em>learning objective</em> calls for — then carry the lens to your own redesign candidate.</p>
+</div>
+
+<div class="legend">
+  <div class="leg lit">
+    <h3>AI-Literacy</h3>
+    <p>AI is built in on purpose. Students build fluency by using it — and the objective is about judgment <em>with</em> the tool.</p>
+  </div>
+  <div class="leg res">
+    <h3>AI-Resistant</h3>
+    <p>The cognitive work stays with the student. The objective depends on struggle AI would short-circuit.</p>
+  </div>
+  <div class="leg spl">
+    <h3>Task-Split</h3>
+    <p>Some tasks are protected, others opened. Most real assignments live here — and the split is decided task by task.</p>
+  </div>
+</div>
+
+<div class="bar">
+  <span class="count" id="count">0 of 5 classified</span>
+  <div class="track"><div class="fill" id="fill"></div></div>
+</div>
+
+<div class="deck" id="deck"></div>
+<div id="reflectSlot"></div>
+<div class="summary" id="summary"></div>
+
+</div>
+
+<script>
+/* ============ EDITABLE CONTENT — scenarios & feedback ============ */
+const SCENARIOS = [
+  {
+    disc: "Accounting",
+    title: "Prof. Nakamura — Audit Judgment Memo",
+    body: "Students receive a set of working papers with an embedded, non-obvious material misstatement. They must find it, decide whether it rises to the level of a reportable condition, and write a memo defending the judgment call — including the risk they'd be wrong.",
+    obj: "Learning objective: Exercise professional skepticism in an ambiguous audit context and defend a judgment under uncertainty.",
+    answer: "res",
+    right: "Professional skepticism is the whole objective — and it's built by sitting in the discomfort of an ambiguous call, not by receiving a confident answer. AI hands the student a clean verdict before the doubt has done its work. The struggle <em>is</em> the curriculum here.",
+    wrong: {
+      lit: "Tempting, because AI is genuinely used in audit practice. But the objective isn't <em>use AI to find misstatements</em> — it's <em>develop skepticism under uncertainty</em>. Integrating AI here removes the exact cognitive experience the memo exists to produce.",
+      spl: "Reasonable instinct — most assignments do split. But look at what's actually here: there's only one cognitive task, and it's the protected one. A split needs at least one task worth opening. This assignment doesn't have one."
+    },
+    lens: "The tell: when the objective names a <strong>disposition</strong> (skepticism, judgment, doubt) rather than a deliverable, the tool that removes the doubt removes the learning."
+  },
+  {
+    disc: "Marketing",
+    title: "Prof. Villanueva — Campaign Concept Sprint",
+    body: "Students must generate 20 campaign concepts for a client brief in 48 hours, then use a scoring rubric to defend the three they advance. Volume is the point — the rubric rewards range, not polish. Students submit a prompt log alongside the final three.",
+    obj: "Learning objective: Evaluate creative concepts against a strategic brief and defend a selection under time pressure.",
+    answer: "lit",
+    right: "The objective is <em>evaluation</em>, not <em>ideation</em>. AI is an ideation engine — so integrating it doesn't threaten the objective, it clears the runway for it. Twenty concepts by hand takes the whole 48 hours; twenty concepts with AI leaves time for the actual work of scoring and defending. The prompt log makes the use visible.",
+    wrong: {
+      res: "Understandable — creative generation feels like the sacred part. But read the rubric: it rewards <em>range</em> and the defense of a selection. That's an evaluation objective. Protecting the ideation step protects a task the assignment never claimed to assess.",
+      spl: "Close, and defensible. But the prompt log already handles the transparency concern, and the volume requirement is designed to make hand-generation impractical. This one leans clean-integration — the split is doing less work than it looks."
+    },
+    lens: "The tell: check whether the task AI would do is the task the <strong>rubric actually scores</strong>. Often it isn't."
+  },
+  {
+    disc: "Finance",
+    title: "Prof. Brennan — Valuation Project",
+    body: "Students build a DCF model for a public company from scratch, then write an investment recommendation for a skeptical portfolio committee. The model must be their own; the memo must anticipate three counterarguments the committee will raise.",
+    obj: "Learning objective: Construct a valuation model and communicate a defensible recommendation to a resistant audience.",
+    answer: "spl",
+    right: "Two objectives, two responses. Building the model is where the mechanics live — if AI assembles the DCF, the student never learns why the terminal value assumption breaks the whole thing. That task is protected. But <em>anticipating counterarguments</em> is exactly what an adversarial AI is good for: the student can stress-test the memo against a simulated skeptic before the committee ever sees it. Protect the model. Open the memo.",
+    wrong: {
+      res: "Half right — the model genuinely does need protecting. But you've locked the whole assignment to protect one task. The counterargument work is a place where AI makes the student <em>better</em>, and closing it costs you real learning for no integrity gain.",
+      lit: "Half right in the other direction. Opening the memo is a good call. But if AI builds the DCF, the mechanical fluency the model exists to develop simply doesn't happen — and every downstream judgment rests on mechanics the student never internalized."
+    },
+    lens: "The tell: when an assignment has <strong>two distinct cognitive tasks</strong> with different objectives, the classification is almost always a split — and naming which is which is the Gap Analysis in miniature."
+  },
+  {
+    disc: "Management / HR",
+    title: "Prof. Okonjo — Performance Conversation Simulation",
+    body: "Students prepare for a difficult termination conversation: research the legal constraints, draft talking points, then conduct the conversation live with a trained role-player while the class observes. A written reflection follows.",
+    obj: "Learning objective: Navigate a high-stakes interpersonal conversation under emotional and legal constraint.",
+    answer: "spl",
+    right: "The live conversation cannot be AI-assisted — it's synchronous, embodied, and observed. That protection is structural; you don't have to design it. But the <em>preparation</em> is a different story. Researching legal constraints and rehearsing talking points against an AI role-player is exactly how a competent HR professional would actually prepare. Open the prep. The performance protects itself.",
+    wrong: {
+      res: "The instinct is right about the conversation — but notice that it's <em>already</em> protected by being live and observed. You don't need to also close the prep. Doing so just means students rehearse less, and walk in colder.",
+      lit: "The prep is genuinely a good integration candidate. But calling the whole thing AI-Literacy misreads the assignment's center of gravity: the live conversation is the assessment, and it is untouched by AI by construction."
+    },
+    lens: "The tell: some tasks are <strong>already AI-resistant by format</strong> — live, oral, observed, in-person. Don't spend a design decision protecting what the format already protects."
+  },
+  {
+    disc: "Ops / Analytics",
+    title: "Prof. Sørensen — Supply Chain Diagnostic",
+    body: "Students receive a messy operational dataset and a vague executive prompt: \"Something is wrong with our fulfillment times — find it.\" They must clean the data, run the analysis, and present findings. They may use any tool. The rubric weights problem framing and the defense of analytical choices at 70%.",
+    obj: "Learning objective: Frame an ambiguous business problem and defend the analytical choices made in response.",
+    answer: "lit",
+    right: "One sentence decided it: <strong>70% on framing and defense.</strong> The cleaning and the running are the other 30% — and they are precisely what a working analyst delegates. Sørensen has already declared what this assignment is for, and AI does not threaten any of it. Integrate openly, require students to defend <em>why</em> they asked the model what they asked, and the assignment becomes more honest about what the profession actually rewards.<br><br>Now notice what just happened to you. You did not have to weigh anything. The rubric handed you the objective, and the classification fell out. Compare that to Brennan or Okonjo, where you had to excavate the objective yourself. <em>That difference is the lesson.</em>",
+    wrong: {
+      res: "This is the reflex to protect the technical steps — a real reflex, and often right. But go back and find the rubric sentence: 70% is framing and defense. Closing AI here protects 30% of the grade at the cost of teaching a workflow no employer uses.<br><br>The wider point: <strong>the rubric had already answered this for you.</strong> Sørensen wrote down what the assignment was for, and the classification followed. Most assignments will not do you that favor — but when one does, read the weights before you read anything else.",
+      spl: "Defensible, and if you'd argued for protecting the cleaning step you would not be wrong on the merits. But Sørensen already did the splitting for you and wrote it into the rubric: 70% framing and defense, 30% mechanics. Once the weighting is that explicit, the integration call is clean — you are confirming a decision, not making one.<br><br>Which is the point of putting this scenario last. <strong>It was easier than the four before it, on purpose.</strong> An assignment whose rubric already weights judgment over mechanics is an assignment that is half-redesigned."
+    },
+    lens: "The tell: a <strong>rubric that already weights judgment over mechanics</strong> is an assignment someone has half-redesigned already. Read the weights first. When they are explicit, your job shrinks to confirming — when they are silent, the excavation is yours."
+  }
+];
+
+const LABELS = {lit:"AI-Literacy", res:"AI-Resistant", spl:"Task-Split"};
+const ORDER = ["lit","res","spl"];
+
+/* --- Framing block shown BEFORE Scenario 5 --- */
+const PRE_5 = `
+  <div class="interstitial">
+    <div class="eyebrow">Before the last one — read this</div>
+    <h2>This next assignment is easier than the four before it. That is deliberate.</h2>
+    <p>The first four scenarios made you do the hard thing: read the cognitive work, decide what the objective was really made of, and place each task yourself. Nobody told you what mattered. You had to infer it.</p>
+    <p>Prof. Sørensen's assignment is different. Watch for one sentence in it — a sentence about how the rubric is <strong>weighted</strong>. When you find it, the classification will resolve almost on its own, and you should notice that happening.</p>
+    <p>Here is why that matters. <strong>An assignment whose rubric already weights judgment over mechanics is an assignment that is half-redesigned.</strong> Someone has already decided what the assessment is actually for, and written that decision down. When you meet an assignment like this, your job gets dramatically smaller — you are not deciding what to protect, you are confirming a decision that has already been made. Read the weights before you read anything else.</p>
+    <p>Most assignments do not do you this favor. Yours may not. But when one does, take it.</p>
+  </div>`;
+
+/* --- Bridge block shown AFTER Scenario 5 is answered --- */
+const POST_5 = `
+  <div class="interstitial bridge">
+    <div class="eyebrow">Now the honest part</div>
+    <h2>Your assignment will not be this clean.</h2>
+    <p>Five assignments, five classifications, and every one of them arrived with its learning objective stated in a tidy italic line and its cognitive tasks already separated for you. That is not what an assignment looks like. That is what an assignment looks like <em>after someone has already done the analysis</em> — and here, that someone was us.</p>
+    <p>What you are about to open is your own assignment from Module 3, and it will be messy in the specific ways real assignments are messy:</p>
+    <p>The <strong>stated objective will not match the real one.</strong> The syllabus says "students will analyze"; the rubric awards most of its points for formatting and length. Both are true, and they point in opposite directions. You will have to decide which one the assignment is actually built around.</p>
+    <p>The <strong>tasks will not come pre-separated.</strong> What reads as one step — "prepare a market entry recommendation" — is four cognitive tasks wearing a trench coat, and some of them are protected while others are wide open. Nobody has pulled them apart. You will.</p>
+    <p>And <strong>you will be wrong about some of it</strong> — not because you reasoned badly, but because you are reasoning from the outside. You are guessing what AI would do to this assignment. You have not watched it happen.</p>
+    <p>That is the entire point of what comes next. The reflection below asks for your <strong>first pass</strong>, made on instinct, from the outside, with the lens you just practiced. It is supposed to be provisional. Then on <strong>Day 2</strong>, you run the assignment through an AI Stress Test and stop guessing — you watch the tool do the work, side by side with your expectations, and the split you drew here moves. The Gap Analysis is where instinct becomes evidence, task by task.</p>
+    <p>So write the messy version. Name the task you cannot place. <strong>The uncertainty you carry into Day 2 is not a gap in your preparation — it is the material Day 2 is made of.</strong></p>
+  </div>`;
+/* ============ END EDITABLE CONTENT ============ */
+
+const state = {};
+const deck = document.getElementById('deck');
+
+SCENARIOS.forEach((s, i) => {
+  if (i === 4) {
+    const pre = document.createElement('div');
+    pre.innerHTML = PRE_5;
+    deck.appendChild(pre.firstElementChild);
+  }
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = 'card' + i;
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="meta">
+        <span class="num">${i+1}</span>
+        <span class="disc">${s.disc}</span>
+      </div>
+      <h2>${s.title}</h2>
+      <p>${s.body}</p>
+      <p class="obj">${s.obj.replace('Learning objective:','<strong>Learning objective:</strong>')}</p>
+    </div>
+    <div class="choices" role="group" aria-label="Classify scenario ${i+1}">
+      ${ORDER.map(k => `<button class="pick" data-s="${i}" data-k="${k}">${LABELS[k]}</button>`).join('')}
+    </div>
+    <div class="fb" id="fb${i}"></div>`;
+  deck.appendChild(card);
+});
+
+deck.addEventListener('click', e => {
+  const b = e.target.closest('.pick');
+  if (!b || b.disabled) return;
+  const i = +b.dataset.s, k = b.dataset.k, s = SCENARIOS[i];
+  if (state[i]) return;
+  state[i] = k;
+
+  const card = document.getElementById('card' + i);
+  const correct = (k === s.answer);
+  card.classList.add('done');
+
+  card.querySelectorAll('.pick').forEach(p => {
+    p.disabled = true;
+    if (p.dataset.k === k) p.classList.add('chosen', correct ? 'right' : 'wrong');
+    else if (!correct && p.dataset.k === s.answer) p.classList.add('reveal');
+  });
+
+  const fb = document.getElementById('fb' + i);
+  const body = correct ? s.right : s.wrong[k];
+  fb.innerHTML = `
+    <div class="fb-in ${correct ? '' : 'miss'}">
+      <div class="verdict ${correct ? '' : 'miss'}">
+        ${correct
+          ? LABELS[s.answer] + ' — that\'s the call'
+          : 'Not quite — the design response here is ' + LABELS[s.answer]}
+      </div>
+      <p>${body}</p>
+      <p class="lens">${s.lens}</p>
+    </div>`;
+  fb.classList.add('show');
+  progress();
+});
+
+function progress(){
+  const n = Object.keys(state).length;
+  document.getElementById('count').textContent = n + ' of 5 classified';
+  document.getElementById('fill').style.width = (n/5*100) + '%';
+  if (n === 5) unlock();
+}
+
+function unlock(){
+  const slot = document.getElementById('reflectSlot');
+  if (slot.dataset.built) return;
+  slot.dataset.built = '1';
+  slot.innerHTML = POST_5 + `
+  <div class="reflect" id="reflect">
+    <div class="r-head">
+      <div class="eyebrow">Now turn the lens on your own work</div>
+      <h2>Your Redesign Candidate — First Pass</h2>
+      <p>Pull up the assignment you selected in Module 3. Answer below in whatever state your thinking is actually in — provisional, contradictory, unfinished. <strong>This is a first pass, not a verdict.</strong> A clean answer here would mean you had not looked hard enough.</p>
+    </div>
+    <div class="r-body">
+
+      <div class="q">
+        <label for="rName">Which assignment are you looking at?</label>
+        <div class="hint">Course and assignment name — the one you submitted in Module 3.</div>
+        <input type="text" id="rName" placeholder="e.g. MKT 3305 — Brand Audit Report">
+      </div>
+
+      <div class="q">
+        <label for="rObj">What is this assignment's <em>real</em> learning objective?</label>
+        <div class="hint">Not what students produce — what they should be able to <em>do</em> afterward. Then check it against the rubric: where do the points actually go? If the stated objective and the point distribution disagree, say so here. That disagreement is a finding, and it is the most useful thing you can bring to Day 2.</div>
+        <textarea id="rObj" rows="3" placeholder="Stated objective: students should be able to...&#10;What the rubric actually rewards:"></textarea>
+      </div>
+
+      <div class="q">
+        <label>Pull the tasks apart — then sort them.</label>
+        <div class="hint">List every cognitive task the assignment requires, then sort. Watch for compound steps: "prepare a recommendation" is not one task, it is several, and they do not all belong in the same column. Break them until each line is one thing a student's mind actually does. Some assignments end up with an empty column — that is a finding, not a failure.</div>
+        <div class="split-grid">
+          <textarea id="rProtect" rows="4" placeholder="Protect — the cognitive work that must stay with the student, because the objective depends on the struggle."></textarea>
+          <textarea id="rOpen" rows="4" placeholder="Open — the tasks where AI would make the student better, faster, or more like a working professional."></textarea>
+        </div>
+      </div>
+
+      <div class="cont">
+        <div class="cont-head">
+          <div class="eyebrow">The continuum, applied — Module 4 returns</div>
+          <h3>Your assignment is not <em>at</em> a level. Its tasks are at different levels.</h3>
+          <p>In Module 4 you placed this assignment on the IWU AI Literacy Continuum and gave it a number. That number was useful, and it was also a simplification — because you had not yet pulled the assignment apart. Now you have.</p>
+          <p>So here is the harder question. <strong>Look at your two columns above and place them separately.</strong> Where do the tasks you want to <em>protect</em> sit on the continuum? And where do the tasks you want to <em>open</em> sit — not where they are today, but where the redesign would put them?</p>
+          <p>Most faculty find these two numbers are not the same. <strong>That gap is not an error in your thinking. It is the shape of the redesign.</strong> An assignment that protects at Level 1 and opens at Level 4 is not confused — it is deliberately doing two things, and it is the most honest kind of assignment you can build in a discipline where students will graduate into both realities.</p>
+          <p>If your two numbers come out identical, that is a real finding too — it usually means one column is thin, and it is worth going back up to look again.</p>
+          <p><strong>You are not being asked to resolve this.</strong> You are being asked to see it clearly enough to bring it to Day 2.</p>
+        </div>
+        <div class="cont-body">
+          <div class="scale" aria-hidden="true">
+            <div class="lvl"><span class="n">1</span><span class="nm">No AI</span></div>
+            <div class="lvl"><span class="n">2</span><span class="nm">AI-assisted planning</span></div>
+            <div class="lvl"><span class="n">3</span><span class="nm">AI-assisted execution</span></div>
+            <div class="lvl"><span class="n">4</span><span class="nm">Full AI, human-directed</span></div>
+            <div class="lvl"><span class="n">5</span><span class="nm">AI as co-author</span></div>
+          </div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:4px">Level labels are shorthand — refer to your Module 4 continuum card for the full descriptors.</p>
+
+          <div class="place">
+            <div class="box pro">
+              <h4>Protected tasks</h4>
+              <p class="sub">Where do these sit? Usually low — that's the point of protecting them.</p>
+              <select id="rLvlPro">
+                <option value="">Select level…</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+                <option value="5">Level 5</option>
+                <option value="none">No protected tasks — the whole assignment opens</option>
+              </select>
+            </div>
+            <div class="box opn">
+              <h4>Opened tasks — after redesign</h4>
+              <p class="sub">Not where they are now. Where you'd move them.</p>
+              <select id="rLvlOpn">
+                <option value="">Select level…</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+                <option value="5">Level 5</option>
+                <option value="none">No opened tasks — the whole assignment is protected</option>
+              </select>
+            </div>
+          </div>
+          <div class="spread" id="spread"></div>
+        </div>
+      </div>
+
+      <div class="q">
+        <label for="rCall">Your first-pass call</label>
+        <div class="hint">Based on what you just sorted — is this assignment AI-Literacy, AI-Resistant, or Task-Split? Say why in one or two sentences.</div>
+        <textarea id="rCall" rows="3" placeholder="My call is ______ because..."></textarea>
+      </div>
+
+      <div class="q">
+        <label for="rHard">Which task can't you place — and what would settle it?</label>
+        <div class="hint">There is one. Find it. This is the single most valuable line you will write today, because it becomes your agenda for Day 2 — the thing you will watch for when you run the assignment through the AI Stress Test. Leaving this blank does not mean you are certain; it means you have not looked.</div>
+        <textarea id="rHard" rows="3" placeholder="I can't decide whether ______ should be protected or opened. What would settle it: seeing whether AI can actually..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="save">Generate my Day 2 carry-forward</button>
+        <button class="btn ghost" id="print">Print / save as PDF</button>
+      </div>
+      <p class="note">Nothing is stored or transmitted. Generate the carry-forward, then print it or copy it into your Canvas reflection — you will need it on Day 2.</p>
+    </div>
+  </div>`;
+
+  document.getElementById('save').addEventListener('click', build);
+  document.getElementById('print').addEventListener('click', () => window.print());
+  document.getElementById('rLvlPro').addEventListener('change', spread);
+  document.getElementById('rLvlOpn').addEventListener('change', spread);
+  // Scroll to the bridge, not the form — the framing is the teaching moment.
+  slot.querySelector('.interstitial.bridge').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* Interprets the gap between the two continuum placements. */
+function spread(){
+  const p = document.getElementById('rLvlPro').value;
+  const o = document.getElementById('rLvlOpn').value;
+  const el = document.getElementById('spread');
+  if (!p || !o) { el.classList.remove('show'); return; }
+
+  let msg;
+  if (p === 'none' && o === 'none'){
+    msg = `<strong>Both columns empty.</strong> Go back up — every assignment asks students to do something. If neither column has a task in it, the tasks have not been named yet.`;
+  } else if (p === 'none'){
+    msg = `<strong>Nothing protected — the whole assignment opens to Level ${o}.</strong> That is a legitimate AI-Literacy design, and in a discipline where the tool is the profession, it may be exactly right. But it is a strong claim. Day 2 asks you to defend it: run the assignment through AI and see whether <em>anything</em> comes back that you would not accept from a student. If something does, you have found your protected task.`;
+  } else if (o === 'none'){
+    msg = `<strong>Nothing opened — the whole assignment holds at Level ${p}.</strong> A fully AI-Resistant design. This is a real and sometimes correct choice, but it is the most expensive one: every task you protect is a task where students do not practice the tool their profession already uses. Day 2 will ask what that costs you, and whether the objective genuinely requires all of it.`;
+  } else {
+    const gap = Math.abs(+o - +p);
+    if (gap === 0){
+      msg = `<strong>Both at Level ${p} — no spread.</strong> This usually means one column is thin. An assignment where protected and opened tasks sit at the same continuum level is rarely doing two different things. Go back to your sort: is there a task you filed quickly that deserves a harder look? If the columns are genuinely balanced at one level, say so in your call below — it is a defensible position, but it should be a decision, not a default.`;
+    } else if (gap === 1){
+      msg = `<strong>Spread of one level (${p} → ${o}).</strong> A narrow, cautious split. Nothing wrong with it — but ask yourself whether the caution is coming from the objective or from discomfort. Day 2's Stress Test tends to widen this gap, because faculty routinely discover that AI does less damage to some tasks than they feared, and more to others.`;
+    } else if (gap >= 3){
+      msg = `<strong>Spread of ${gap} levels (${p} → ${o}). This is a wide, deliberate split — and it is not a contradiction.</strong> You are saying: some of this must stay entirely with the student, and some of it should look like the professional workflow they are graduating into. That is an assignment doing two things on purpose. It is also the hardest kind to write a rubric for, which is precisely why Day 3 exists. Bring this number.`;
+    } else {
+      msg = `<strong>Spread of ${gap} levels (${p} → ${o}).</strong> This is the most common shape, and a healthy one — a genuine Task-Split. Your assignment is not <em>at</em> a level on the continuum; it occupies a range, deliberately. The redesign is the decision about where each end of that range should sit.`;
+    }
+  }
+  el.innerHTML = `<p>${msg}</p>`;
+  el.classList.add('show');
+}
+
+function build(){
+  const get = id => (document.getElementById(id).value || '').trim();
+  const name = get('rName'), obj = get('rObj'), pro = get('rProtect'),
+        open = get('rOpen'), call = get('rCall'), hard = get('rHard'),
+        lp = get('rLvlPro'), lo = get('rLvlOpn');
+
+  if (!name || !obj || !call){
+    alert('Add at least the assignment name, its objective, and your first-pass call — those three are what Day 2 starts from.');
+    return;
+  }
+
+  const lvlTxt = (v) => v === 'none' ? 'none' : (v ? 'Level ' + v : '—');
+  let contLine = '— not yet placed —';
+  if (lp && lo){
+    contLine = `Protected: ${lvlTxt(lp)}   ·   Opened (target): ${lvlTxt(lo)}`;
+    if (lp !== 'none' && lo !== 'none'){
+      const g = Math.abs(+lo - +lp);
+      contLine += `\nSpread: ${g} level${g === 1 ? '' : 's'}` + (g === 0 ? ' — no spread; one column may be thin.' : ' — this assignment occupies a range, not a point.');
+    }
+  }
+
+  const s = document.getElementById('summary');
+  s.innerHTML = `
+    <div class="s-head">
+      <h2>Day 2 Carry-Forward</h2>
+      <p>Module A5 — dual-approach first pass. Bring this to the Gap Analysis.</p>
+    </div>
+    <div class="s-body">
+      <div class="s-block"><h3>Assignment</h3><p>${esc(name)}</p></div>
+      <div class="s-block"><h3>Real learning objective</h3><p>${esc(obj)}</p></div>
+      <div class="s-block"><h3>Lean protected</h3><p>${esc(pro) || '— nothing named —'}</p></div>
+      <div class="s-block"><h3>Lean open</h3><p>${esc(open) || '— nothing named —'}</p></div>
+      <div class="s-block"><h3>IWU Continuum placement</h3><p>${esc(contLine)}</p></div>
+      <div class="s-block"><h3>First-pass call</h3><p>${esc(call)}</p></div>
+      <div class="s-block"><h3>Hardest task to place</h3><p>${esc(hard) || '— not yet named —'}</p></div>
+      <div class="carry">
+        <p><strong>What happens next — and why this is not finished.</strong> What you just wrote is a first pass, made from the outside, on instinct. It is supposed to be provisional. On <strong>Day 2</strong> you will run this assignment through an AI Stress Test: you will watch the tool actually do the work, side by side with what you expected, and the split you drew above <em>will move</em>. Tasks you protected will turn out to be untouched by AI anyway. Tasks you opened will turn out to be load-bearing. That is not a failure of this first pass — it is what a first pass is for.</p>
+        <p><strong>Bring this page.</strong> Bring the task you could not place, especially. The Gap Analysis is where instinct becomes evidence, task by task — and it starts from exactly what you wrote here.</p>
+      </div>
+    </div>`;
+  s.classList.add('show');
+  s.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function esc(t){
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>
