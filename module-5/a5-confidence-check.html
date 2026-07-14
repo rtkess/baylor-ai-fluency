@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidence Check — Module 5</title>
+<style>
+/* ============================================================
+   CONFIDENCE CHECK — MODULE 5
+   AI Pedagogy: Literacy vs. AI-Resistant Assignments
+   Baylor Green #154734 · Baylor Gold #FFB81C
+
+   ONE FILE, EMBEDDED TWICE. Mode is set by URL parameter:
+     a5-confidence-check.html?mode=pre    → Overview Page
+     a5-confidence-check.html?mode=post   → Wrap-Up Page
+
+   Pre-check saves ratings to browser localStorage.
+   Post-check reads them back and shows the shift automatically.
+   If storage is blocked or empty (different device, different
+   browser, Safari iframe restrictions), the post-check degrades
+   cleanly to manual entry — it never fails silently.
+
+   REUSE FOR OTHER MODULES: change MODULE_ID and ITEMS below.
+   Nothing else needs touching.
+   ============================================================ */
+:root{
+  --green:#154734; --green-mid:#1d6349; --green-tint:#e8efec;
+  --gold:#FFB81C; --gold-tint:#fff6e2;
+  --ink:#1f2622; --muted:#5d6b64; --line:#dde3df;
+  --paper:#fff; --wash:#f6f8f7;
+  --up:#1d6349; --down:#a8442a; --flat:#5d6b64;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  background:var(--wash);color:var(--ink);line-height:1.55;padding:20px 16px 36px;
+}
+.wrap{max-width:800px;margin:0 auto}
+
+.head{background:var(--green);color:#fff;border-radius:10px 10px 0 0;padding:22px 26px 20px;border-bottom:5px solid var(--gold)}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
+.head h1{font-size:22px;font-weight:700;margin-bottom:7px;letter-spacing:-.01em}
+.head p{font-size:14px;color:#cfe0d8;max-width:66ch}
+
+.body{background:var(--paper);border:1px solid var(--line);border-top:none;border-radius:0 0 10px 10px;padding:24px 26px 26px}
+
+/* ---------- Rating rows ---------- */
+.item{padding:18px 0;border-bottom:1px solid var(--line)}
+.item:first-child{padding-top:4px}
+.item:last-of-type{border-bottom:none}
+.stem{font-size:15px;font-weight:600;margin-bottom:12px;max-width:70ch}
+.scale{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.dot{
+  width:44px;height:44px;border:1.5px solid var(--line);background:var(--paper);
+  border-radius:8px;font:inherit;font-size:15px;font-weight:700;color:var(--muted);
+  cursor:pointer;transition:all .14s ease;flex:none;
+}
+.dot:hover{border-color:var(--green);color:var(--green);background:var(--green-tint)}
+.dot:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.dot.on{background:var(--green);border-color:var(--green);color:#fff}
+.anchors{display:flex;justify-content:space-between;max-width:268px;margin-top:6px}
+.anchors span{font-size:11px;color:var(--muted)}
+
+/* ---------- Prior (post mode) ---------- */
+.prior{
+  font-size:12.5px;color:var(--muted);margin-top:10px;padding-top:9px;
+  border-top:1px dashed var(--line);display:none;
+}
+.prior.show{display:block}
+.prior .b{font-weight:700;color:var(--green)}
+
+/* ---------- Delta chips ---------- */
+.delta{
+  display:none;margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);
+  font-size:13px;align-items:center;gap:8px;
+}
+.delta.show{display:flex;flex-wrap:wrap}
+.chip{
+  font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap;
+}
+.chip.up{background:var(--green-tint);color:var(--up)}
+.chip.down{background:#fbecea;color:var(--down)}
+.chip.flat{background:var(--wash);color:var(--flat)}
+.delta .why{font-size:12.5px;color:var(--muted);flex:1;min-width:200px}
+
+/* ---------- Fallback ---------- */
+.fallback{
+  display:none;border-left:4px solid var(--gold);background:var(--gold-tint);
+  padding:16px 18px;border-radius:0 8px 8px 0;margin-bottom:22px;
+}
+.fallback.show{display:block}
+.fallback h2{font-size:15px;color:var(--green);margin-bottom:7px}
+.fallback p{font-size:13.5px;margin-bottom:8px;max-width:70ch}
+.fallback p:last-child{margin-bottom:0}
+.mini{
+  width:52px;font:inherit;font-size:14px;padding:6px 8px;text-align:center;
+  border:1.5px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);
+}
+.mini:focus{outline:none;border-color:var(--green)}
+.mini-row{display:flex;align-items:center;gap:9px;margin-top:9px;font-size:13px;color:var(--muted)}
+.mini-row label{flex:none}
+
+/* ---------- Actions ---------- */
+.actions{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{
+  background:var(--green);color:#fff;border:none;border-radius:7px;padding:12px 24px;
+  font:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;
+}
+.btn:hover{background:var(--green-mid)}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn:disabled{background:var(--muted);cursor:not-allowed}
+.btn.ghost{background:var(--paper);color:var(--green);border:1.5px solid var(--green)}
+.btn.ghost:hover{background:var(--green-tint)}
+.note{font-size:12.5px;color:var(--muted);margin-top:12px;max-width:70ch}
+
+/* ---------- Result ---------- */
+.result{display:none;margin-top:20px;border-radius:9px;overflow:hidden;border:1.5px solid var(--green)}
+.result.show{display:block}
+.r-head{background:var(--green);color:#fff;padding:16px 20px}
+.r-head h2{font-size:17px;margin-bottom:3px}
+.r-head p{font-size:13px;color:#cfe0d8}
+.r-body{background:var(--paper);padding:18px 20px}
+.r-body > p{font-size:14px;margin-bottom:12px;max-width:70ch}
+.r-body > p:last-child{margin-bottom:0}
+.r-body strong{color:var(--green)}
+.pull{
+  border-left:4px solid var(--gold);background:var(--gold-tint);
+  padding:14px 16px;border-radius:0 7px 7px 0;margin-top:14px;
+}
+.pull p{font-size:13.5px;margin:0}
+
+.saved{
+  display:none;margin-top:18px;border-left:4px solid var(--green);background:var(--green-tint);
+  padding:15px 17px;border-radius:0 8px 8px 0;
+}
+.saved.show{display:block}
+.saved h2{font-size:15px;color:var(--green);margin-bottom:6px}
+.saved p{font-size:13.5px;max-width:70ch}
+
+@media (max-width:600px){
+  .head,.body{padding-left:18px;padding-right:18px}
+  .dot{width:40px;height:40px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.actions,.dot:not(.on){display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow" id="eyebrow">Module A5 · Confidence Check</div>
+    <h1 id="title">Confidence Check</h1>
+    <p id="lede"></p>
+  </div>
+  <div class="body">
+    <div class="fallback" id="fallback">
+      <h2>We don't have your earlier ratings</h2>
+      <p>Your ratings from the start of this module aren't available on this browser. That's normal — it usually just means you started the module on a different device, or your browser blocks stored data inside embedded pages.</p>
+      <p><strong>No problem.</strong> If you wrote your earlier numbers down, enter them below and we'll show you the shift. If you didn't, skip this — just rate yourself now, and read the reflection at the end.</p>
+      <div id="miniRows"></div>
+    </div>
+
+    <div id="items"></div>
+
+    <div class="actions">
+      <button class="btn" id="go"></button>
+      <button class="btn ghost" id="print" style="display:none">Print / save as PDF</button>
+    </div>
+    <p class="note" id="note"></p>
+
+    <div class="saved" id="saved">
+      <h2>Recorded.</h2>
+      <p id="savedTxt"></p>
+    </div>
+
+    <div class="result" id="result"></div>
+  </div>
+</div>
+
+<script>
+/* ============ EDITABLE CONTENT ============ */
+const MODULE_ID = "a5";          // change per module — this is the storage key
+const MODULE_LABEL = "Module A5";
+const MODULE_TITLE = "AI Pedagogy: Literacy vs. AI-Resistant Assignments";
+
+const ITEMS = [
+  "I can explain the difference between an AI-Literacy assignment and an AI-Resistant one.",
+  "I can look at an assignment and identify which of its tasks should be protected from AI and which should be opened to it.",
+  "I can place my own assignment on the IWU Continuum and explain why its tasks might sit at different levels."
+];
+
+const COPY = {
+  pre: {
+    lede: "Rate your current confidence on each item. There is no right answer and nothing is graded — an honest starting point is the only thing that makes the comparison at the end of the module worth anything.",
+    btn: "Save my starting point",
+    note: "Your ratings are stored only in this browser. Nothing is transmitted, and no one sees them. You'll be asked the same three questions at the end of the module.",
+    saved: "Your starting point is recorded. Complete the module, then return to these same three items on the Wrap-Up page — we'll show you what moved."
+  },
+  post: {
+    lede: "Same three items, one module later. Rate yourself again — and be honest, including where you feel less certain than when you started.",
+    btn: "Show me what shifted",
+    note: "Nothing is transmitted. Print this if you'd like to bring it to Day 1.",
+    saved: ""
+  }
+};
+
+/* Per-item interpretation of a DOWN shift. Written to make a decline
+   feel like a finding, not a failure. Item 3 is the one that matters. */
+const DOWN_READ = [
+  "A dip here is unusual. If the distinction still feels slippery, revisit Panels 2 and 3 of the reference — the difference is what each move <em>protects</em>, not whether AI is allowed.",
+  "A dip here often means you looked at a real assignment for the first time and found it harder than the clean examples. That is accurate. Bring it to Day 2.",
+  "This is the expected direction, and it is the right answer. You arrived thinking your assignment sat at a level on the continuum. You now know it doesn't — its tasks sit at different levels, and the range is what you have to resolve. <strong>Less certainty here is more understanding, not less.</strong>"
+];
+/* ============ END EDITABLE CONTENT ============ */
+
+const mode = (new URLSearchParams(location.search).get('mode') || 'pre').toLowerCase() === 'post' ? 'post' : 'pre';
+const KEY = 'baylor-aif-confidence-' + MODULE_ID;
+const now = {};      // current ratings
+const manual = {};   // fallback-entered prior ratings
+let prior = null;    // ratings recovered from storage
+
+/* --- Storage, defensively --- */
+function load(){
+  try {
+    const raw = window.localStorage.getItem(KEY);
+    if (!raw) return null;
+    const d = JSON.parse(raw);
+    return (d && Array.isArray(d.r) && d.r.length === ITEMS.length) ? d : null;
+  } catch (e) { return null; }  // blocked storage — not an error, just no data
+}
+function save(){
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify({
+      r: ITEMS.map((_, i) => now[i]),
+      at: new Date().toISOString()
+    }));
+    return true;
+  } catch (e) { return false; }
+}
+
+/* --- Header + copy --- */
+document.getElementById('eyebrow').textContent =
+  MODULE_LABEL + ' · ' + (mode === 'pre' ? 'Before You Begin' : 'Post-Module');
+document.getElementById('title').textContent =
+  mode === 'pre' ? 'Confidence Check — Module 5' : 'Confidence Check — Module 5 (Again)';
+document.getElementById('lede').textContent = COPY[mode].lede;
+document.getElementById('go').textContent = COPY[mode].btn;
+document.getElementById('note').textContent = COPY[mode].note;
+
+/* --- Recover prior ratings in post mode --- */
+if (mode === 'post'){
+  prior = load();
+  if (!prior){
+    const fb = document.getElementById('fallback');
+    fb.classList.add('show');
+    const rows = document.getElementById('miniRows');
+    ITEMS.forEach((_, i) => {
+      const row = document.createElement('div');
+      row.className = 'mini-row';
+      row.innerHTML = `<label for="m${i}">Item ${i+1} — my earlier rating:</label>
+        <input class="mini" id="m${i}" type="number" min="1" max="5" placeholder="–">
+        <span>(leave blank if you don't have it)</span>`;
+      rows.appendChild(row);
+    });
+    rows.addEventListener('input', e => {
+      const i = +e.target.id.slice(1);
+      const v = parseInt(e.target.value, 10);
+      if (v >= 1 && v <= 5) manual[i] = v; else delete manual[i];
+    });
+  }
+}
+
+/* --- Render the rating rows --- */
+const wrap = document.getElementById('items');
+ITEMS.forEach((stem, i) => {
+  const d = document.createElement('div');
+  d.className = 'item';
+  d.innerHTML = `
+    <p class="stem">${i+1}. ${stem}</p>
+    <div class="scale" role="group" aria-label="Rate item ${i+1} from 1 to 5">
+      ${[1,2,3,4,5].map(n =>
+        `<button class="dot" data-i="${i}" data-v="${n}" aria-label="${n} out of 5">${n}</button>`
+      ).join('')}
+    </div>
+    <div class="anchors"><span>Not at all</span><span>Completely</span></div>
+    <div class="prior" id="pr${i}"></div>
+    <div class="delta" id="dl${i}"></div>`;
+  wrap.appendChild(d);
+
+  if (prior){
+    const pr = document.getElementById('pr' + i);
+    pr.innerHTML = `Your rating at the start of this module: <span class="b">${prior.r[i]} of 5</span>`;
+    pr.classList.add('show');
+  }
+});
+
+wrap.addEventListener('click', e => {
+  const b = e.target.closest('.dot');
+  if (!b) return;
+  const i = +b.dataset.i, v = +b.dataset.v;
+  now[i] = v;
+  b.parentElement.querySelectorAll('.dot').forEach(x =>
+    x.classList.toggle('on', x === b)
+  );
+});
+
+/* --- Submit --- */
+document.getElementById('print').addEventListener('click', () => window.print());
+document.getElementById('go').addEventListener('click', () => {
+  if (Object.keys(now).length < ITEMS.length){
+    alert('Rate all three items before continuing.');
+    return;
+  }
+  mode === 'pre' ? doPre() : doPost();
+});
+
+function doPre(){
+  const ok = save();
+  const s = document.getElementById('saved');
+  document.getElementById('savedTxt').innerHTML = ok
+    ? COPY.pre.saved
+    : "Your ratings couldn't be stored in this browser — that's fine, but it means we won't be able to show you the shift automatically. <strong>Write your three numbers down now</strong> (or screenshot this page). You'll be asked for them again at the end of the module.";
+  s.classList.add('show');
+  document.getElementById('go').disabled = true;
+  document.getElementById('go').textContent = 'Recorded';
+  s.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function doPost(){
+  const before = i => prior ? prior.r[i] : (manual[i] ?? null);
+  let shown = 0, up = 0, down = 0, flat = 0;
+
+  ITEMS.forEach((_, i) => {
+    const b = before(i);
+    if (b == null) return;
+    shown++;
+    const diff = now[i] - b;
+    const el = document.getElementById('dl' + i);
+    let chip, why;
+    if (diff > 0){
+      up++;
+      chip = `<span class="chip up">▲ ${b} → ${now[i]}</span>`;
+      why = `Up ${diff} ${diff === 1 ? 'point' : 'points'}.`;
+    } else if (diff < 0){
+      down++;
+      chip = `<span class="chip down">▼ ${b} → ${now[i]}</span>`;
+      why = DOWN_READ[i];
+    } else {
+      flat++;
+      chip = `<span class="chip flat">■ held at ${b}</span>`;
+      why = 'No change. Sometimes that means the module confirmed what you already knew — and sometimes it means the idea hasn\'t landed yet. You know which.';
+    }
+    el.innerHTML = chip + `<span class="why">${why}</span>`;
+    el.classList.add('show');
+  });
+
+  const r = document.getElementById('result');
+  let body;
+
+  if (shown === 0){
+    body = `<p>We don't have your earlier ratings, so there's nothing to compare against — but your ratings now are still worth reading. Look at item 3 especially.</p>
+      <p>If you feel <strong>less</strong> certain about placing your assignment on the continuum than you did an hour ago, that is the correct result. You arrived thinking your assignment sat at a level. You now know it doesn't — its tasks sit at different levels, and the distance between them is the work.</p>`;
+  } else {
+    const lines = [];
+    if (up)   lines.push(`<strong>${up} ${up === 1 ? 'item' : 'items'} up.</strong>`);
+    if (flat) lines.push(`<strong>${flat} held.</strong>`);
+    if (down) lines.push(`<strong>${down} down.</strong>`);
+    body = `<p>${lines.join(' ')} ${shown < ITEMS.length ? `(Comparison shown for ${shown} of ${ITEMS.length} items — the rest are missing an earlier rating.)` : ''}</p>`;
+
+    if (down){
+      body += `<p>You went down on something, and I want to be direct about that: <strong>a decline here is not a bad outcome.</strong> This module's job was to take a judgment you thought was simple and show you it isn't. Faculty who leave less certain than they arrived are usually the ones who looked hardest at their own assignment.</p>`;
+    } else if (!down && up >= 2){
+      body += `<p>Confidence up across the board. Worth one honest check before you accept it: have you actually opened your assignment and tried to sort its tasks — or does it still feel clean from a distance? The five scenarios in this module were designed to be tractable. Yours won't be.</p>`;
+    } else {
+      body += `<p>Whatever moved, the number that matters most is the one you'll bring to Day 2 — not your confidence, but the task you couldn't place.</p>`;
+    }
+  }
+
+  body += `<div class="pull"><p><strong>Bring this to Day 1.</strong> The facilitator will show the cohort's aggregate ratings as a shared starting point — including where confidence dropped. Nobody's individual numbers are shown, and dips are read as evidence of engagement, not gaps in preparation.</p></div>`;
+
+  r.innerHTML = `
+    <div class="r-head">
+      <h2>What shifted</h2>
+      <p>${MODULE_LABEL} — ${MODULE_TITLE}</p>
+    </div>
+    <div class="r-body">${body}</div>`;
+  r.classList.add('show');
+  document.getElementById('go').disabled = true;
+  document.getElementById('go').textContent = 'Complete';
+  document.getElementById('print').style.display = 'inline-block';
+  r.scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+</body>
+</html>
