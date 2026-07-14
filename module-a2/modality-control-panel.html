@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modality Control Panel — AI Fluency for Faculty, Module 2</title>
+<style>
+  :root{
+    --green:        #154734;
+    --green-dark:   #0D2E21;
+    --green-mid:    #2C6E4F;
+    --green-tint:   #E7EFEA;
+    --gold:         #FFB81C;
+    --gold-dark:    #A66E00;
+    --gold-tint:    #FFF4DC;
+    --cream:        #FBF8F1;
+    --ink:          #201F1B;
+    --muted:        #6B6558;
+    --border:       #DED5BC;
+    --radius-lg: 14px;
+    --radius-md: 10px;
+    --font-display: 'Arial Black', 'Liberation Sans Bold', Arial, Helvetica, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0; padding: 0;
+    background: #ffffff;
+    font-family: var(--font-body);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{ padding: clamp(12px, 3vw, 28px); }
+
+  .app{
+    max-width: 1080px;
+    margin: 0 auto;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(21,71,52,0.08), 0 8px 24px rgba(21,71,52,0.06);
+  }
+
+  /* ---------- Header ---------- */
+  .app-header{
+    background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+    color: #fff;
+    padding: clamp(20px, 4vw, 32px) clamp(20px, 5vw, 40px) 22px;
+    position: relative;
+  }
+
+  .app-header::after{
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 5px;
+    background: var(--gold);
+  }
+
+  .eyebrow{
+    font-family: var(--font-display);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 10px;
+  }
+
+  .app-header h1{
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3.6vw, 30px);
+    line-height: 1.15;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle{
+    margin: 0;
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.9);
+    max-width: 62ch;
+  }
+
+  .brandline{
+    margin-top: 16px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ---------- Panel grid ---------- */
+  .panel-grid{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+    padding: clamp(16px, 4vw, 28px);
+  }
+
+  .zone{
+    flex: 1 1 300px;
+    min-width: 280px;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .zone[open]{
+    border-color: var(--green-mid);
+    box-shadow: 0 4px 14px rgba(21,71,52,0.10);
+  }
+
+  .zone summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 18px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .zone summary::-webkit-details-marker{ display: none; }
+
+  .zone summary:focus-visible{
+    outline: 3px solid var(--gold);
+    outline-offset: -3px;
+  }
+
+  .mode-index{
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .mode-icon{
+    flex: none;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--green-tint);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .zone[open] .mode-icon{
+    background: var(--green);
+    color: var(--gold);
+  }
+
+  .mode-icon svg{ width: 20px; height: 20px; }
+
+  .summary-text{ flex: 1; min-width: 0; }
+
+  .mode-name{
+    font-family: var(--font-display);
+    font-size: 17px;
+    color: var(--green-dark);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .mode-tag{
+    font-size: 12.5px;
+    color: var(--muted);
+    display: block;
+  }
+
+  .chevron{
+    flex: none;
+    width: 22px; height: 22px;
+    color: var(--green-mid);
+    transition: transform 0.2s ease;
+    margin-top: 6px;
+  }
+
+  .zone[open] .chevron{ transform: rotate(180deg); }
+
+  /* ---------- Expanded content ---------- */
+  .zone-body{
+    padding: 0 18px 20px;
+    border-top: 1px dashed var(--border);
+    margin-top: 2px;
+    padding-top: 16px;
+  }
+
+  .block{ margin-bottom: 16px; }
+  .block:last-child{ margin-bottom: 0; }
+
+  .block h3{
+    font-family: var(--font-display);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin: 0 0 6px;
+  }
+
+  .block p{
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .examples .example{
+    background: var(--green-tint);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+
+  .examples .example:last-child{ margin-bottom: 0; }
+
+  .examples .who{
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 12.5px;
+    margin: 0 0 3px;
+  }
+
+  .examples .who .disc{
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .examples .example p{ margin: 0; }
+
+  .gain{
+    border-left: 3px solid var(--green-mid);
+    padding-left: 12px;
+  }
+
+  .watchout{
+    background: var(--gold-tint);
+    border-left: 3px solid var(--gold-dark);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 12px 10px 12px;
+    margin-left: -3px;
+  }
+
+  .watchout h3{ color: var(--gold-dark); }
+
+  @media (max-width: 720px){
+    .panel-grid{ flex-direction: column; }
+    .zone{ flex-basis: auto; width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="app-header">
+    <p class="eyebrow">Module 2 · Resource</p>
+    <h1>Modality Control Panel</h1>
+    <p class="subtitle">Select each mode below to see how it plays out for Hankamer School of Business faculty — the definition, real examples, what you gain, and what to watch for.</p>
+    <p class="brandline">AI Fluency for Faculty · Hankamer School of Business · Baylor University</p>
+  </header>
+
+  <div class="panel-grid">
+
+    <!-- AUTOMATION -->
+    <details class="zone">
+      <summary>
+        <span class="mode-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M8 12.5l2.5 2.5L16 9.5"/>
+          </svg>
+        </span>
+        <span class="summary-text">
+          <span class="mode-index">MODE 01</span>
+          <span class="mode-name">Automation</span>
+          <span class="mode-tag">AI does, you review</span>
+        </span>
+        <span class="chevron" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </span>
+      </summary>
+      <div class="zone-body">
+        <section class="block definition">
+          <h3>What It Is</h3>
+          <p>AI completes a well-defined task end-to-end in a single pass — generating a full first draft or output. Your role is to review, edit, and decide whether to use it.</p>
+        </section>
+        <section class="block examples">
+          <h3>In Practice at Hankamer</h3>
+          <div class="example">
+            <p class="who">Prof. Marsh <span class="disc">· Finance</span></p>
+            <p>Asks Claude to generate a first-draft amortization schedule template for a lending case problem set, then verifies the calculations before assigning it.</p>
+          </div>
+          <div class="example">
+            <p class="who">Prof. Duquette <span class="disc">· Marketing</span></p>
+            <p>Has Claude draft a full set of discussion questions for a brand positioning case, then selects and lightly edits the ones she'll actually use.</p>
+          </div>
+        </section>
+        <section class="block gain">
+          <h3>What You Gain</h3>
+          <p>Speed on repetitive, well-scoped work — freeing your time for the judgment calls only you can make.</p>
+        </section>
+        <section class="block watchout">
+          <h3>Primary Watchout</h3>
+          <p>A fluent-sounding first draft can still be wrong. It's tempting to skip the review step once the output looks polished — don't.</p>
+        </section>
+      </div>
+    </details>
+
+    <!-- AUGMENTATION -->
+    <details class="zone">
+      <summary>
+        <span class="mode-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8h14M18 8l-3.2-3.2M18 8l-3.2 3.2"/>
+            <path d="M20 16H6M6 16l3.2-3.2M6 16l3.2 3.2"/>
+          </svg>
+        </span>
+        <span class="summary-text">
+          <span class="mode-index">MODE 02</span>
+          <span class="mode-name">Augmentation</span>
+          <span class="mode-tag">You and AI co-create</span>
+        </span>
+        <span class="chevron" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </span>
+      </summary>
+      <div class="zone-body">
+        <section class="block definition">
+          <h3>What It Is</h3>
+          <p>You and AI iterate together, each exchange building on the last. Neither of you produces the final result alone — it emerges through the back-and-forth.</p>
+        </section>
+        <section class="block examples">
+          <h3>In Practice at Hankamer</h3>
+          <div class="example">
+            <p class="who">Prof. Iyer <span class="disc">· Finance</span></p>
+            <p>Works through several rounds with Claude to refine a valuation problem set, adjusting assumptions each time based on what the last version revealed.</p>
+          </div>
+          <div class="example">
+            <p class="who">Prof. Okonkwo <span class="disc">· Management</span></p>
+            <p>Co-develops a leadership simulation exercise with Claude across multiple exchanges, each round sharpening the scenario's realism.</p>
+          </div>
+        </section>
+        <section class="block gain">
+          <h3>What You Gain</h3>
+          <p>A thinking partner that sharpens your ideas in real time — especially useful when you don't yet know exactly what you want.</p>
+        </section>
+        <section class="block watchout">
+          <h3>Primary Watchout</h3>
+          <p>You control when the iteration stops. Without a clear sense of "good enough," the back-and-forth can drift without ever finishing.</p>
+        </section>
+      </div>
+    </details>
+
+    <!-- AGENCY -->
+    <details class="zone">
+      <summary>
+        <span class="mode-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/>
+            <path d="M12 3a9 9 0 1 1 -6.36 2.64" stroke-dasharray="3 3.2"/>
+          </svg>
+        </span>
+        <span class="summary-text">
+          <span class="mode-index">MODE 03</span>
+          <span class="mode-name">Agency</span>
+          <span class="mode-tag">AI acts on your behalf</span>
+        </span>
+        <span class="chevron" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </span>
+      </summary>
+      <div class="zone-body">
+        <section class="block definition">
+          <h3>What It Is</h3>
+          <p>AI operates independently across multiple steps or over time, acting on your behalf without your review at each stage. You set it up, then check the outcome.</p>
+        </section>
+        <section class="block examples">
+          <h3>In Practice at Hankamer</h3>
+          <div class="example">
+            <p class="who">Prof. Halvorsen <span class="disc">· Marketing</span></p>
+            <p>Deploys an AI research agent that independently gathers and synthesizes competitor pricing data for an upcoming case study, reviewing only the final brief.</p>
+          </div>
+          <div class="example">
+            <p class="who">Prof. Petrova <span class="disc">· Management</span></p>
+            <p>Sets up an AI-powered onboarding assistant that answers new MBA students' logistics questions automatically throughout orientation week.</p>
+          </div>
+        </section>
+        <section class="block gain">
+          <h3>What You Gain</h3>
+          <p>Continuous coverage — tasks get handled even when you're not available to supervise every step.</p>
+        </section>
+        <section class="block watchout">
+          <h3>Primary Watchout</h3>
+          <p>Once deployed, AI is making decisions without you in the room. Institutional policy, data privacy, and clear boundaries on what it should never do all need to be set before you turn it loose.</p>
+        </section>
+      </div>
+    </details>
+
+  </div>
+
+</div>
+
+</body>
+</html>
