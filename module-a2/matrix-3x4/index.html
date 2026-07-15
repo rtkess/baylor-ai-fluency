@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 3×4 Matrix — Your Framework at a Glance</title>
+<style>
+  :root {
+    --green: #154734;
+    --green-deep: #0d2e21;
+    --green-mid: #1f6047;
+    --gold: #FFB81C;
+    --gold-soft: #fff4d6;
+    --gold-line: #f0c65a;
+    --ink: #1c2521;
+    --paper: #f7f9f7;
+    --card: #ffffff;
+    --line: #d3ddd7;
+    --muted: #5c6b63;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  .header {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--green);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    margin: 0 0 6px;
+    font-size: 1.4rem;
+    color: var(--green);
+    letter-spacing: -0.01em;
+  }
+  .header p { margin: 6px 0 0; font-size: 0.96rem; color: var(--muted); }
+  .header .bookmark {
+    margin-top: 12px;
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    background: var(--gold-soft);
+    border: 1px solid var(--gold-line);
+    border-radius: 8px;
+    padding: 8px 14px;
+  }
+
+  .matrix-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  .matrix {
+    display: grid;
+    grid-template-columns: 130px repeat(3, 1fr);
+    gap: 8px;
+    min-width: 640px;
+    margin-bottom: 20px;
+  }
+
+  .corner {
+    background: transparent;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+  }
+
+  .col-head {
+    background: var(--green);
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .col-head .cm { font-size: 1.02rem; font-weight: 700; color: var(--gold); }
+  .col-head .cd { font-size: 0.76rem; opacity: 0.9; margin-top: 3px; font-weight: 400; }
+
+  .row-head {
+    background: var(--green);
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+  }
+  .row-head .rd { font-size: 0.98rem; font-weight: 700; color: var(--gold); }
+  .row-head .rq { font-size: 0.72rem; opacity: 0.9; margin-top: 3px; font-weight: 400; line-height: 1.3; }
+
+  .cell {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 0;
+    cursor: pointer;
+    min-height: 72px;
+    position: relative;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.05s;
+    font-family: inherit;
+    text-align: left;
+    width: 100%;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .cell:hover { border-color: var(--green-mid); box-shadow: 0 2px 8px rgba(21,71,52,0.1); }
+  .cell:active { transform: translateY(1px); }
+  .cell:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .cell.active { border-color: var(--gold); border-width: 2px; box-shadow: 0 3px 12px rgba(255,184,28,0.28); }
+
+  .cell-inner { padding: 11px 12px; display: flex; flex-direction: column; height: 100%; }
+  .cell .cell-combo {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .cell .cell-teaser {
+    font-size: 0.82rem;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .cell .plus {
+    position: absolute;
+    top: 8px; right: 9px;
+    font-size: 0.95rem;
+    color: var(--gold-line);
+    font-weight: 700;
+  }
+  .cell.active .plus { color: var(--gold); }
+
+  /* detail panel */
+  .detail {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--gold);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .detail.show { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .detail .d-combo {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .detail .chip-m { background: var(--green); color: var(--gold); padding: 4px 10px; border-radius: 6px; }
+  .detail .chip-d { background: var(--gold-soft); color: var(--green-deep); border: 1px solid var(--gold-line); padding: 4px 10px; border-radius: 6px; }
+  .detail .d-disc { font-size: 0.82rem; color: var(--muted); font-weight: 600; }
+  .detail h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--green); }
+  .detail .d-example { font-size: 1rem; margin: 0 0 14px; }
+  .detail .d-why {
+    font-size: 0.94rem;
+    color: var(--green-deep);
+    background: var(--paper);
+    border-left: 4px solid var(--green-mid);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+  }
+  .detail .d-why strong { color: var(--green); }
+
+  .empty-hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-style: italic;
+    padding: 16px;
+    background: var(--card);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>The 3×4 Matrix — Your Framework at a Glance</h1>
+    <p>Three modalities across the top, the four D's down the side. Click any cell to see a Hankamer faculty example of that exact combination — and why it lives there. Every AI task you do lives in one of these twelve cells.</p>
+    <span class="bookmark">★ Bookmark this page — you'll come back to it throughout the course.</span>
+  </div>
+
+  <div class="matrix-scroll">
+    <div class="matrix" id="matrix">
+      <div class="corner">The 4 D's ↓ &nbsp; Modalities →</div>
+      <div class="col-head"><div class="cm">Automation</div><div class="cd">AI does, you review</div></div>
+      <div class="col-head"><div class="cm">Augmentation</div><div class="cd">You &amp; AI co-create</div></div>
+      <div class="col-head"><div class="cm">Agency</div><div class="cd">AI acts on your behalf</div></div>
+      <!-- rows injected by JS -->
+    </div>
+  </div>
+
+  <div class="empty-hint" id="empty-hint">Select any cell above to explore that Modality × D combination.</div>
+
+  <div class="detail" id="detail" role="region" aria-live="polite"></div>
+
+</div>
+
+<script>
+const MODALITIES = ["Automation", "Augmentation", "Agency"];
+const DS = [
+  { d: "Delegation", q: "What should I hand to AI — and what stays with me?" },
+  { d: "Description", q: "How clearly am I telling the AI what I need?" },
+  { d: "Discernment", q: "How carefully am I judging what comes back?" },
+  { d: "Diligence", q: "Am I owning the outcome responsibly?" }
+];
+
+// CELLS[dIndex][modIndex]
+const CELLS = [
+  // ---- DELEGATION ----
+  [
+    {
+      disc: "Marketing",
+      teaser: "Prof. Halvorsen offloads first-draft social captions.",
+      example: "Prof. Halvorsen hands Claude a batch of product details and asks for first-draft social captions, then keeps the two that fit the brand voice and discards the rest.",
+      why: "The core decision is <strong>what to hand off</strong>: a low-stakes, high-volume drafting task is a clean delegation candidate, and Automation is the right mode because she reviews rather than co-writes."
+    },
+    {
+      disc: "Management",
+      teaser: "Prof. Ainsworth decides which parts of a case to build with AI.",
+      example: "Before co-developing a leadership case with Claude, Prof. Ainsworth deliberately chooses to keep the ethical dilemma design herself and delegate only the background company profile to the AI.",
+      why: "Even in a collaborative <strong>Augmentation</strong> workflow, delegation is the up-front judgment about which pieces belong to the human — she draws that line before the dialogue starts."
+    },
+    {
+      disc: "Accounting",
+      teaser: "Prof. Nkemelu scopes what an FAQ bot may and may not handle.",
+      example: "Setting up an after-hours FAQ bot, Prof. Nkemelu decides it may answer logistics questions but must route anything about grades or extensions back to her.",
+      why: "Delegation in <strong>Agency</strong> mode is drawing the boundary of the AI's authority — deciding what an autonomous system is and isn't allowed to own on your behalf."
+    }
+  ],
+  // ---- DESCRIPTION ----
+  [
+    {
+      disc: "Operations/Analytics",
+      teaser: "Prof. Vasquez specifies exactly what a summary must include.",
+      example: "Prof. Vasquez asks Claude to summarize 60 student project reflections, spelling out the three themes to look for, the tone, and a 150-word limit — then reviews the single summary it returns.",
+      why: "Automation still lives or dies on <strong>Description</strong>: a precise, well-scoped instruction is what makes a one-shot, review-only task produce something usable instead of generic."
+    },
+    {
+      disc: "Finance",
+      teaser: "Prof. Delaronde refines a problem set prompt each round.",
+      example: "Building a derivatives problem set, Prof. Delaronde and Claude trade messages — each turn he sharpens the difficulty, adds a constraint, and re-specifies what the last version got wrong.",
+      why: "In <strong>Augmentation</strong>, description is the engine of every iteration: the quality of each exchange is set by how precisely he frames that turn's request. This is the matrix's most description-intensive cell."
+    },
+    {
+      disc: "Management",
+      teaser: "Prof. Underhill writes the standing instructions for an agent.",
+      example: "Prof. Underhill configures an AI teaching assistant with a detailed system prompt — its scope, tone, escalation rules, and forbidden topics — before letting it respond to students on its own.",
+      why: "For <strong>Agency</strong>, description happens once but carries enormous weight: the standing instructions you write are the only steering the system gets while it acts autonomously."
+    }
+  ],
+  // ---- DISCERNMENT ----
+  [
+    {
+      disc: "Accounting",
+      teaser: "Prof. Broadhurst checks AI-drafted rubric language for errors.",
+      example: "Prof. Broadhurst asks Claude to draft rubric criteria for a tax return project, then catches that one criterion rewards a practice her course actually warns against, and rewrites it.",
+      why: "Even when AI does the drafting, <strong>Discernment</strong> is what keeps a plausible-sounding output from slipping through — she judges the result against her expertise before it reaches students."
+    },
+    {
+      disc: "Marketing",
+      teaser: "Prof. Castellano weighs each AI suggestion mid-collaboration.",
+      example: "Co-designing a campaign brief with Claude, Prof. Castellano accepts two positioning ideas, rejects one as off-brand, and pushes back on a claim she suspects isn't supported.",
+      why: "In <strong>Augmentation</strong>, discernment runs continuously — every turn she's evaluating whether the AI's contribution is accurate, on-strategy, and worth building on."
+    },
+    {
+      disc: "Finance",
+      teaser: "Prof. Osterlund audits what an FAQ bot has been telling students.",
+      example: "Prof. Osterlund periodically reviews the transcripts from her course's autonomous FAQ bot, discovers it gave an imprecise answer about exam weighting, and corrects its instructions.",
+      why: "Discernment in <strong>Agency</strong> mode is oversight after the fact: because the AI acts without you in the loop, judging its outputs on review is how you catch what autonomous action got wrong."
+    }
+  ],
+  // ---- DILIGENCE ----
+  [
+    {
+      disc: "Operations/Analytics",
+      teaser: "Prof. Marchetti verifies an AI-generated dataset before use.",
+      example: "Prof. Marchetti uses Claude to generate a synthetic dataset for a class exercise, then checks its distributions and documents that it's AI-generated before handing it to students.",
+      why: "Diligence is <strong>owning the outcome</strong>: even for an automated task, she takes responsibility for verifying and disclosing what the AI produced rather than passing it along untested."
+    },
+    {
+      disc: "Marketing",
+      teaser: "Prof. Whitcombe tracks and discloses AI's role in a co-built assignment.",
+      example: "After co-developing an assignment with Claude, Prof. Whitcombe notes in her syllabus how AI was used to build it and confirms the final version meets accessibility standards.",
+      why: "In <strong>Augmentation</strong>, diligence means standing behind the shared product — documenting AI's contribution and taking full responsibility for the result you put your name on."
+    },
+    {
+      disc: "Accounting",
+      teaser: "Prof. Lindgren plans institutional sign-off before deploying a bot.",
+      example: "Before launching an autonomous student FAQ bot, Prof. Lindgren confirms it complies with Baylor policy, checks FERPA implications, and sets a review schedule for its performance.",
+      why: "Diligence is at its most demanding in <strong>Agency</strong>: autonomous deployment requires institutional alignment, policy awareness, and a plan for ongoing responsibility. This is the matrix's highest-stakes cell."
+    }
+  ]
+];
+
+const matrix = document.getElementById('matrix');
+const detail = document.getElementById('detail');
+const emptyHint = document.getElementById('empty-hint');
+let activeCell = null;
+
+DS.forEach((drow, di) => {
+  const rh = document.createElement('div');
+  rh.className = 'row-head';
+  rh.innerHTML = `<div class="rd">${drow.d}</div><div class="rq">${drow.q}</div>`;
+  matrix.appendChild(rh);
+
+  MODALITIES.forEach((mod, mi) => {
+    const c = CELLS[di][mi];
+    const btn = document.createElement('button');
+    btn.className = 'cell';
+    btn.setAttribute('aria-label', `${mod} and ${drow.d}: ${c.disc}`);
+    btn.innerHTML = `
+      <span class="plus">+</span>
+      <span class="cell-inner">
+        <span class="cell-combo">${mod.slice(0,4)} × ${drow.d.slice(0,4)}</span>
+        <span class="cell-teaser">${c.teaser}</span>
+      </span>`;
+    btn.addEventListener('click', () => showDetail(btn, mod, drow, c));
+    matrix.appendChild(btn);
+  });
+});
+
+function showDetail(btn, mod, drow, c) {
+  if (activeCell) activeCell.classList.remove('active');
+  if (activeCell === btn) {
+    // toggle off
+    activeCell = null;
+    detail.classList.remove('show');
+    emptyHint.style.display = 'block';
+    return;
+  }
+  btn.classList.add('active');
+  activeCell = btn;
+  emptyHint.style.display = 'none';
+  detail.innerHTML = `
+    <div class="d-combo">
+      <span class="chip-m">${mod}</span>
+      <span style="color:var(--muted)">×</span>
+      <span class="chip-d">${drow.d}</span>
+      <span class="d-disc">&nbsp;${c.disc}</span>
+    </div>
+    <h3>What this looks like in practice</h3>
+    <p class="d-example">${c.example}</p>
+    <div class="d-why"><strong>Why this cell:</strong> ${c.why}</div>
+  `;
+  detail.classList.add('show');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
