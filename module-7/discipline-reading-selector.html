@@ -219,6 +219,16 @@
   .cta:focus-visible { outline: 3px solid var(--baylor-gold); outline-offset: 2px; }
   .cta .arw { font-size: 17px; }
 
+  .access-note {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 12px;
+    font-style: italic;
+    display: none;
+  }
+  .access-note.show { display: block; }
+
   /* ---- Shared supplements ---- */
   .supp {
     margin-top: 14px;
@@ -314,6 +324,7 @@
       <a class="cta" id="rLink" href="#" target="_blank" rel="noopener">
         <span id="rCtaLabel">Open the reading</span><span class="arw">→</span>
       </a>
+      <p class="access-note" id="rNote"></p>
     </div>
   </section>
 
@@ -343,52 +354,54 @@ const CONTENT = {
     {
       id: "accounting",
       name: "Accounting",
-      tag: "AICPA",
-      title: "The AI Accelerator Skills Program",
-      source: "AICPA & CIMA · Program overview",
-      url: "https://www.aicpa-cima.com/cpe-learning/bundle/ai-accelerator-program-bun",
-      desc: "The accounting profession's structured response to AI — organized into strategic, transitional, and operational tiers spanning governance, generative AI adoption, and day-to-day automation of finance and accounting work.",
-      lens: "As you read, watch for: which AI competencies the profession now treats as baseline for graduates entering practice — and where <strong>human judgment and governance</strong> are held apart from the automation."
+      tag: "Emerald / HESWBL",
+      title: "Adapting Accountants to the AI Revolution",
+      source: "Saad (2025) · Higher Education, Skills and Work-Based Learning",
+      url: "https://baylor.primo.exlibrisgroup.com/permalink/01BUL_INST/di6pmr/cdi_crossref_primary_10_1108_HESWBL_10_2023_0295",
+      note: "Baylor Library link — you may be prompted to sign in with your Baylor credentials.",
+      desc: "A peer-reviewed review of how AI is reshaping accounting work and how universities should redesign programs to build the skills graduates need — critical thinking, technological proficiency, ethical judgment, communication, and adaptability.",
+      lens: "As you read, watch for: the skills framework the author recommends universities build — and where <strong>human judgment and ethical reasoning</strong> are held apart from what AI automates."
     },
     {
       id: "finance",
       name: "Finance",
       tag: "CFA Institute",
-      title: "AI in Asset Management: Tools, Applications & Frontiers",
-      source: "CFA Institute · Practitioner theme hub",
-      url: "https://rpc.cfainstitute.org/themes/technology/ai-in-asset-management",
-      desc: "How machine learning, natural language processing, and deep learning are being deployed across portfolio design, trading, risk oversight, and client engagement — with practitioner briefs on where AI adds value beyond traditional quantitative methods.",
-      lens: "As you read, watch for: how the profession frames <strong>balancing automation with human oversight</strong> while maintaining governance and accountability — the judgment your students will be expected to exercise, not just the tools."
+      title: "Five Tips for Job Seekers in an AI-Driven Investment Industry",
+      source: "CFA Institute · In Brief (Nov 2025)",
+      url: "https://www.cfainstitute.org/insights/articles/guide-for-individuals-in-ai-era",
+      desc: "The CFA Institute's practical guide to what finance employers now expect from new entrants in the AI era — pairing AI fluency with human judgment, and the mix of technical and human skills that make a graduate competitive.",
+      lens: "As you read, watch for: how the profession pairs <strong>AI fluency with durable human skills</strong> — empathy, communication, strategic thinking — as the differentiators your students will be measured on."
     },
     {
       id: "marketing",
       name: "Marketing",
       tag: "AMA",
-      title: "The Skills Marketers Need in 2025 and Beyond",
-      source: "American Marketing Association · 2025 Skills Report",
-      url: "https://www.ama.org/2025/01/31/2025-marketing-skills-report/",
-      desc: "Built from 1,200+ marketer surveys and 450+ job postings, this report names generative AI as the top-rated future skill while stressing the durable human skills — communication, innovation, adaptability — that stay competitive alongside automation.",
-      lens: "As you read, watch for: the report's pairing of <strong>rising AI fluency with enduring human skills</strong> — and how that tension should shape what a marketing assignment asks students to demonstrate."
+      title: "AMA Marketing Competency Model",
+      source: "American Marketing Association (2025 update)",
+      url: "https://www.ama.org/ama-marketing-competency-model/",
+      desc: "The marketing profession's own map of what marketers need: six competency domains \u2014 including a new \u201CEssential Capabilities\u201D domain of durable human skills and AI woven through ethics and technology \u2014 with early-career job behaviors spelled out for each.",
+      lens: "As you read, watch for: how the profession balances <strong>AI and data fluency against durable human capabilities</strong> \u2014 critical thinking, creativity, communication \u2014 and which early-career behaviors your graduates should be able to demonstrate."
     },
     {
       id: "mgmt",
       name: "Management / HR",
-      tag: "SHRM",
-      title: "The State of AI in HR 2026",
-      source: "SHRM · Research report",
-      url: "https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026",
-      desc: "Drawing on nearly 1,900 HR professionals, this report maps which HR functions AI is reshaping, where adoption stalls, and how organizations are setting policy and governance for responsible use.",
-      lens: "As you read, watch for: the gap between <strong>executive expectation and front-line practice</strong>, and the governance and policy literacy the profession now expects — competencies your graduates will need to name and navigate."
+      tag: "AACSB",
+      title: "What Skills Will Future Business Graduates Need?",
+      source: "AACSB · Insights, 2025 State of Business Education Report",
+      url: "https://www.aacsb.edu/insights/articles/2025/08/what-skills-will-future-business-graduates-need",
+      desc: "From the premier accreditor of business schools: the AI-era skill set employers now seek in graduates — AI and big-data literacy, communication and critical thinking, creativity, resilience — framed around \u201Chuman-directed AI.\u201D",
+      lens: "As you read, watch for: the report's core claim that <strong>\u201Cthe future isn't AI; it's human-directed AI\u201D</strong> — and which durable human skills your graduates will need most alongside the tools."
     },
     {
       id: "ops",
       name: "Ops / Analytics",
       tag: "INFORMS",
-      title: "Information on Artificial Intelligence",
-      source: "INFORMS · AI resource hub",
-      url: "https://www.informs.org/News-Room/O.R.-Analytics-for-Government-Officials/Topic-Areas/Information-on-Artificial-Intelligence",
-      desc: "The operations-research and analytics community's view of AI — how modeling, optimization, and data science translate AI capability into defensible, real-world decision-making across sectors.",
-      lens: "As you read, watch for: how the field ties AI to <strong>rigorous, accountable decision-making</strong> rather than output alone — the analytical discipline your students will be expected to bring to AI-assisted work."
+      title: "The Human Side of Data Science (Soft-Skills Series)",
+      source: "INFORMS · Analytics (free digital magazine)",
+      url: "https://pubsonline.informs.org/magazine/analytics",
+      note: "INFORMS Analytics is a free digital magazine; a Baylor Library permalink can be substituted if you prefer.",
+      desc: "The operations-research and analytics community's own account of why human involvement is substantial at every step of data science — the communication, change-management, and stakeholder skills that carry an analytics project to adoption alongside AI/ML.",
+      lens: "As you read, watch for: how the field frames AI/ML as <strong>augmentation, not replacement</strong> — the human-in-the-loop skills your students will need to make analytics land in an organization."
     }
   ],
   supplements: [
@@ -448,6 +461,15 @@ function select(id) {
     link.style.pointerEvents = 'none';
     link.style.opacity = '.5';
     label.textContent = 'Link coming soon';
+  }
+
+  const note = document.getElementById('rNote');
+  if (d.note) {
+    note.textContent = d.note;
+    note.classList.add('show');
+  } else {
+    note.textContent = '';
+    note.classList.remove('show');
   }
 
   result.classList.add('show');
