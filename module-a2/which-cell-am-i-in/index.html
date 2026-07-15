@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Which Cell Am I In?</title>
+<style>
+  :root {
+    --baylor-green: #154734;
+    --baylor-green-deep: #0d2e21;
+    --baylor-gold: #FFB81C;
+    --gold-soft: #fff4d6;
+    --ink: #1c2521;
+    --paper: #f7f9f7;
+    --card: #ffffff;
+    --line: #dbe3de;
+    --correct: #1f7a4d;
+    --correct-soft: #e6f4ec;
+    --stop: #b3261e;
+    --stop-soft: #fbe9e7;
+    --muted: #5c6b63;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+
+  .wrap { max-width: 760px; margin: 0 auto; }
+
+  .intro {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--baylor-green);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+  }
+  .intro h1 {
+    margin: 0 0 6px;
+    font-size: 1.4rem;
+    color: var(--baylor-green);
+    letter-spacing: -0.01em;
+  }
+  .intro p { margin: 8px 0 0; font-size: 0.97rem; color: var(--muted); }
+  .intro .watch {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: var(--baylor-green-deep);
+    background: var(--gold-soft);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: var(--line);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--baylor-gold);
+    transition: width 0.4s ease;
+  }
+
+  .scenario {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px rgba(21,71,52,0.04);
+  }
+
+  .scenario-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .scenario-num {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--baylor-gold);
+    background: var(--baylor-green);
+    border-radius: 6px;
+    padding: 3px 9px;
+    white-space: nowrap;
+  }
+  .scenario-disc {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .scenario-body { margin: 10px 0 18px; font-size: 1rem; }
+
+  .q-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--baylor-green);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 16px 0 8px;
+  }
+
+  .options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt {
+    border: 1.5px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 9px 15px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.05s;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--baylor-green); }
+  .opt:active:not(:disabled) { transform: translateY(1px); }
+  .opt:focus-visible { outline: 3px solid var(--baylor-gold); outline-offset: 2px; }
+  .opt.selected {
+    border-color: var(--baylor-green);
+    background: var(--baylor-green);
+    color: #fff;
+  }
+  .opt.stop-opt { font-weight: 600; }
+  .opt:disabled { cursor: default; opacity: 0.9; }
+
+  .opt.answer-correct {
+    border-color: var(--correct);
+    background: var(--correct-soft);
+    color: var(--correct);
+    font-weight: 600;
+  }
+  .opt.answer-stop {
+    border-color: var(--stop);
+    background: var(--stop-soft);
+    color: var(--stop);
+    font-weight: 600;
+  }
+  .opt.answer-wrong {
+    border-color: var(--line);
+    background: #f2f4f2;
+    color: #97a29a;
+    text-decoration: line-through;
+  }
+
+  .submit-btn {
+    margin-top: 18px;
+    background: var(--baylor-gold);
+    color: var(--baylor-green-deep);
+    border: none;
+    border-radius: 8px;
+    padding: 11px 22px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: filter 0.15s;
+  }
+  .submit-btn:hover:not(:disabled) { filter: brightness(0.95); }
+  .submit-btn:focus-visible { outline: 3px solid var(--baylor-green); outline-offset: 2px; }
+  .submit-btn:disabled { background: var(--line); color: #97a29a; cursor: default; }
+
+  .feedback {
+    margin-top: 18px;
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.94rem;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.good { background: var(--correct-soft); border-left: 5px solid var(--correct); }
+  .feedback.stop { background: var(--stop-soft); border-left: 5px solid var(--stop); }
+  .feedback.partial { background: var(--gold-soft); border-left: 5px solid var(--baylor-gold); }
+  .feedback .fb-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .feedback.good .fb-title { color: var(--correct); }
+  .feedback.stop .fb-title { color: var(--stop); }
+  .feedback.partial .fb-title { color: var(--baylor-green-deep); }
+  .feedback p { margin: 6px 0 0; }
+  .feedback .answer-line {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  .summary {
+    background: var(--baylor-green);
+    color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    display: none;
+  }
+  .summary.show { display: block; }
+  .summary h2 { margin: 0 0 8px; color: var(--baylor-gold); }
+  .summary p { margin: 6px 0 0; font-size: 0.96rem; }
+  .summary .score { font-size: 2rem; font-weight: 700; margin: 10px 0; }
+  .restart {
+    margin-top: 16px;
+    background: transparent;
+    border: 1.5px solid var(--baylor-gold);
+    color: var(--baylor-gold);
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .restart:hover { background: var(--baylor-gold); color: var(--baylor-green-deep); }
+  .restart:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="intro">
+    <h1>Which Cell Am I In?</h1>
+    <p>Five Hankamer School of Business faculty are each working with AI. For every scenario, make two calls: which <strong>Modality</strong> is operating, and which <strong>D</strong> is most critical. You'll get immediate feedback after each. There are no partial scores per scenario &mdash; think before you submit.</p>
+    <div class="watch">Read carefully. One of these scenarios is a trap &mdash; the right first move isn't a modality at all.</div>
+  </div>
+
+  <div class="progress-row">
+    <span id="progress-label">0 of 5 answered</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="summary" id="summary">
+    <h2>Scenarios complete</h2>
+    <div class="score" id="score-line"></div>
+    <p id="summary-msg"></p>
+    <button class="restart" id="restart">Reset and try again</button>
+  </div>
+
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    id: 1,
+    discipline: "Marketing",
+    body: "Prof. Bergstrom asks Claude to generate first-draft language for a rubric she's building. She reads the output, keeps the parts that fit, and rewrites the rest in her own voice before finalizing.",
+    modOptions: ["Automation", "Augmentation", "Agency"],
+    dOptions: ["Delegation", "Description", "Discernment", "Diligence"],
+    correctMod: "Automation",
+    correctD: "Delegation",
+    isStop: false,
+    fb: "A well-scoped, lower-stakes task handed to AI for a first draft, with the human reviewing and retaining editorial control. That's <strong>Automation</strong>. The key move happened before the prompt: recognizing this as an appropriate task to hand off in the first place &mdash; <strong>Delegation</strong>."
+  },
+  {
+    id: 2,
+    discipline: "Finance",
+    body: "Prof. Adeyemi is developing a new derivatives problem set. He and Claude trade messages in real time &mdash; each exchange sharpens the difficulty, adjusts the scenario parameters, and adds a constraint based on what the last version missed.",
+    modOptions: ["Automation", "Augmentation", "Agency"],
+    dOptions: ["Delegation", "Description", "Discernment", "Diligence"],
+    correctMod: "Augmentation",
+    correctD: "Description",
+    isStop: false,
+    fb: "A real-time back-and-forth where human and AI build something together, iteration by iteration, is <strong>Augmentation</strong>. The quality of each round depends on how precisely he frames each request &mdash; vague prompts here produce an unusable problem set. That makes <strong>Description</strong> the critical D."
+  },
+  {
+    id: 3,
+    discipline: "Accounting",
+    body: "Prof. Lindqvist deploys an AI-powered FAQ bot for her Tax Law course. It answers student questions on its own between 10pm and 7am, when she isn't available.",
+    modOptions: ["Automation", "Augmentation", "Agency"],
+    dOptions: ["Delegation", "Description", "Discernment", "Diligence"],
+    correctMod: "Agency",
+    correctD: "Diligence",
+    isStop: false,
+    fb: "The AI acts independently, on her behalf, without a human in the loop for each response. That's <strong>Agency</strong> &mdash; the most powerful and most demanding modality. Autonomous deployment requires institutional alignment, policy awareness, and deliberate planning for what the bot should <em>not</em> answer: <strong>Diligence</strong>."
+  },
+  {
+    id: 4,
+    discipline: "Management",
+    body: "Prof. Thibodeaux wants to personalize feedback for 30 students. He opens his grade book and pastes each student's name, grade, and assignment notes into Claude, then asks it to write personalized feedback for each one.",
+    modOptions: ["Automation", "Augmentation", "Agency", "\u26A0 STOP \u2014 do not proceed"],
+    dOptions: ["Delegation", "Description", "Discernment", "Diligence"],
+    correctMod: "\u26A0 STOP \u2014 do not proceed",
+    correctD: "Discernment",
+    isStop: true,
+    fb: "Before any modality question applies, this one fails the <strong>Discernment</strong> check &mdash; specifically #4, <em>Safe?</em> Student names, grades, and assignment-specific notes are FERPA-protected information, and general-purpose AI tools are not FERPA-compliant for student data. The correct move is to <strong>STOP</strong>. A safer path: use performance-level templates (Strong / Developing / Emerging) with no identifiers, then personalize by hand before sending. Catching this <em>is</em> Discernment doing its job &mdash; it's inside the framework, not outside it."
+  },
+  {
+    id: 5,
+    discipline: "Operations / Analytics",
+    body: "Prof. Castellanos is building a supply chain simulation. She runs a scenario, shares the output with Claude, asks it to stress-test one assumption, reviews the analysis, and decides which variable to adjust next. The loop runs six times before she finalizes the parameters.",
+    modOptions: ["Automation", "Augmentation", "Agency"],
+    dOptions: ["Delegation", "Description", "Discernment", "Diligence"],
+    correctMod: "Augmentation",
+    correctD: "Description",
+    isStop: false,
+    fb: "A repeated human-AI loop where she stays in the driver's seat, deciding what to test next each round, is <strong>Augmentation</strong>. Each prompt determines what gets stress-tested and how specifically &mdash; precision there decides whether the simulation is useful. The critical D is <strong>Description</strong>."
+  }
+];
+
+const state = {};
+SCENARIOS.forEach(s => { state[s.id] = { mod: null, d: null, submitted: false }; });
+
+const quizEl = document.getElementById('quiz');
+
+function render() {
+  quizEl.innerHTML = '';
+  SCENARIOS.forEach(s => {
+    const st = state[s.id];
+    const card = document.createElement('div');
+    card.className = 'scenario';
+    card.id = 'scenario-' + s.id;
+
+    card.innerHTML = `
+      <div class="scenario-head">
+        <span class="scenario-num">Scenario ${s.id}</span>
+        <span class="scenario-disc">${s.discipline}</span>
+      </div>
+      <div class="scenario-body">${s.body}</div>
+      <div class="q-label">Which modality is operating?</div>
+      <div class="options" data-group="mod" data-sid="${s.id}"></div>
+      <div class="q-label">Which D is most critical?</div>
+      <div class="options" data-group="d" data-sid="${s.id}"></div>
+    `;
+
+    const modBox = card.querySelector('[data-group="mod"]');
+    s.modOptions.forEach(opt => modBox.appendChild(makeOpt(s, 'mod', opt)));
+    const dBox = card.querySelector('[data-group="d"]');
+    s.dOptions.forEach(opt => dBox.appendChild(makeOpt(s, 'd', opt)));
+
+    const btn = document.createElement('button');
+    btn.className = 'submit-btn';
+    btn.textContent = 'Submit answer';
+    btn.disabled = !(st.mod && st.d) || st.submitted;
+    btn.addEventListener('click', () => submit(s));
+    card.appendChild(btn);
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = 'fb-' + s.id;
+    card.appendChild(fb);
+
+    quizEl.appendChild(card);
+
+    if (st.submitted) applyResult(s);
+  });
+  updateProgress();
+}
+
+function makeOpt(s, group, value) {
+  const st = state[s.id];
+  const b = document.createElement('button');
+  b.className = 'opt' + (value.indexOf('STOP') > -1 ? ' stop-opt' : '');
+  b.textContent = value;
+  b.setAttribute('data-value', value);
+  if (st[group] === value) b.classList.add('selected');
+  b.disabled = st.submitted;
+  b.addEventListener('click', () => {
+    if (st.submitted) return;
+    st[group] = value;
+    render();
+  });
+  return b;
+}
+
+function submit(s) {
+  state[s.id].submitted = true;
+  render();
+  const card = document.getElementById('scenario-' + s.id);
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function applyResult(s) {
+  const st = state[s.id];
+  const card = document.getElementById('scenario-' + s.id);
+  const modCorrect = st.mod === s.correctMod;
+  const dCorrect = st.d === s.correctD;
+
+  // mark option buttons
+  card.querySelectorAll('[data-group="mod"] .opt').forEach(b => {
+    const v = b.getAttribute('data-value');
+    if (v === s.correctMod) b.classList.add(s.isStop ? 'answer-stop' : 'answer-correct');
+    else if (v === st.mod) b.classList.add('answer-wrong');
+  });
+  card.querySelectorAll('[data-group="d"] .opt').forEach(b => {
+    const v = b.getAttribute('data-value');
+    if (v === s.correctD) b.classList.add('answer-correct');
+    else if (v === st.d) b.classList.add('answer-wrong');
+  });
+
+  const fb = document.getElementById('fb-' + s.id);
+  fb.classList.add('show');
+
+  let cls, title;
+  if (s.isStop) {
+    cls = modCorrect ? 'stop' : 'partial';
+    title = modCorrect ? '\u2714 You caught it \u2014 STOP is correct' : 'Look again \u2014 this one\u2019s a STOP';
+  } else if (modCorrect && dCorrect) {
+    cls = 'good';
+    title = '\u2714 Both correct';
+  } else {
+    cls = 'partial';
+    title = (modCorrect || dCorrect) ? 'Partly there' : 'Not quite';
+  }
+
+  fb.classList.remove('good', 'stop', 'partial');
+  fb.classList.add(cls);
+  fb.innerHTML = `
+    <span class="fb-title">${title}</span>
+    <p>${s.fb}</p>
+    <p class="answer-line">Modality: <strong>${s.correctMod}</strong> &nbsp;&middot;&nbsp; Critical D: <strong>${s.correctD}</strong></p>
+  `;
+}
+
+function updateProgress() {
+  const done = SCENARIOS.filter(s => state[s.id].submitted).length;
+  document.getElementById('progress-label').textContent = done + ' of 5 answered';
+  document.getElementById('progress-fill').style.width = (done / 5 * 100) + '%';
+
+  const summary = document.getElementById('summary');
+  if (done === 5) {
+    let both = 0;
+    SCENARIOS.forEach(s => {
+      const st = state[s.id];
+      if (st.mod === s.correctMod && st.d === s.correctD) both++;
+    });
+    document.getElementById('score-line').textContent = both + ' of 5 fully correct';
+    document.getElementById('summary-msg').textContent =
+      both === 5
+        ? "Every call correct \u2014 including the FERPA STOP. You\u2019re reading the framework the way it\u2019s meant to be used."
+        : "Review the feedback above on any you missed. The goal isn\u2019t a perfect score \u2014 it\u2019s learning to name the modality and the D on sight.";
+    summary.classList.add('show');
+  } else {
+    summary.classList.remove('show');
+  }
+}
+
+document.getElementById('restart').addEventListener('click', () => {
+  SCENARIOS.forEach(s => { state[s.id] = { mod: null, d: null, submitted: false }; });
+  document.getElementById('summary').classList.remove('show');
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+render();
+</script>
+</body>
+</html>
