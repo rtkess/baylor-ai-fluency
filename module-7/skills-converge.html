@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What the professions agree on — Six AI skills</title>
+<style>
+  :root{
+    --baylor-green:#154734;
+    --baylor-gold:#FFB81C;
+    --green-tint:#eaf0ed;
+    --gold-tint:#fff6e2;
+    --ink:#1f2a24;
+    --muted:#5a6b62;
+    --line:#d5ddd8;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:transparent;
+    line-height:1.5;
+    padding:20px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+  .head{
+    border-left:6px solid var(--baylor-gold);
+    padding:2px 0 2px 16px;
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--baylor-green);font-weight:700;margin-bottom:4px;
+  }
+  .head h1{font-size:22px;color:var(--baylor-green);font-weight:700;line-height:1.25}
+  .head p{font-size:14px;color:var(--muted);margin-top:6px;max-width:640px}
+  .cols{
+    display:grid;grid-template-columns:minmax(0,2.1fr) minmax(0,1.1fr) minmax(0,2.2fr);
+    gap:10px;padding:0 4px 8px;
+    font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;
+  }
+  .row{
+    display:grid;grid-template-columns:minmax(0,2.1fr) minmax(0,1.1fr) minmax(0,2.2fr);
+    gap:10px;align-items:stretch;margin-bottom:10px;
+  }
+  .cell{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;display:flex;flex-direction:column;justify-content:center;
+  }
+  .skill .name{font-size:15px;font-weight:600;color:var(--baylor-green)}
+  .skill .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .d{
+    background:var(--green-tint);border-color:transparent;
+    align-items:center;text-align:center;
+  }
+  .d .dname{font-size:14px;font-weight:700;color:var(--baylor-green)}
+  .d.cross{background:var(--gold-tint)}
+  .d.cross .dname{color:#8a6a08}
+  .practice{font-size:13px;color:var(--ink)}
+  .foot{
+    display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;
+    margin-top:14px;padding-top:14px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--muted);
+  }
+  .key{display:flex;align-items:center;gap:7px}
+  .dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+  .dot.g{background:var(--green-tint);border:1px solid #c3d2ca}
+  .dot.y{background:var(--gold-tint);border:1px solid #ecd9a3}
+  .src{margin-top:10px;font-size:11.5px;color:var(--muted)}
+  @media (max-width:640px){
+    .cols{display:none}
+    .row{grid-template-columns:1fr;gap:6px;margin-bottom:14px;
+      border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfcfb}
+    .cell{border:none;padding:6px 8px}
+    .d{border-radius:8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Teaching Forward · Module A7</div>
+    <h1>What the professions agree on</h1>
+    <p>Accounting, Finance, Marketing, Management/HR, and Operations read different sources — yet their guidance converges on the same six AI competencies. Each one leans on a D you already know from Module 2.</p>
+  </div>
+
+  <div class="cols">
+    <div>The skill</div>
+    <div style="text-align:center">Leans on</div>
+    <div>In practice, it means</div>
+  </div>
+
+  <div class="row">
+    <div class="cell skill"><div class="name">Critical evaluation of output</div><div class="sub">hallucination, bias, model limits</div></div>
+    <div class="cell d"><div class="dname">Discernment</div></div>
+    <div class="cell practice">Checking what AI produces before trusting or using it.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell skill"><div class="name">Prompting &amp; problem framing</div><div class="sub">describing intent precisely</div></div>
+    <div class="cell d"><div class="dname">Description</div></div>
+    <div class="cell practice">Getting a usable result by stating the task clearly.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell skill"><div class="name">Delegation judgment</div><div class="sub">what AI should and shouldn't do</div></div>
+    <div class="cell d"><div class="dname">Delegation</div></div>
+    <div class="cell practice">Deciding which work to hand off and which to keep.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell skill"><div class="name">Ethics, privacy, responsible use</div><div class="sub">legal &amp; regulatory awareness</div></div>
+    <div class="cell d"><div class="dname">Diligence</div></div>
+    <div class="cell practice">Using AI within policy, law, and disclosure norms.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell skill"><div class="name">Workflow integration</div><div class="sub">where AI fits in the real work</div></div>
+    <div class="cell d cross"><div class="dname">cuts across</div></div>
+    <div class="cell practice">Placing AI at the right point in an actual process.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell skill"><div class="name">Durable human skills</div><div class="sub">communication, creativity, judgment</div></div>
+    <div class="cell d cross"><div class="dname">stays human</div></div>
+    <div class="cell practice">The capacities AI raises the value of, not replaces.</div>
+  </div>
+
+  <div class="foot">
+    <span class="key"><span class="dot g"></span>Maps to one D</span>
+    <span class="key"><span class="dot y"></span>Spans the whole framework</span>
+  </div>
+  <div class="src">Skill set synthesized from AICPA, CFA, AMA, SHRM, and INFORMS guidance. Framework: 4 Ds, Module A2.</div>
+</div>
+</body>
+</html>
