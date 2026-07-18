@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidence Check — Module 8</title>
+<style>
+  :root{
+    --baylor-green:#154734;
+    --baylor-gold:#FFB81C;
+    --ink:#1f2a24;
+    --muted:#5a6b62;
+    --line:#d5ddd8;
+    --card:#ffffff;
+    --tint:#eaf0ed;
+    --gold-tint:#fff6e2;
+    --up:#1f6b3d;
+    --up-bg:#eaf3ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:transparent;line-height:1.5;padding:20px;
+  }
+  .wrap{max-width:800px;margin:0 auto}
+  .head{border-left:6px solid var(--baylor-gold);padding:2px 0 2px 16px;margin-bottom:20px}
+  .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--baylor-green);font-weight:700;margin-bottom:4px}
+  .head h1{font-size:22px;color:var(--baylor-green);font-weight:700;line-height:1.25}
+  .head p{font-size:14px;color:var(--muted);margin-top:6px;max-width:620px}
+
+  .item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .qnum{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+  .qtext{font-size:15.5px;color:var(--ink);font-weight:500;line-height:1.45;margin-bottom:14px}
+
+  .scalewrap{display:flex;flex-direction:column;gap:12px}
+  .scalerow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .scalelbl{font-size:12px;font-weight:700;color:var(--muted);min-width:52px;letter-spacing:.03em;text-transform:uppercase}
+  .scale{display:flex;gap:8px;flex-wrap:wrap}
+  .dot{
+    width:42px;height:42px;border-radius:10px;border:1.5px solid var(--line);background:#fff;
+    font-size:15px;font-weight:700;color:var(--muted);cursor:pointer;
+    transition:background .15s,border-color .15s,color .15s;font-family:inherit;
+  }
+  .dot:hover{border-color:var(--baylor-green);color:var(--baylor-green)}
+  .dot:focus-visible{outline:3px solid var(--baylor-gold);outline-offset:2px}
+  .dot.on{background:var(--baylor-green);border-color:var(--baylor-green);color:#fff}
+  .dot.then.on{background:#9fb3a9;border-color:#9fb3a9;color:#fff}
+  .anchors{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:2px;max-width:274px}
+
+  .shift{font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
+  .shift.up{color:var(--up)}
+  .shift.same{color:var(--muted)}
+
+  .summary{
+    margin-top:18px;padding:16px 18px;border-radius:12px;background:var(--tint);
+    border-left:4px solid var(--baylor-green);font-size:14.5px;line-height:1.6;color:var(--ink);
+  }
+  .summary strong{color:var(--baylor-green)}
+  .note{margin-top:14px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  @media (max-width:520px){
+    .dot{width:38px;height:38px}
+    .scalerow{gap:8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Teaching Forward · Module A8</div>
+    <h1 id="title">Before You Begin — Confidence Check</h1>
+    <p id="intro">Rate your current confidence (1&ndash;5) on each of the following. You&rsquo;ll return to these same items at the close of the module.</p>
+  </div>
+
+  <div id="items"></div>
+
+  <div class="summary" id="summary"></div>
+  <div class="note" id="note"></div>
+</div>
+
+<script>
+(function(){
+  var POST = /(?:\?|&)mode=post\b/.test(window.location.search);
+
+  var ITEMS = [
+    "I can identify the top AI-related skills my discipline\u2019s professional body expects of graduates.",
+    "I can rewrite a professional skill as a clear, student-facing learning outcome.",
+    "I can judge whether one of my own assignments actually develops a given AI skill."
+  ];
+
+  var now  = [0,0,0];
+  var then = [0,0,0];
+
+  if (POST) {
+    document.getElementById('title').textContent = "Confidence Check \u2014 Revisited";
+    document.getElementById('intro').innerHTML =
+      "These are the same three items you rated at the start of the module. Enter the number you gave yourself then, and the number you\u2019d give yourself now. Seeing the distance is the point.";
+  }
+
+  var wrap = document.getElementById('items');
+
+  function scaleRow(idx, kind){
+    var isThen = (kind === 'then');
+    var row = document.createElement('div');
+    row.className = 'scalerow';
+
+    if (POST) {
+      var lbl = document.createElement('span');
+      lbl.className = 'scalelbl';
+      lbl.textContent = isThen ? 'Then' : 'Now';
+      row.appendChild(lbl);
+    }
+
+    var scale = document.createElement('div');
+    scale.className = 'scale';
+    for (var v = 1; v <= 5; v++){
+      (function(val){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'dot' + (isThen ? ' then' : '');
+        b.textContent = val;
+        b.setAttribute('aria-label',
+          (POST ? (isThen ? 'Then, ' : 'Now, ') : '') + 'rate ' + val + ' of 5 for item ' + (idx+1));
+        b.onclick = function(){
+          (isThen ? then : now)[idx] = val;
+          render();
+        };
+        scale.appendChild(b);
+      })(v);
+    }
+    row.appendChild(scale);
+    return row;
+  }
+
+  function build(){
+    wrap.innerHTML = '';
+    ITEMS.forEach(function(text, i){
+      var card = document.createElement('div');
+      card.className = 'item';
+
+      var n = document.createElement('div');
+      n.className = 'qnum';
+      n.textContent = 'Item ' + (i+1) + ' of 3';
+      card.appendChild(n);
+
+      var q = document.createElement('div');
+      q.className = 'qtext';
+      q.textContent = text;
+      card.appendChild(q);
+
+      var sw = document.createElement('div');
+      sw.className = 'scalewrap';
+      if (POST) sw.appendChild(scaleRow(i, 'then'));
+      sw.appendChild(scaleRow(i, 'now'));
+      card.appendChild(sw);
+
+      var a = document.createElement('div');
+      a.className = 'anchors';
+      a.innerHTML = '<span>1 &mdash; Not yet</span><span>5 &mdash; Confident</span>';
+      card.appendChild(a);
+
+      if (POST) {
+        var s = document.createElement('div');
+        s.className = 'shift';
+        s.id = 'shift-' + i;
+        card.appendChild(s);
+      }
+      wrap.appendChild(card);
+    });
+  }
+
+  function paint(){
+    var cards = wrap.querySelectorAll('.item');
+    cards.forEach(function(card, i){
+      var scales = card.querySelectorAll('.scale');
+      if (POST) {
+        setOn(scales[0], then[i]);
+        setOn(scales[1], now[i]);
+      } else {
+        setOn(scales[0], now[i]);
+      }
+    });
+  }
+  function setOn(scale, val){
+    var btns = scale.querySelectorAll('.dot');
+    btns.forEach(function(b, j){
+      if (j+1 === val) b.classList.add('on'); else b.classList.remove('on');
+    });
+  }
+
+  function render(){
+    paint();
+    var sum = document.getElementById('summary');
+    var note = document.getElementById('note');
+
+    if (!POST) {
+      var done = now.filter(function(v){return v>0;}).length;
+      if (done === 0){
+        sum.innerHTML = 'Choose a number for each item above. There is no right answer &mdash; an honest starting point is all that\u2019s needed.';
+      } else if (done < 3){
+        sum.innerHTML = 'You\u2019ve rated <strong>' + done + '</strong> of 3. Keep going.';
+      } else {
+        var avg = (now.reduce(function(a,b){return a+b;},0)/3).toFixed(1);
+        sum.innerHTML = 'All three rated &mdash; your starting average is <strong>' + avg + ' of 5</strong>. Jot these three numbers down or screenshot this; you\u2019ll compare against them at the close of the module.';
+      }
+      note.textContent = 'Nothing is saved or graded. This is your own baseline.';
+      return;
+    }
+
+    // POST mode
+    var complete = 0;
+    for (var i=0;i<3;i++){
+      var el = document.getElementById('shift-' + i);
+      if (then[i] && now[i]){
+        complete++;
+        var d = now[i] - then[i];
+        if (d > 0){ el.className = 'shift up'; el.textContent = '\u2191 Up ' + d + ' point' + (d===1?'':'s'); }
+        else if (d === 0){ el.className = 'shift same'; el.textContent = 'No change \u2014 steady'; }
+        else { el.className = 'shift same'; el.textContent = 'Down ' + Math.abs(d) + ' \u2014 worth naming in the Muddiest Point'; }
+      } else if (el) {
+        el.className = 'shift'; el.textContent = '';
+      }
+    }
+
+    if (complete === 0){
+      sum.innerHTML = 'Enter your <strong>Then</strong> and <strong>Now</strong> rating for each item to see the shift.';
+    } else if (complete < 3){
+      sum.innerHTML = 'You\u2019ve completed <strong>' + complete + '</strong> of 3 comparisons.';
+    } else {
+      var tAvg = then.reduce(function(a,b){return a+b;},0)/3;
+      var nAvg = now.reduce(function(a,b){return a+b;},0)/3;
+      var diff = (nAvg - tAvg).toFixed(1);
+      if (nAvg > tAvg){
+        sum.innerHTML = 'You moved from <strong>' + tAvg.toFixed(1) + '</strong> to <strong>' + nAvg.toFixed(1) + '</strong> &mdash; up ' + diff + ' points on average. Any item still sitting low is a good thing to raise in the synchronous sessions.';
+      } else if (nAvg === tAvg){
+        sum.innerHTML = 'Your average held steady at <strong>' + nAvg.toFixed(1) + '</strong>. Steady isn\u2019t stalled &mdash; but name what would move it in the Muddiest Point.';
+      } else {
+        sum.innerHTML = 'Your average moved down to <strong>' + nAvg.toFixed(1) + '</strong>. That often means the module showed you what you didn\u2019t know you didn\u2019t know &mdash; useful information. Bring it to Day 1.';
+      }
+    }
+    note.textContent = 'Nothing is saved or graded. This comparison is for you.';
+  }
+
+  build();
+  render();
+})();
+</script>
+</body>
+</html>
