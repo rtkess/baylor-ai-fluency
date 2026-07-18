@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What you'll do in Module 8</title>
+<style>
+  :root{
+    --baylor-green:#154734;
+    --baylor-gold:#FFB81C;
+    --ink:#1f2a24;
+    --muted:#5a6b62;
+    --line:#d5ddd8;
+    --green-tint:#eaf0ed;
+    --gold-tint:#fff6e2;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:transparent;line-height:1.5;padding:20px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+  .head{border-left:6px solid var(--baylor-gold);padding:2px 0 2px 16px;margin-bottom:22px}
+  .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--baylor-green);font-weight:700;margin-bottom:4px}
+  .head h1{font-size:22px;color:var(--baylor-green);font-weight:700;line-height:1.25}
+  .head p{font-size:14px;color:var(--muted);margin-top:6px;max-width:640px}
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap}
+  .step{
+    flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  }
+  .step.start{background:var(--green-tint);border-color:transparent}
+  .snum{
+    width:26px;height:26px;border-radius:50%;background:var(--baylor-green);color:#fff;
+    font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:8px;
+  }
+  .step.start .snum{background:#8ba69a}
+  .sname{font-size:14.5px;font-weight:700;color:var(--baylor-green);line-height:1.2}
+  .ssub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--baylor-gold);font-size:20px;font-weight:700;padding:0 4px;flex:0 0 22px}
+  .feeds{
+    margin-top:16px;background:var(--gold-tint);border-radius:12px;padding:16px 18px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .feeds .fnum{
+    width:30px;height:30px;border-radius:50%;background:var(--baylor-gold);color:var(--baylor-green);
+    font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .feeds .ftext{font-size:14px;color:var(--ink)}
+  .feeds .ftext strong{color:var(--baylor-green);font-weight:700}
+  .downcue{text-align:center;color:var(--baylor-gold);font-size:20px;font-weight:700;margin:8px 0 2px}
+  @media (max-width:660px){
+    .flow{flex-direction:column}
+    .step{text-align:left;flex-direction:row;align-items:center;gap:12px}
+    .snum{margin-bottom:0}
+    .arrow{transform:rotate(90deg);padding:4px 0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Teaching Forward · Module A8</div>
+    <h1>What you'll do in this module</h1>
+    <p>From the discipline reading you just finished to a shared reference your cohort works from in the synchronous workshop.</p>
+  </div>
+
+  <div class="flow">
+    <div class="step start">
+      <div class="snum">&#8226;</div>
+      <div class="sname">Start with</div>
+      <div class="ssub">your Module&nbsp;7 reading</div>
+    </div>
+    <div class="arrow">&#8594;</div>
+    <div class="step">
+      <div class="snum">1</div>
+      <div class="sname">Extract</div>
+      <div class="ssub">top&#8209;5 AI skills your graduates need</div>
+    </div>
+    <div class="arrow">&#8594;</div>
+    <div class="step">
+      <div class="snum">2</div>
+      <div class="sname">Rewrite</div>
+      <div class="ssub">as student&#8209;facing learning outcomes</div>
+    </div>
+    <div class="arrow">&#8594;</div>
+    <div class="step">
+      <div class="snum">3</div>
+      <div class="sname">Post</div>
+      <div class="ssub">to your discipline board</div>
+    </div>
+  </div>
+
+  <div class="downcue">&#8595;</div>
+  <div class="feeds">
+    <div class="fnum">&#10003;</div>
+    <div class="ftext"><strong>Becomes your cohort's shared reference</strong> &mdash; pinned to the discipline workspace for the synchronous redesign days.</div>
+  </div>
+</div>
+</body>
+</html>
