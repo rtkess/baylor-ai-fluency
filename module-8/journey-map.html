@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where you've been · Where you're going</title>
+<style>
+  :root{
+    --baylor-green:#154734;
+    --baylor-gold:#FFB81C;
+    --ink:#1f2a24;
+    --muted:#5a6b62;
+    --line:#d5ddd8;
+    --card:#ffffff;
+    --tint:#eaf0ed;
+    --gold-tint:#fff6e2;
+    --rail-idle:#cfd8d3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:transparent;line-height:1.5;padding:20px;
+  }
+  .wrap{max-width:800px;margin:0 auto}
+  .head{border-left:6px solid var(--baylor-gold);padding:2px 0 2px 16px;margin-bottom:10px}
+  .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--baylor-green);font-weight:700;margin-bottom:4px}
+  .head h1{font-size:22px;color:var(--baylor-green);font-weight:700;line-height:1.25}
+  .head p{font-size:14px;color:var(--muted);margin-top:6px;max-width:620px}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin:14px 0 18px;padding-left:16px;font-size:12.5px;color:var(--muted)}
+  .lg{display:flex;align-items:center;gap:7px}
+  .swatch{width:14px;height:6px;border-radius:3px;flex-shrink:0}
+  .swatch.thread{background:var(--baylor-gold)}
+  .swatch.idle{background:var(--rail-idle)}
+
+  .track{position:relative;padding-left:8px}
+  .stop{display:grid;grid-template-columns:78px 20px 1fr;gap:0;align-items:stretch}
+
+  .code{
+    display:flex;align-items:flex-start;justify-content:flex-end;
+    padding:14px 12px 0 0;font-size:14px;font-weight:700;color:var(--baylor-green);
+  }
+  .code .sub{display:block;font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-top:1px;text-align:right}
+
+  .rail{position:relative;display:flex;justify-content:center}
+  .rail::before{
+    content:"";position:absolute;top:0;bottom:0;width:4px;background:var(--rail-idle);border-radius:2px;
+  }
+  .stop.threaded .rail::before{background:var(--baylor-gold)}
+  .stop:first-child .rail::before{top:18px}
+  .node{
+    position:relative;z-index:2;width:14px;height:14px;border-radius:50%;
+    background:#fff;border:3px solid var(--rail-idle);margin-top:16px;flex-shrink:0;
+  }
+  .stop.threaded .node{border-color:var(--baylor-gold)}
+  .stop.hinge .node{width:18px;height:18px;border-color:var(--baylor-green);background:var(--baylor-gold);margin-top:14px}
+
+  .body{padding:10px 0 10px 16px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 14px;
+  }
+  .stop.hinge .card{background:var(--gold-tint);border-color:var(--baylor-gold);border-width:2px}
+  .stop.sync .card{background:var(--tint);border-color:var(--baylor-green);border-width:2px}
+  .name{font-size:14.5px;font-weight:700;color:var(--baylor-green);line-height:1.3}
+  .made{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .made b{color:var(--ink);font-weight:600}
+
+  .youare{
+    display:flex;align-items:center;gap:10px;margin:2px 0 2px 98px;padding:9px 14px;
+    background:var(--baylor-green);border-radius:8px;
+  }
+  .youare .dot{width:9px;height:9px;border-radius:50%;background:var(--baylor-gold);flex-shrink:0}
+  .youare .t{font-size:13px;font-weight:700;color:#fff;letter-spacing:.02em}
+  .youare .s{font-size:12px;color:#cfded6;font-weight:400}
+
+  .foot{
+    margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--tint);
+    border-left:4px solid var(--baylor-green);font-size:13.5px;line-height:1.6;
+  }
+  .foot b{color:var(--baylor-green)}
+
+  @media (max-width:560px){
+    .stop{grid-template-columns:56px 20px 1fr}
+    .code{font-size:13px;padding-right:8px}
+    .body{padding-left:12px}
+    .youare{margin-left:76px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="eyebrow">Teaching Forward &middot; End of the asynchronous phase</div>
+    <h1>Where you&rsquo;ve been &middot; Where you&rsquo;re going</h1>
+    <p>Eight modules, and one assignment carried through them. The gold line is your assignment &mdash; picked up in Module 3, and still with you when you walk into the workshop.</p>
+  </div>
+
+  <div class="legend">
+    <span class="lg"><span class="swatch thread"></span>Your assignment travels with you</span>
+    <span class="lg"><span class="swatch idle"></span>Building the frameworks</span>
+  </div>
+
+  <div class="track">
+
+    <div class="stop">
+      <div class="code">A1<span class="sub">Async</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">What Is Generative AI?</div>
+        <div class="made">You built <b>a working understanding</b> of how these tools actually produce what they produce.</div>
+      </div></div>
+    </div>
+
+    <div class="stop">
+      <div class="code">A2<span class="sub">Async</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">3 Modalities &amp; the 4 D&rsquo;s</div>
+        <div class="made">You built <b>a shared vocabulary</b> &mdash; Automation, Augmentation, Agency; Delegation, Description, Discernment, Diligence.</div>
+      </div></div>
+    </div>
+
+    <div class="stop threaded">
+      <div class="code">A3<span class="sub">Async</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">Choose Your Redesign Candidate</div>
+        <div class="made">You picked up <b>the assignment</b> &mdash; submitted as it exists today, with a framework-grounded diagnosis. Everything after this point is about that assignment.</div>
+      </div></div>
+    </div>
+
+    <div class="stop threaded">
+      <div class="code">A4<span class="sub">Async</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">The AI Literacy Continuum</div>
+        <div class="made">You placed your assignment on <b>a five-level scale</b> &mdash; where it sits now, and where it could move.</div>
+      </div></div>
+    </div>
+
+    <div class="stop threaded">
+      <div class="code">A5<span class="sub">Async</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">AI-Literacy vs. AI-Resistant</div>
+        <div class="made">You learned <b>two design responses</b> &mdash; and that the choice is made task by task, not once for the whole assignment.</div>
+      </div></div>
+    </div>
+
+    <div class="stop threaded">
+      <div class="code">A6<span class="sub">Async</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">Ethical Stewardship</div>
+        <div class="made">You worked through <b>the questions beyond FERPA</b> &mdash; integrity, bias, disclosure, privacy &mdash; against your own course.</div>
+      </div></div>
+    </div>
+
+    <div class="stop threaded">
+      <div class="code">A7<span class="sub">Async</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">Discipline-Specific Reading</div>
+        <div class="made">You read <b>what your profession expects</b> &mdash; AICPA, CFA, AMA, SHRM, or INFORMS guidance for your own field.</div>
+      </div></div>
+    </div>
+
+    <div class="stop threaded hinge">
+      <div class="code">A8<span class="sub">You just finished</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">Discipline AI Skills Translation</div>
+        <div class="made">You produced <b>your top-5 skills as student-facing outcomes</b>, posted for your cohort &mdash; and named <b>the gaps</b> between those skills and your assignment.</div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <div class="youare">
+    <span class="dot"></span>
+    <span class="t">You are here</span>
+    <span class="s">&mdash; carrying your assignment, your top-5 list, and your gaps into the room</span>
+  </div>
+
+  <div class="track">
+    <div class="stop threaded sync">
+      <div class="code">S1&ndash;S4<span class="sub">Synchronous</span></div>
+      <div class="rail"><div class="node"></div></div>
+      <div class="body"><div class="card">
+        <div class="name">The Redesign Workshop</div>
+        <div class="made">Four sessions: place it on the continuum, run the <b>AI Stress Test</b>, complete the <b>Gap Analysis</b>, then draft the redesign &mdash; prompt, rubric, and syllabus statement &mdash; with your discipline cohort beside you.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>The through-line:</b> you didn&rsquo;t study AI in the abstract. You chose one real assignment in Module 3 and carried it through every module since &mdash; measuring it against a continuum, two design strategies, an ethical lens, and your profession&rsquo;s own expectations. The workshop is where you rebuild it.
+  </div>
+
+</div>
+</body>
+</html>
