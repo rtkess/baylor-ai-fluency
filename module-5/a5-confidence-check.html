@@ -20,6 +20,10 @@
    browser, Safari iframe restrictions), the post-check degrades
    cleanly to manual entry — it never fails silently.
 
+   Post ratings are never written to storage. The pre-check
+   baseline is write-once, so the post page can be reloaded
+   without corrupting the comparison.
+
    REUSE FOR OTHER MODULES: change MODULE_ID and ITEMS below.
    Nothing else needs touching.
    ============================================================ */
@@ -282,7 +286,7 @@ ITEMS.forEach((stem, i) => {
     <p class="stem">${i+1}. ${stem}</p>
     <div class="scale" role="group" aria-label="Rate item ${i+1} from 1 to 5">
       ${[1,2,3,4,5].map(n =>
-        `<button class="dot" data-i="${i}" data-v="${n}" aria-label="${n} out of 5">${n}</button>`
+        `<button class="dot" data-i="${i}" data-v="${n}" aria-pressed="false" aria-label="${n} out of 5">${n}</button>`
       ).join('')}
     </div>
     <div class="anchors"><span>Not at all</span><span>Completely</span></div>
@@ -302,9 +306,11 @@ wrap.addEventListener('click', e => {
   if (!b) return;
   const i = +b.dataset.i, v = +b.dataset.v;
   now[i] = v;
-  b.parentElement.querySelectorAll('.dot').forEach(x =>
-    x.classList.toggle('on', x === b)
-  );
+  b.parentElement.querySelectorAll('.dot').forEach(x => {
+    const on = x === b;
+    x.classList.toggle('on', on);
+    x.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
 });
 
 /* --- Submit --- */
