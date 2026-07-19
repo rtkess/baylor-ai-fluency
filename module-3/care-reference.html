@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CARE Prompting Template — AI Fluency for Faculty, Hankamer School of Business</title>
+<meta name="description" content="A one-page static reference for the CARE prompting template: Context, Assignment, Role, Examples. Module A3, Teaching Forward: AI Fluency for Practitioners.">
+<style>
+  :root{
+    --green:#154734;
+    --gold:#FFB81C;
+    --ink:#1E2B25;
+    --muted:#5A6B63;
+    --panel:#F2F6F3;
+    --rule:#D6E0DA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#E9EFEB;
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    padding:20px 16px 40px;
+  }
+  .shell{max-width:816px;margin:0 auto;}
+  .toolbar{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    margin:0 0 16px;
+  }
+  .toolbar p{
+    margin:0;flex:1 1 200px;min-width:180px;
+    font-size:12.5px;line-height:1.45;color:var(--muted);
+  }
+  button{
+    font:600 13px/1 "Helvetica Neue",Helvetica,Arial,sans-serif;
+    padding:11px 16px;border-radius:4px;cursor:pointer;
+    border:1px solid var(--green);background:var(--green);color:#fff;
+    transition:background .15s ease,color .15s ease;
+  }
+  button.ghost{background:#fff;color:var(--green);}
+  button:hover{background:#0E3225;color:#fff;}
+  button.ghost:hover{background:var(--green);color:#fff;}
+  button:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  button[disabled]{opacity:.55;cursor:default;}
+  .sheet{
+    background:#fff;
+    box-shadow:0 2px 14px rgba(21,71,52,.16);
+    border-radius:3px;overflow:hidden;
+  }
+  .sheet svg{display:block;width:100%;height:auto;}
+  .status{
+    margin:12px 0 0;font-size:12.5px;color:var(--muted);min-height:1.2em;
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .toolbar,.status{display:none;}
+    .sheet{box-shadow:none;border-radius:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <div class="toolbar">
+    <p>Keep this open while you write your prompt. Download it, print it, or bookmark this page.</p>
+    <button id="png" type="button">Download PNG</button>
+    <button id="copy" class="ghost" type="button">Copy prompt skeleton</button>
+    <button id="print" class="ghost" type="button">Print</button>
+  </div>
+
+  <div class="sheet">
+<svg id="sheet-svg" xmlns="http://www.w3.org/2000/svg" width="816" height="1056" viewBox="0 0 816 1056" role="img" aria-labelledby="svgtitle svgdesc">
+<title id="svgtitle">The CARE Prompting Template</title>
+<desc id="svgdesc">A one-page reference. CARE stands for Context, Assignment, Role, and Examples. Each component lists a core question and three prompting moves. A copy-paste prompt skeleton appears at the bottom.</desc>
+<style>
+  .bg{fill:#ffffff}
+  .band{fill:#154734}
+  .goldbar{fill:#FFB81C}
+  .h1{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:700;fill:#ffffff}
+  .h1sub{font-family:Georgia,"Times New Roman",serif;font-size:13px;font-style:italic;fill:#FFB81C}
+  .headmeta{font-family:Helvetica,Arial,sans-serif;font-size:11px;fill:#A9C0B3}
+  .eyebrow{font-family:Helvetica,Arial,sans-serif;font-size:9.5px;font-weight:700;letter-spacing:1.6px;fill:#5A6B63}
+  .lede{font-family:Georgia,"Times New Roman",serif;font-size:14px;fill:#1E2B25}
+  .panel{fill:#F2F6F3}
+  .edge{fill:#154734}
+  .badge{fill:#154734}
+  .badgeltr{font-family:Georgia,"Times New Roman",serif;font-size:26px;font-weight:700;fill:#FFB81C}
+  .cname{font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:700;fill:#154734;letter-spacing:.4px}
+  .cq{font-family:Georgia,"Times New Roman",serif;font-size:12.5px;font-style:italic;fill:#3D4A44}
+  .bul{font-family:Helvetica,Arial,sans-serif;font-size:11.5px;fill:#2A3A33}
+  .dot{fill:#FFB81C}
+  .box{fill:#14372A}
+  .boxlabel{font-family:Helvetica,Arial,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:1.5px;fill:#FFB81C}
+  .boxnote{font-family:Helvetica,Arial,sans-serif;font-size:10px;font-style:italic;fill:#9FBFAE}
+  .mono{font-family:"Courier New",Courier,monospace;font-size:10px;fill:#E8F0EB}
+  .key{fill:#FFB81C;font-weight:700}
+  .ph{fill:#E8C46A}
+  .footmain{font-family:Helvetica,Arial,sans-serif;font-size:10.5px;fill:#C9D8CF}
+  .footsub{font-family:Helvetica,Arial,sans-serif;font-size:9.5px;fill:#8FAA9C}
+  .footright{font-family:Helvetica,Arial,sans-serif;font-size:10px;fill:#FFB81C}
+</style>
+
+<rect class="bg" x="0" y="0" width="816" height="1056"/>
+
+<!-- HEADER -->
+<rect class="band" x="0" y="0" width="816" height="96"/>
+<rect class="goldbar" x="0" y="96" width="816" height="7"/>
+<text class="h1" x="48" y="52">The CARE Prompting Template</text>
+<text class="h1sub" x="48" y="77">Description in practice — the second of the 4 D&#8217;s</text>
+<text class="headmeta" x="768" y="46" text-anchor="end">Hankamer School of Business</text>
+<text class="headmeta" x="768" y="63" text-anchor="end">Baylor University</text>
+
+<!-- EYEBROW ROW -->
+<text class="eyebrow" x="48" y="130">REFERENCE PAGE — KEEP THIS OPEN WHILE YOU PROMPT</text>
+<text class="eyebrow" x="768" y="130" text-anchor="end">MODULE A3 — SECTION 2</text>
+
+<text class="lede" x="48" y="164">A vague prompt gets a generic answer. CARE gives the model what it needs before it writes a word.</text>
+
+<!-- ===== C — CONTEXT ===== -->
+<rect class="panel" x="48" y="186" width="720" height="132" rx="3"/>
+<rect class="edge" x="48" y="186" width="5" height="132"/>
+<rect class="badge" x="68" y="208" width="46" height="46" rx="4"/>
+<text class="badgeltr" x="91" y="240" text-anchor="middle">C</text>
+<text class="cname" x="132" y="224">Context</text>
+<text class="cq" x="132" y="246">What does the model need to know about my course, my students, and this moment?</text>
+<circle class="dot" cx="138" cy="268" r="2.5"/><text class="bul" x="150" y="272">Course, level, and where students actually are in the sequence right now</text>
+<circle class="dot" cx="138" cy="287" r="2.5"/><text class="bul" x="150" y="291">What just happened in class — or what this assignment follows</text>
+<circle class="dot" cx="138" cy="306" r="2.5"/><text class="bul" x="150" y="310">Hard constraints: time, length, format, platform, Baylor policy</text>
+
+<!-- ===== A — ASSIGNMENT ===== -->
+<rect class="panel" x="48" y="326" width="720" height="132" rx="3"/>
+<rect class="edge" x="48" y="326" width="5" height="132"/>
+<rect class="badge" x="68" y="348" width="46" height="46" rx="4"/>
+<text class="badgeltr" x="91" y="380" text-anchor="middle">A</text>
+<text class="cname" x="132" y="364">Assignment</text>
+<text class="cq" x="132" y="386">What exactly am I asking it to produce?</text>
+<circle class="dot" cx="138" cy="408" r="2.5"/><text class="bul" x="150" y="412">One deliverable, named with a verb: generate, revise, outline, critique</text>
+<circle class="dot" cx="138" cy="427" r="2.5"/><text class="bul" x="150" y="431">Quantity and scope — how many, how long, covering what</text>
+<circle class="dot" cx="138" cy="446" r="2.5"/><text class="bul" x="150" y="450">The thinking level you want: recall, application, or analysis</text>
+
+<!-- ===== R — ROLE ===== -->
+<rect class="panel" x="48" y="466" width="720" height="132" rx="3"/>
+<rect class="edge" x="48" y="466" width="5" height="132"/>
+<rect class="badge" x="68" y="488" width="46" height="46" rx="4"/>
+<text class="badgeltr" x="91" y="520" text-anchor="middle">R</text>
+<text class="cname" x="132" y="504">Role</text>
+<text class="cq" x="132" y="526">Whose expertise should it bring to the table?</text>
+<circle class="dot" cx="138" cy="548" r="2.5"/><text class="bul" x="150" y="552">The disciplinary expert you want in the room — name the field, not &#8220;an expert&#8221;</text>
+<circle class="dot" cx="138" cy="567" r="2.5"/><text class="bul" x="150" y="571">The frameworks or professional standards that expert would hold to</text>
+<circle class="dot" cx="138" cy="586" r="2.5"/><text class="bul" x="150" y="590">Your audience: business core, upper-division major, MBA, executive</text>
+
+<!-- ===== E — EXAMPLES ===== -->
+<rect class="panel" x="48" y="606" width="720" height="132" rx="3"/>
+<rect class="edge" x="48" y="606" width="5" height="132"/>
+<rect class="badge" x="68" y="628" width="46" height="46" rx="4"/>
+<text class="badgeltr" x="91" y="660" text-anchor="middle">E</text>
+<text class="cname" x="132" y="644">Examples</text>
+<text class="cq" x="132" y="666">What does good look like — and what should it avoid?</text>
+<circle class="dot" cx="138" cy="688" r="2.5"/><text class="bul" x="150" y="692">A sample, a template, or a strong piece of your own prior work</text>
+<circle class="dot" cx="138" cy="707" r="2.5"/><text class="bul" x="150" y="711">Terms, concepts, or sources that must appear in the output</text>
+<circle class="dot" cx="138" cy="726" r="2.5"/><text class="bul" x="150" y="730">One counter-example — name what you do not want back</text>
+
+<!-- ===== PROMPT SKELETON ===== -->
+<rect class="box" x="48" y="754" width="720" height="232" rx="3"/>
+<text class="boxlabel" x="68" y="782">COPY-PASTE PROMPT SKELETON</text>
+<text class="boxnote" x="748" y="782" text-anchor="end">Replace everything in [BRACKETS]</text>
+<rect x="68" y="794" width="680" height="1" fill="#2E5645"/>
+
+<text class="mono" x="68" y="816"><tspan class="key">Context:</tspan> I teach <tspan class="ph">[COURSE + LEVEL]</tspan> at Baylor&#8217;s Hankamer School of Business.</text>
+<text class="mono" x="68" y="831">My students just <tspan class="ph">[WHAT THEY COVERED]</tspan>. Constraints: <tspan class="ph">[TIME / LENGTH / FORMAT]</tspan>.</text>
+
+<text class="mono" x="68" y="862"><tspan class="key">Assignment:</tspan> Generate <tspan class="ph">[QUANTITY + DELIVERABLE]</tspan> that requires students to</text>
+<text class="mono" x="68" y="877"><tspan class="ph">[APPLY / ANALYZE / EVALUATE ...]</tspan>. Format: <tspan class="ph">[STRUCTURE FOR EACH ITEM]</tspan>.</text>
+
+<text class="mono" x="68" y="908"><tspan class="key">Role:</tspan> Act as an experienced <tspan class="ph">[DISCIPLINE]</tspan> educator familiar with</text>
+<text class="mono" x="68" y="923"><tspan class="ph">[KEY FRAMEWORKS OR STANDARDS]</tspan> and <tspan class="ph">[AUDIENCE / LEVEL EXPECTATIONS]</tspan>.</text>
+
+<text class="mono" x="68" y="954"><tspan class="key">Examples:</tspan> Draw on <tspan class="ph">[SOURCE MATERIAL OR PRIOR WORK]</tspan>. Must include</text>
+<text class="mono" x="68" y="969"><tspan class="ph">[KEY TERMS OR CONCEPTS]</tspan>. Avoid <tspan class="ph">[WHAT YOU DO NOT WANT BACK]</tspan>.</text>
+
+<!-- ===== FOOTER ===== -->
+<rect class="goldbar" x="0" y="996" width="816" height="6"/>
+<rect class="band" x="0" y="1002" width="816" height="54"/>
+<text class="footmain" x="48" y="1026">AI Fluency for Faculty — Hankamer School of Business, Baylor University</text>
+<text class="footsub" x="48" y="1042">Adapted from the AI Fluency Framework (Anthropic / Dakan &amp; Feller), CC BY-NC-SA 4.0.</text>
+<text class="footright" x="768" y="1034" text-anchor="end">Module A3 — Description in Action</text>
+
+</svg>
+  </div>
+
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+</div>
+
+<script>
+(function(){
+  var svg = document.getElementById('sheet-svg');
+  var status = document.getElementById('status');
+  var pngBtn = document.getElementById('png');
+  var copyBtn = document.getElementById('copy');
+  var printBtn = document.getElementById('print');
+
+  var SKELETON = [
+    "Context: I teach [COURSE + LEVEL] at Baylor's Hankamer School of Business.",
+    "My students just [WHAT THEY COVERED]. Constraints: [TIME / LENGTH / FORMAT].",
+    "",
+    "Assignment: Generate [QUANTITY + DELIVERABLE] that requires students to",
+    "[APPLY / ANALYZE / EVALUATE ...]. Format: [STRUCTURE FOR EACH ITEM].",
+    "",
+    "Role: Act as an experienced [DISCIPLINE] educator familiar with",
+    "[KEY FRAMEWORKS OR STANDARDS] and [AUDIENCE / LEVEL EXPECTATIONS].",
+    "",
+    "Examples: Draw on [SOURCE MATERIAL OR PRIOR WORK]. Must include",
+    "[KEY TERMS OR CONCEPTS]. Avoid [WHAT YOU DO NOT WANT BACK]."
+  ].join("\n");
+
+  function say(msg){ status.textContent = msg; }
+
+  printBtn.addEventListener('click', function(){ window.print(); });
+
+  copyBtn.addEventListener('click', function(){
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = SKELETON;
+      ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.top='-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); say('Prompt skeleton copied.'); }
+      catch(e){ say('Copy did not work in this browser. Select the text on the sheet instead.'); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(SKELETON).then(function(){
+        say('Prompt skeleton copied.');
+      }).catch(fallback);
+    } else { fallback(); }
+  });
+
+  pngBtn.addEventListener('click', function(){
+    pngBtn.disabled = true;
+    say('Building the image…');
+
+    var scale = 3; // 2448 x 3168 — clean for print and for slides
+    var clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    clone.setAttribute('width','816');
+    clone.setAttribute('height','1056');
+
+    var source = new XMLSerializer().serializeToString(clone);
+    var blob = new Blob([source], {type:'image/svg+xml;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var img = new Image();
+
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      canvas.width = 816 * scale;
+      canvas.height = 1056 * scale;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+
+      canvas.toBlob(function(out){
+        if(!out){ say('The image could not be created. Use Print instead and save as PDF.'); pngBtn.disabled=false; return; }
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(out);
+        a.download = 'CARE-Prompting-Template_Baylor.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+        say('Downloaded CARE-Prompting-Template_Baylor.png');
+        pngBtn.disabled = false;
+      }, 'image/png');
+    };
+
+    img.onerror = function(){
+      URL.revokeObjectURL(url);
+      say('The image could not be created. Use Print instead and save as PDF.');
+      pngBtn.disabled = false;
+    };
+
+    img.src = url;
+  });
+})();
+</script>
+
+</body>
+</html>
